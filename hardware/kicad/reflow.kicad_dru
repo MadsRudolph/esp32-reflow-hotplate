@@ -1,0 +1,22 @@
+(version 1)
+
+# Custom DRC rules for the laser/mill reflow board.
+#
+# The DTU fiber-laser process minimum copper clearance is 0.8 mm (the Default
+# netclass clearance). Two THROUGH-HOLE parts ship with a fixed pad pitch whose
+# copper gap is below 0.8 mm and cannot be widened without changing the part:
+#   * SW1 - Alps EC11 rotary encoder, 2.5 mm pin pitch -> ~0.5 mm pad-to-pad gap
+#   * D1  - 5 mm LED, 2.54 mm pitch -> ~0.74 mm pad-to-pad gap
+# Those gaps are a property of the component's own legs, not of any track we etch,
+# so the laser places each footprint as one unit. These rules relax the
+# pad-to-pad clearance ONLY between two pads that both belong to that specific
+# footprint; the full 0.8 mm process clearance stays in force for every gap
+# between DIFFERENT components and for all etched tracks.
+
+(rule "SW1_intra_pad_clearance"
+	(condition "A.memberOfFootprint('SW1') && B.memberOfFootprint('SW1')")
+	(constraint clearance (min 0.4mm)))
+
+(rule "D1_intra_pad_clearance"
+	(condition "A.memberOfFootprint('D1') && B.memberOfFootprint('D1')")
+	(constraint clearance (min 0.4mm)))

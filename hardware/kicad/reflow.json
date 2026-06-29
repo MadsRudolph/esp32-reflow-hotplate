@@ -1,0 +1,372 @@
+{
+ "components": [
+  {
+   "ref": "A1",
+   "value": "ESP32-DevKitV1",
+   "footprint": "reflow:ESP32_DevKitV1_2x15_P2.54_W22.86",
+   "pads": {
+    "30": "/+3V3",
+    "15": "/+5V",
+    "14": "/GND",
+    "26": "/GPIO4",
+    "23": "/GPIO5",
+    "22": "/GPIO18",
+    "21": "/GPIO19",
+    "20": "/GPIO21",
+    "17": "/GPIO22",
+    "8": "/GPIO25",
+    "9": "/GPIO26",
+    "10": "/GPIO27",
+    "6": "/GPIO32",
+    "7": "/GPIO33"
+   }
+  },
+  {
+   "ref": "C1",
+   "value": "100uF",
+   "footprint": "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm",
+   "pads": {
+    "1": "/+24V",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "C2",
+   "value": "1000uF",
+   "footprint": "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm",
+   "pads": {
+    "1": "/+5V",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "C3",
+   "value": "330nF",
+   "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
+   "pads": {
+    "1": "/+24V",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "C4",
+   "value": "100nF",
+   "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
+   "pads": {
+    "1": "/+12V",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "C5",
+   "value": "100nF",
+   "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
+   "pads": {
+    "1": "/+3V3",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "C6",
+   "value": "100nF",
+   "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
+   "pads": {
+    "1": "/+3V3",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "C7",
+   "value": "10nF",
+   "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
+   "pads": {
+    "2": "/GND",
+    "1": "/GPIO32"
+   }
+  },
+  {
+   "ref": "C8",
+   "value": "10nF",
+   "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm",
+   "pads": {
+    "2": "/GND",
+    "1": "/GPIO33"
+   }
+  },
+  {
+   "ref": "D1",
+   "value": "LED 5MM GR\u00d8N",
+   "footprint": "LED_THT:LED_D5.0mm",
+   "pads": {
+    "1": "/GND",
+    "2": "/LED_ANODE"
+   }
+  },
+  {
+   "ref": "D2",
+   "value": "1N5817",
+   "footprint": "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal",
+   "pads": {
+    "2": "/GND",
+    "1": "/SW_OUT"
+   }
+  },
+  {
+   "ref": "D3",
+   "value": "P6KE24P",
+   "footprint": "Diode_THT:D_DO-201AD_P15.24mm_Horizontal",
+   "pads": {
+    "1": "/+24V",
+    "2": "/GND"
+   }
+  },
+  {
+   "ref": "D4",
+   "value": "1.5KE36A",
+   "footprint": "Diode_THT:D_DO-201AD_P15.24mm_Horizontal",
+   "pads": {
+    "2": "/GND",
+    "1": "/HEATER_RET"
+   }
+  },
+  {
+   "ref": "F1",
+   "value": "15A (holder, BYO)",
+   "footprint": "Fuse:Fuseholder_Cylinder-5x20mm_Schurter_FUP_0031.2510_Horizontal_Closed",
+   "pads": {
+    "2": "/+24V",
+    "1": "Net-(J1-Pin_1)"
+   }
+  },
+  {
+   "ref": "J1",
+   "value": "2 pol skrueterminal",
+   "footprint": "TerminalBlock:TerminalBlock_bornier-2_P5.08mm",
+   "pads": {
+    "2": "/GND",
+    "1": "Net-(J1-Pin_1)"
+   }
+  },
+  {
+   "ref": "J2",
+   "value": "2 pol skrueterminal",
+   "footprint": "TerminalBlock:TerminalBlock_bornier-2_P5.08mm",
+   "pads": {
+    "1": "/+24V",
+    "2": "/HEATER_RET"
+   }
+  },
+  {
+   "ref": "J3",
+   "value": "MAX31855",
+   "footprint": "reflow:Header_1x05_P2.54",
+   "pads": {
+    "1": "/+3V3",
+    "2": "/GND",
+    "4": "/GPIO5",
+    "3": "/GPIO18",
+    "5": "/GPIO19"
+   }
+  },
+  {
+   "ref": "J4",
+   "value": "OLED",
+   "footprint": "reflow:Header_1x04_P2.54",
+   "pads": {
+    "1": "/+3V3",
+    "2": "/GND",
+    "4": "/GPIO21",
+    "3": "/GPIO22"
+   }
+  },
+  {
+   "ref": "L1",
+   "value": "120uH",
+   "footprint": "Inductor_THT:L_Toroid_Vertical_L26.7mm_W14.0mm_P10.16mm_Pulse_D",
+   "pads": {
+    "2": "/+5V",
+    "1": "/SW_OUT"
+   }
+  },
+  {
+   "ref": "Q1",
+   "value": "IRFS4710",
+   "footprint": "energy_system:TO-220-3_Vertical_LaserPads",
+   "pads": {
+    "3": "/GND",
+    "2": "/HEATER_RET",
+    "1": "/Q1_GATE"
+   }
+  },
+  {
+   "ref": "Q2",
+   "value": "BS170",
+   "footprint": "energy_system:TO-92_Inline_GDS",
+   "pads": {
+    "2": "/GD_NODE1",
+    "3": "/GND",
+    "1": "/Q2_GATE"
+   }
+  },
+  {
+   "ref": "Q3",
+   "value": "BS170",
+   "footprint": "energy_system:TO-92_Inline_GDS",
+   "pads": {
+    "2": "/GATE_MAIN",
+    "1": "/GD_NODE1",
+    "3": "/GND"
+   }
+  },
+  {
+   "ref": "R1",
+   "value": "100k",
+   "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+   "pads": {
+    "2": "/GND",
+    "1": "/Q2_GATE"
+   }
+  },
+  {
+   "ref": "R2",
+   "value": "1k",
+   "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+   "pads": {
+    "1": "/GPIO25",
+    "2": "/Q2_GATE"
+   }
+  },
+  {
+   "ref": "R3",
+   "value": "10k",
+   "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+   "pads": {
+    "1": "/+12V",
+    "2": "/GD_NODE1"
+   }
+  },
+  {
+   "ref": "R4",
+   "value": "10k",
+   "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+   "pads": {
+    "1": "/+12V",
+    "2": "/GATE_MAIN"
+   }
+  },
+  {
+   "ref": "R5",
+   "value": "100",
+   "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+   "pads": {
+    "1": "/GATE_MAIN",
+    "2": "/Q1_GATE"
+   }
+  },
+  {
+   "ref": "R6",
+   "value": "10k",
+   "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+   "pads": {
+    "2": "/GND",
+    "1": "/Q1_GATE"
+   }
+  },
+  {
+   "ref": "R7",
+   "value": "3k09",
+   "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+   "pads": {
+    "1": "/+5V",
+    "2": "/VFB"
+   }
+  },
+  {
+   "ref": "R8",
+   "value": "1k00",
+   "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+   "pads": {
+    "2": "/GND",
+    "1": "/VFB"
+   }
+  },
+  {
+   "ref": "R13",
+   "value": "330",
+   "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+   "pads": {
+    "1": "/GPIO4",
+    "2": "/LED_ANODE"
+   }
+  },
+  {
+   "ref": "SW1",
+   "value": "Rotary 1x12 EYE",
+   "footprint": "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm",
+   "pads": {
+    "C": "/GND",
+    "S1": "/GPIO27",
+    "A": "/GPIO32",
+    "B": "/GPIO33"
+   }
+  },
+  {
+   "ref": "SW2",
+   "value": "Pushbutton",
+   "footprint": "Button_Switch_THT:SW_PUSH_6mm",
+   "pads": {
+    "2": "/GND",
+    "1": "/GPIO26"
+   }
+  },
+  {
+   "ref": "U2",
+   "value": "LM2575-ADJ",
+   "footprint": "energy_system:TO-220-5_Vertical_LaserPads",
+   "pads": {
+    "1": "/+24V",
+    "3": "/GND",
+    "5": "/GND",
+    "2": "/SW_OUT",
+    "4": "/VFB"
+   }
+  },
+  {
+   "ref": "U3",
+   "value": "LM7812",
+   "footprint": "energy_system:TO-220-3_Vertical_LaserPads",
+   "pads": {
+    "3": "/+12V",
+    "1": "/+24V",
+    "2": "/GND"
+   }
+  }
+ ],
+ "nets": [
+  "/+3V3",
+  "/+5V",
+  "/+12V",
+  "/+24V",
+  "/GATE_MAIN",
+  "/GD_NODE1",
+  "/GND",
+  "/GPIO4",
+  "/GPIO5",
+  "/GPIO18",
+  "/GPIO19",
+  "/GPIO21",
+  "/GPIO22",
+  "/GPIO25",
+  "/GPIO26",
+  "/GPIO27",
+  "/GPIO32",
+  "/GPIO33",
+  "/HEATER_RET",
+  "/LED_ANODE",
+  "/Q1_GATE",
+  "/Q2_GATE",
+  "/SW_OUT",
+  "/VFB",
+  "Net-(J1-Pin_1)"
+ ]
+}
