@@ -186,27 +186,26 @@ COMPONENTS = [
     ("R13", "Device:R", "330",
      "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 365, 130, 0),
 
-    # ---- I2C pull-ups + encoder/button debounce + misc passives ----
-    ("R7", "Device:R", "4.7k",
-     "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 210, 120, 0),
-    ("R8", "Device:R", "4.7k",
-     "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 210, 135, 0),
-    ("R9", "Device:R", "10k",
-     "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 300, 75, 0),
-    ("R10", "Device:R", "10k",
-     "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 315, 75, 0),
-    ("R11", "Device:R", "10k",
-     "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 330, 75, 0),
-    ("R12", "Device:R", "10k",
-     "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 300, 150, 0),
+    # ---- Decoupling + encoder debounce caps (Task 6) ----
+    # NOTE (Task 6): R7-R12 were orphaned placeholder resistors from the Task-3
+    # generic pool (intended as I2C pull-ups / encoder-button pull-ups). They are
+    # NOT used by this design -- the SSD1306 OLED module carries its own I2C
+    # pull-ups, and the encoder/start-button use the ESP32 internal pull-ups.
+    # They have been removed so they do not appear as floating parts. The
+    # resistor set is now exactly R1-R6 (gate drive) + R13 (LED).
+    #
+    # C5 100nF = J3 (MAX31855) VCC->GND decoupling.
+    # C6 100nF = J4 (OLED) VCC->GND decoupling.
+    # C7 10nF  = encoder A (SW1.A)->GND debounce.
+    # C8 10nF  = encoder B (SW1.B)->GND debounce.
     ("C5", "Device:C", "100nF",
      "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm", 250, 110, 0),
     ("C6", "Device:C", "100nF",
      "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm", 250, 150, 0),
-    ("C7", "Device:C", "100nF",
-     "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm", 330, 110, 0),
-    ("C8", "Device:C", "100nF",
-     "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm", 330, 150, 0),
+    ("C7", "Device:C", "10nF",
+     "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm", 345, 100, 0),
+    ("C8", "Device:C", "10nF",
+     "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm", 345, 80, 0),
 ]
 
 
@@ -512,6 +511,16 @@ PAIR_WIRES = [
 PWR_FLAGS = [
     ("+24V", "U2", "1"),
     ("GND", "U2", "3"),
+    # +3V3 is sourced by the ESP32 onboard LDO, but the module symbol types its
+    # 3V3 pin as power_INPUT (passive consumer), so ERC sees +3V3 as driverless.
+    # A PWR_FLAG on the A1.3V3 stub declares the driver (Task 6).
+    ("+3V3", "A1", "30"),
+    # +5V is driven by the LM2576 output *through* inductor L1, so the rail label
+    # sits on L1.2 (a passive pin) rather than a power_out pin -- ERC therefore
+    # sees +5V as driverless once a real consumer (A1.VIN) is attached. A PWR_FLAG
+    # on the L1.2 (+5V) stub declares the driver. (Surfaced in Task 6 because
+    # Task 4 had no +5V consumer connected yet; logically a Task-4 rail.)
+    ("+5V", "L1", "2"),
 ]
 
 # =============================================================================
@@ -573,6 +582,107 @@ NETS_POWERSTAGE = [
     ("HEATER_RET", "D4", "1"),   # TVS cathode at HEATER_RET
     ("GND", "Q1", "3"),          # Q1 source = GND (low-side)
     ("GND", "D4", "2"),          # TVS anode to GND
+]
+
+# =============================================================================
+# Task 6: controller / sensor / UI wiring (NETS_CTRL)
+# =============================================================================
+#
+# Same net-label-on-outward-stub technique as Tasks 4-5. The contract checker
+# (net_contract.py) asserts that each pinmap GPIO *name* (e.g. "GPIO18") appears
+# as a label in the schematic, so the GPIO name is used directly as the local
+# net label and is dropped on BOTH the A1 pin and the matching peripheral pin --
+# that makes them one net AND satisfies the contract in a single pass.
+#
+# ESP32 A1 pin-number map (from modules.kicad_sym ESP32_DevKitV1):
+#   VIN=15, GND=14, 3V3=30, GPIO32=6, GPIO33=7, GPIO25=8, GPIO26=9, GPIO27=10,
+#   GPIO22=17, GPIO21=20, GPIO19=21, GPIO18=22, GPIO5=23, GPIO4=26.
+# J3 MAX31855: VCC=1 GND=2 SCK=3 CS=4 SO=5.
+# J4 OLED:     VCC=1 GND=2 SCL=3 SDA=4.
+# SW1 RotaryEncoder_Switch: pins A/B/C/S1/S2 (number == letter).
+# SW2 SW_Push: 1, 2.   D1 LED: 1=K(cathode), 2=A(anode).
+#
+# HEATER_PWM: A1.GPIO25 joins the existing HEATER_PWM net (its gate-drive end was
+# wired in Task 5). Two labels share the GPIO25 stub node -- "HEATER_PWM" (for
+# connectivity to GATEDRV.IN at R2.1) and "GPIO25" (for the contract checker).
+#
+# LED: A1.GPIO4 --R13(330)--> D1.A(anode); D1.K(cathode) --> GND. The series R13
+# means GPIO4 lands on R13.1 (not directly on D1.A); R13.2 -> D1.A is the local
+# LED_ANODE net. The contract enumerates LED_STATUS = [A1.GPIO4, D1.A] at the
+# interface level; R13 is a passive interconnect (not enumerated), and the
+# checker only requires the "GPIO4" label to be present, which it is on A1.GPIO4.
+#
+# Decoupling: C5 100nF across J3.VCC(+3V3)->GND, C6 100nF across J4.VCC(+3V3)->GND.
+# Debounce:   C7 10nF A(GPIO32)->GND, C8 10nF B(GPIO33)->GND.
+# No external I2C pull-ups (SSD1306 module has its own); encoder + button use the
+# ESP32 internal pull-ups (no external R).
+NETS_CTRL = [
+    # ---- ESP32 (A1) power ----
+    ("+5V", "A1", "15"),     # A1.VIN  <- +5V (from LM2576, Task 4)
+    ("GND", "A1", "14"),     # A1.GND
+    ("+3V3", "A1", "30"),    # A1.3V3  (onboard LDO output; PWR_FLAG added below)
+
+    # ---- MAX31855 thermocouple (J3, SPI) ----
+    ("+3V3", "J3", "1"),     # J3.VCC <- +3V3
+    ("GND", "J3", "2"),      # J3.GND
+    ("GPIO18", "J3", "3"),   # J3.SCK = A1.GPIO18 (TC_SCK)
+    ("GPIO5", "J3", "4"),    # J3.CS  = A1.GPIO5  (TC_CS)
+    ("GPIO19", "J3", "5"),   # J3.SO  = A1.GPIO19 (TC_SO)
+    ("GPIO18", "A1", "22"),  # A1.GPIO18
+    ("GPIO5", "A1", "23"),   # A1.GPIO5
+    ("GPIO19", "A1", "21"),  # A1.GPIO19
+
+    # ---- OLED (J4, I2C) ----
+    ("+3V3", "J4", "1"),     # J4.VCC <- +3V3
+    ("GND", "J4", "2"),      # J4.GND
+    ("GPIO22", "J4", "3"),   # J4.SCL = A1.GPIO22 (OLED_SCL)
+    ("GPIO21", "J4", "4"),   # J4.SDA = A1.GPIO21 (OLED_SDA)
+    ("GPIO22", "A1", "17"),  # A1.GPIO22
+    ("GPIO21", "A1", "20"),  # A1.GPIO21
+
+    # ---- Rotary encoder (SW1) ----
+    ("GPIO32", "SW1", "A"),  # SW1.A = A1.GPIO32 (ENC_A)
+    ("GPIO33", "SW1", "B"),  # SW1.B = A1.GPIO33 (ENC_B)
+    ("GPIO27", "SW1", "S1"), # SW1.S1 = A1.GPIO27 (ENC_SW)
+    ("GND", "SW1", "C"),     # SW1.C common = GND
+    ("GPIO32", "A1", "6"),   # A1.GPIO32
+    ("GPIO33", "A1", "7"),   # A1.GPIO33
+    ("GPIO27", "A1", "10"),  # A1.GPIO27
+
+    # ---- Encoder debounce caps ----
+    ("GPIO32", "C7", "1"),   # C7 A->GND debounce, top = ENC_A node
+    ("GND", "C7", "2"),
+    ("GPIO33", "C8", "1"),   # C8 B->GND debounce, top = ENC_B node
+    ("GND", "C8", "2"),
+
+    # ---- Start button (SW2) ----
+    ("GPIO26", "SW2", "1"),  # SW2.1 = A1.GPIO26 (BTN_START)
+    ("GND", "SW2", "2"),     # SW2.2 = GND
+    ("GPIO26", "A1", "9"),   # A1.GPIO26
+
+    # ---- Status LED (D1) via R13 ----
+    ("GPIO4", "A1", "26"),   # A1.GPIO4 (LED_STATUS)
+    ("GPIO4", "R13", "1"),   # R13.1 = GPIO4 side
+    ("LED_ANODE", "R13", "2"),  # R13.2 -> D1 anode (local node)
+    ("LED_ANODE", "D1", "2"),   # D1.A (anode) = pin 2
+    ("GND", "D1", "1"),         # D1.K (cathode) = pin 1 -> GND
+
+    # ---- Decoupling caps ----
+    ("+3V3", "C5", "1"),     # C5 across J3.VCC->GND
+    ("GND", "C5", "2"),
+    ("+3V3", "C6", "1"),     # C6 across J4.VCC->GND
+    ("GND", "C6", "2"),
+
+    # ---- Heater PWM logic input (A1.GPIO25 -> existing HEATER_PWM net) ----
+    ("HEATER_PWM", "A1", "8"),  # joins GATEDRV.IN (R2.1) wired in Task 5
+]
+
+# Extra labels that must share an existing stub node (same ref+pin) without a new
+# wire. Used for the GPIO25 pin, which carries the HEATER_PWM net label (above)
+# plus a second "GPIO25" label so the contract checker sees the GPIO25 name.
+# (net_label, ref, pin)
+NETS_CTRL_ALIASES = [
+    ("GPIO25", "A1", "8"),
 ]
 
 # Net-label visual styling. KiCad treats SW_OUT / J1_HOT as ordinary local nets.
@@ -820,6 +930,29 @@ def render_powerstage_wiring() -> list[str]:
     return out
 
 
+def render_ctrl_wiring() -> list[str]:
+    """Task-6 controller/sensor/UI connectivity.
+
+    Identical net-label-on-outward-stub technique as Tasks 4-5. Each entry in
+    ``NETS_CTRL`` emits a short outward stub from the pin endpoint with a net
+    label on its far end; identical label names form one net. ``NETS_CTRL_ALIASES``
+    drops an *extra* label on an existing stub-far node (no new wire) -- used so
+    the GPIO25 pin carries both "HEATER_PWM" (connectivity) and "GPIO25" (the
+    contract checker). The +3V3 PWR_FLAG (in PWR_FLAGS) is emitted by
+    render_power_wiring and lands on the same A1.3V3 stub-far node.
+    """
+    out: list[str] = []
+    for net, ref, pin in NETS_CTRL:
+        x, y = endpoint_of(ref, pin)
+        fx, fy = _stub_far(ref, pin)
+        out.append(render_wire(x, y, fx, fy))
+        out.append(render_label(net, fx, fy))
+    for net, ref, pin in NETS_CTRL_ALIASES:
+        fx, fy = _stub_far(ref, pin)
+        out.append(render_label(net, fx, fy))
+    return out
+
+
 HEADER = '''(kicad_sch
 \t(version 20250114)
 \t(generator "eeschema")
@@ -848,6 +981,7 @@ def main() -> None:
         parts.append(render_symbol(ref, lib_id, value, footprint, x, y, angle))
     wiring = render_power_wiring()              # Task 4: power-net connectivity
     wiring += render_powerstage_wiring()        # Task 5: gate drive + power loop
+    wiring += render_ctrl_wiring()              # Task 6: controller/sensor/UI
     parts.extend(wiring)
     parts.append(FOOTER)
 
