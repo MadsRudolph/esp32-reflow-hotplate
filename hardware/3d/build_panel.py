@@ -25,6 +25,9 @@
 # Power corner (placement.json _doc: "lower-left"): regulators U2/U3 +
 # heater MOSFET Q1 sit at board y~30-70. Mapped through the affine the regulator
 # zone lands near panel y~-21..18 in the lower-left quadrant; vent slots go there.
+# Vent anchor positions are read live from placement.json (keys U2, U3) so they
+# track the board layout automatically; defaults [42.5,30.3]/[58.4,30.3] are used
+# as fallback only if a key is absent.
 #
 # Requires build_common.py, params.py and build_box.py exec'd first (helpers,
 # PARAMS, and top_insert_centers() in scope).
@@ -102,21 +105,31 @@ def build():
             'DIFFERENCE')
 
     # 5) OLED rectangular window at J4. oled_win_x along X, oled_win_y along Y.
+    #    J4 rotation must be 0; if it's ever rotated, the window dims need swapping.
+    pl_j4_rot = _load_placement()["J4"][2]
+    assert pl_j4_rot == 0, (
+        f"J4 rotation in placement.json is {pl_j4_rot}° (expected 0). "
+        "If J4 is rotated 90°/270° swap oled_win_x and oled_win_y here."
+    )
     x, y = cuts["J4"]
     boolean(plate, add_box("cut_oled", P["oled_win_x"], P["oled_win_y"], cut_h,
                            loc=(x, y, cut_z)), 'DIFFERENCE')
 
-    # 6) Vent slots over the regulator/MOSFET (power) zone. The regulators U2/U3
-    #    sit at board (42.5,30.3)/(58.4,30.3) -> panel (-9.5,-21.7)/(6.4,-21.7).
-    #    A small row of slots centred on that y, spanning the regulator x range.
-    u2x, u2y = _affine(42.5, 30.3)
+    # 6) Vent slots over the regulator/MOSFET (power) zone. U2/U3 positions are
+    #    read from placement.json so the vent row tracks the board layout automatically.
+    #    Fallback defaults match the current layout if a key is ever absent.
+    _pl = _load_placement()
+    _u2_bx, _u2_by, _ = _pl.get("U2", [42.5, 30.3, 0])
+    _u3_bx, _u3_by, _ = _pl.get("U3", [58.4, 30.3, 0])
+    u2x, u2y = _affine(_u2_bx, _u2_by)
+    u3x, _u3y = _affine(_u3_bx, _u3_by)
     vw = P["vent_slot_w"]
     vl = P["vent_slot_l"]
     n_vents = 4
     pitch = 6.0
     span = (n_vents - 1) * pitch
-    vent_cx = (u2x + _affine(58.4, 30.3)[0]) / 2.0  # midpoint of U2..U3 in x
-    vent_cy = u2y
+    vent_cx = (u2x + u3x) / 2.0  # midpoint of U2..U3 in panel x
+    vent_cy = u2y                 # both regulators share the same board y
     for i in range(n_vents):
         vx = vent_cx - span / 2.0 + i * pitch
         boolean(plate, add_box("vent", vw, vl, cut_h, loc=(vx, vent_cy, cut_z)),
