@@ -42,9 +42,12 @@ board, ESP32 firmware, and 3D-printed enclosure parts.
 ### 3.2 Power stage ("power corner")
 - **IRFS4710** low-side N-MOSFET switches the heater negative return. ~2.4 W at 13 A →
   TO-220 heatsink + mica/silicon insulating pad (DTU shop).
-- Gate drive: ESP32 3.3 V PWM → **BS170** level-shifter → gate pulled to **12 V** through
-  a gate resistor; **gate pulldown** ensures unpowered/crashed ESP32 = heater OFF.
-  Drive logic is inverted in firmware (BS170 inverts).
+- Gate drive: ESP32 3.3 V PWM → **two-stage BS170 level shifter (non-inverting overall)**
+  → IRFS4710 gate at **12 V** through a gate resistor, plus a **gate-source pulldown**.
+  The topology is **boot-safe**: GPIO high = heater ON; GPIO low / floating / ESP32
+  unpowered / mid-reset = heater **OFF inherently** (no firmware required for the safe
+  state). A single inverting shifter is explicitly rejected because it would drive the
+  heater ON whenever the GPIO floats at boot/crash.
 - Heater is resistive → no freewheel diode. **TVS** across 24 V input clamps transients.
 - PWM is "slow" (≤ a few hundred Hz; thermal mass tolerates even ~2 Hz), so switching
   losses are negligible and gate-drive current is tiny.
@@ -58,7 +61,8 @@ board, ESP32 firmware, and 3D-printed enclosure parts.
   cold-junction compensation, and open/short fault flags consumed by the safety module.
 
 ### 3.4 Safety (layered)
-1. **Hardware fail-safe:** gate pulldown → power-off/reset/crash = heater off.
+1. **Hardware fail-safe:** non-inverting gate drive + gate-source pulldown → power-off /
+   reset / crash / floating GPIO = heater off, with no firmware involvement.
 2. **Inline thermal cutoff fuse** (~240 °C one-shot) in series with the heater element —
    independent of firmware.
 3. **Fused 24 V input** (~15 A inline) + input TVS.
@@ -69,7 +73,7 @@ board, ESP32 firmware, and 3D-printed enclosure parts.
 ## 4. Components & sourcing
 
 **From DTU component shop (through-hole lab stock):**
-IRFS4710 (power MOSFET), BS170 (gate level-shifter), LM2576 (5 V switcher), LM7812 (12 V),
+IRFS4710 (power MOSFET), 2× BS170 (non-inverting gate level shifter), LM2576 (5 V switcher), LM7812 (12 V),
 TVS diode, all resistors/capacitors, 2- & 3-pole screw terminals (`TerminalBlock.pretty`),
 rotary encoder, momentary pushbutton, TO-220 heatsink + thermal pad, headers/Molex,
 IC sockets as needed.
@@ -149,6 +153,29 @@ hardware/kicad/   KiCad 10 project (schematic + single-sided board) + project fp
 hardware/3d/      Blender sources + exported STL/STEP
 firmware/         PlatformIO ESP32 project (modules per §6)
 ```
+
+## 8.1 ESP32 GPIO pin map (hardware ↔ firmware contract)
+
+Default module: **30-pin DOIT ESP32 DevKit V1** (2×15 female headers, 2.54 mm pitch,
+22.86 mm row spacing). All listed GPIOs are exposed on this board. If a 38-pin
+ESP32-DevKitC is used instead, only the footprint widens (to 2×19) — the pin map is
+unchanged.
+
+| Signal | GPIO | Notes |
+|---|---|---|
+| `HEATER_PWM` | GPIO25 | LEDC PWM → two-stage BS170 gate drive; low at reset = OFF |
+| `TC_SCK` | GPIO18 | VSPI clock (MAX31855) |
+| `TC_SO` (MISO) | GPIO19 | VSPI MISO (MAX31855 data out; read-only, no MOSI) |
+| `TC_CS` | GPIO5 | MAX31855 chip select |
+| `OLED_SDA` | GPIO21 | I²C data (SSD1306) |
+| `OLED_SCL` | GPIO22 | I²C clock (SSD1306) |
+| `ENC_A` | GPIO32 | Rotary encoder A, internal pull-up |
+| `ENC_B` | GPIO33 | Rotary encoder B, internal pull-up |
+| `ENC_SW` | GPIO27 | Encoder push, internal pull-up |
+| `BTN_START` | GPIO26 | Start/stop + panic, internal pull-up |
+| `LED_STATUS` | GPIO4 | Status LED (avoids strapping pins) |
+
+Strapping pins (GPIO0/2/12/15) and flash pins (GPIO6–11) are deliberately unused.
 
 ## 9. Risks & open items
 - **Heater plate spec:** exact PTC plate dimensions/wattage/voltage must be fixed before
