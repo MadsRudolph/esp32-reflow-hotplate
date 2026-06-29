@@ -41,3 +41,10 @@ logs/
 *.drc.txt
 reflow.net
 reflow.json
+
+# KiCad routing/autoplace scratch (regenerable)
+hardware/kicad/reflow.autoplaced.*
+hardware/kicad/reflow.refined.*
+hardware/kicad/*.autoplace.json
+*-erc.rpt
+hardware/3d/relfow.blend
