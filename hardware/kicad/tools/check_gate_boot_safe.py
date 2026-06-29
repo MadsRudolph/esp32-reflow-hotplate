@@ -191,35 +191,49 @@ def main() -> None:
              f"Q1.G ('{q1_g}') (R5 missing).")
 
     # ---- (c) FORBIDDEN single-inverting / direct-drive patterns. ----
-    pwm = "HEATER_PWM"
+    #
+    # Resolve the PWM-input net by TOPOLOGY, not by a fixed label name.
+    # The net that drives the gate chain is identified as the net whose members
+    # include R2 pin 1 (the source side of the series gate resistor into Q2.G).
+    # This is alias-robust: after Task 6 the net carries both the "GPIO25" and
+    # "HEATER_PWM" labels; KiCad may name it either way in the export.  We never
+    # look up a label string — we look up the pin-set membership.
+    pwm = node_net(nets, "R2", "1")
+    if pwm is None:
+        fail("R2 pin 1 is not connected to any net.  "
+             "Cannot resolve the PWM-input net; R2 (series gate resistor) "
+             "appears missing.")
     pwm_nodes = nets.get(pwm, set())
     pwm_refs = {r for r, _ in pwm_nodes}
 
-    # HEATER_PWM must NOT touch Q1.G directly.
+    # PWM-input net must NOT touch Q1.G directly.
     if (("Q1", "1") in pwm_nodes) or (q1_g == pwm):
-        fail("HEATER_PWM connects DIRECTLY to Q1.G (single-stage / direct "
-             "drive). Floating GPIO at boot would drive the heater ON.")
-    # HEATER_PWM must NOT touch GATE_MAIN directly.
+        fail(f"PWM-input net ('{pwm}') connects DIRECTLY to Q1.G "
+             f"(single-stage / direct drive). "
+             f"Floating GPIO at boot would drive the heater ON.")
+    # PWM-input net must NOT touch GATE_MAIN directly.
     if pwm == gate_main:
-        fail("HEATER_PWM is the same net as GATE_MAIN (single inverting stage). "
-             "Floating GPIO at boot could drive the gate.")
-    # HEATER_PWM must NOT be pulled up to +12V (an inverting stage would put a
-    # pull-up to the gate rail directly on the logic input).
+        fail(f"PWM-input net ('{pwm}') is the same net as GATE_MAIN "
+             f"(single inverting stage). "
+             f"Floating GPIO at boot could drive the gate.")
+    # PWM-input net must NOT be pulled up to +12V (an inverting stage would put
+    # a pull-up to the gate rail directly on the logic input).
     v12_refs_all = {r for r, _ in nets.get(v12, set())}
     for ref, _pin in pwm_nodes:
         if ref.startswith("R") and ref in v12_refs_all:
-            fail(f"HEATER_PWM has a pull-UP resistor ({ref}) to +12V -- that is "
-                 f"the inverting single-stage pattern. Forbidden.")
-    # HEATER_PWM must enter the chain at Q2.G (through R2) -- i.e. Q2.G's net
-    # must be reachable from HEATER_PWM via a resistor (R2), and Q2 is the FIRST
-    # stage, guaranteeing the two-BS170-stage separation from Q1.G.
+            fail(f"PWM-input net ('{pwm}') has a pull-UP resistor ({ref}) to "
+                 f"+12V -- that is the inverting single-stage pattern. Forbidden.")
+    # PWM-input net must reach Q2.G through a series resistor (R2); the two nets
+    # must be DIFFERENT (otherwise R2 is absent and the input is shorted to Q2.G).
     if pwm == q2_g:
-        # acceptable only if there is still R2 in series; but contract wires
-        # HEATER_PWM -> R2 -> Q2.G as two nets. A merged net means no R2.
-        fail("HEATER_PWM is directly the Q2.G net (R2 series resistor missing).")
+        # The input net and Q2.G merged into one net -> R2 has no series effect.
+        fail(f"PWM-input net ('{pwm}') is directly the Q2.G net "
+             f"(R2 series resistor is missing or bypassed).")
     q2g_refs = {r for r, _ in nets.get(q2_g, set())}
-    if not (pwm_refs & q2g_refs & {r for r in pwm_refs if r.startswith("R")}):
-        fail(f"HEATER_PWM does not reach Q2.G through a series resistor (R2). "
+    bridging = pwm_refs & q2g_refs & {r for r in pwm_refs if r.startswith("R")}
+    if not bridging:
+        fail(f"PWM-input net ('{pwm}') does not reach Q2.G through a series "
+             f"resistor (R2 appears missing). "
              f"PWM net refs={sorted(pwm_refs)}, Q2.G net refs={sorted(q2g_refs)}.")
 
     # ---- Q1 drain is the heater return (sanity: not GND/+12V/+24V). ----
@@ -228,7 +242,7 @@ def main() -> None:
 
     # ---- All good. ----
     print("BOOT-SAFETY PASS: non-inverting two-stage gate drive verified.")
-    print(f"  HEATER_PWM --R2--> Q2.G   (Q2.S=GND, pulldown on Q2.G)")
+    print(f"  PWM-input ('{pwm}') --R2--> Q2.G   (Q2.S=GND, pulldown on Q2.G)")
     print(f"  Q2.D = GD_NODE1 ('{gd_node1}')  pull-UP to +12V present")
     print(f"  GD_NODE1 --> Q3.G ; Q3.D = GATE_MAIN ('{gate_main}')  "
           f"pull-UP to +12V present")
