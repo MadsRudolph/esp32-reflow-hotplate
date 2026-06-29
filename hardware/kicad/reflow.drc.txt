@@ -1,0 +1,50 @@
+** Drc report for reflow.kicad_pcb **
+** Created on 2026-06-29T23:44:34 **
+** Report includes: Errors, Warnings **
+
+** Found 4 DRC violations **
+[isolated_copper]: Isolated copper fill
+    Local override; warning
+    @(19.9500 mm, 19.9500 mm): Zone [<no net>] on F.Cu, priority 0
+[isolated_copper]: Isolated copper fill
+    Local override; warning
+    @(19.9500 mm, 19.9500 mm): Zone [<no net>] on B.Cu, priority 0
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(64.7700 mm, 85.3800 mm): PCB text 'Q2' on F.Silkscreen
+    @(64.7700 mm, 86.0050 mm): Footprint text of Q2 (G)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(76.6700 mm, 86.0050 mm): Footprint text of Q3 (G)
+    @(76.6700 mm, 85.3800 mm): PCB text 'Q3' on F.Silkscreen
+
+** Found 4 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(27.0000 mm, 86.0000 mm): Zone 'HEATER_RET_pour' [/HEATER_RET] on B.Cu, priority 10
+    @(27.0000 mm, 86.0000 mm): Zone 'HEATER_RET_pour' [/HEATER_RET] on B.Cu, priority 10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(27.0000 mm, 86.0000 mm): Zone 'HEATER_RET_pour' [/HEATER_RET] on B.Cu, priority 10
+    @(27.0000 mm, 86.0000 mm): Zone 'HEATER_RET_pour' [/HEATER_RET] on B.Cu, priority 10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(50.0000 mm, 79.0100 mm): PTH pad 30 [/+3V3] of A1
+    @(58.9942 mm, 45.0768 mm): Track [/+3V3] on B.Cu, length 2.3677 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(82.4200 mm, 79.5300 mm): Track [/+24V] on B.Cu, length 16.9706 mm
+    @(59.6200 mm, 103.2100 mm): PTH pad 2 [/+24V] of F1
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - PTH inside courtyard
+    - NPTH inside courtyard
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **
