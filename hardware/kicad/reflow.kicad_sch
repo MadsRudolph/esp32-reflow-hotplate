@@ -3140,7 +3140,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Fuse:Fuseholder_Cylinder-5x20mm_Schurter_FAB_0031.8201_Horizontal_Closed"
+		(property "Footprint" "Fuse:Fuseholder_Cylinder-5x20mm_Schurter_FUP_0031.2510_Horizontal_Closed"
 			(at 55 40 0)
 			(effects
 				(font
@@ -3272,7 +3272,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "energy_system:TO-220-3_Vertical_LaserPads"
+		(property "Footprint" "energy_system:TO-220-5_Vertical_LaserPads"
 			(at 40 80 0)
 			(effects
 				(font
@@ -3341,7 +3341,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Inductor_THT:L_Toroid_Vertical_L20.0mm_D7.0mm_P10.16mm"
+		(property "Footprint" "Inductor_THT:L_Toroid_Vertical_L26.7mm_W14.0mm_P10.16mm_Pulse_D"
 			(at 70 75 0)
 			(effects
 				(font
@@ -3804,7 +3804,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "energy_system:TO-220-3_Vertical_LaserPads_GDS"
+		(property "Footprint" "energy_system:TO-220-3_Vertical_LaserPads"
 			(at 330 220 0)
 			(effects
 				(font
@@ -3937,7 +3937,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+		(property "Footprint" "energy_system:TO-92_Inline_GDS"
 			(at 270 230 0)
 			(effects
 				(font
@@ -4004,7 +4004,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+		(property "Footprint" "energy_system:TO-92_Inline_GDS"
 			(at 300 230 0)
 			(effects
 				(font
@@ -4670,7 +4670,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch"
+		(property "Footprint" "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm"
 			(at 330 90 0)
 			(effects
 				(font
@@ -7220,6 +7220,74 @@
 			(justify left bottom)
 		)
 		(uuid "831c0d2a-31c2-4db0-8fbd-ffb4d004a5b6")
+	)
+	(no_connect
+		(at 137.30 132.22)
+		(uuid "b8858aff-b048-549c-bbd8-9f95df3f60bd")
+	)
+	(no_connect
+		(at 137.30 134.76)
+		(uuid "b0e12dd1-e1c7-5634-b530-97f7316d810d")
+	)
+	(no_connect
+		(at 137.30 137.30)
+		(uuid "a5c82471-ec16-5cc2-912f-593f57c03df5")
+	)
+	(no_connect
+		(at 137.30 139.84)
+		(uuid "5aedc1d5-a6f6-553e-9a71-5a80e5f682f9")
+	)
+	(no_connect
+		(at 137.30 142.38)
+		(uuid "e4de93e0-136e-54bd-af4a-563f27aec5ba")
+	)
+	(no_connect
+		(at 137.30 157.62)
+		(uuid "95164f42-caca-5b27-acbb-ecf006fd6132")
+	)
+	(no_connect
+		(at 137.30 160.16)
+		(uuid "3b6de479-313d-5d59-93ef-689a512a0f50")
+	)
+	(no_connect
+		(at 137.30 162.70)
+		(uuid "95408a1e-f4a1-59ea-a193-c91171b8bed7")
+	)
+	(no_connect
+		(at 162.70 132.22)
+		(uuid "d1428d9e-e5a2-56a8-89a9-fae00854fefb")
+	)
+	(no_connect
+		(at 162.70 137.30)
+		(uuid "7bef4c05-2253-5802-b4e9-6ae125229f1e")
+	)
+	(no_connect
+		(at 162.70 139.84)
+		(uuid "2f4179a4-e8a1-5b40-b8ac-a6e8e6343cf4")
+	)
+	(no_connect
+		(at 162.70 152.54)
+		(uuid "375ecac5-5299-50fa-b61d-f9d59b1ead1a")
+	)
+	(no_connect
+		(at 162.70 155.08)
+		(uuid "20b45b99-6ffa-5266-986d-71e048fff21b")
+	)
+	(no_connect
+		(at 162.70 160.16)
+		(uuid "36bdfb1b-8dcb-5f86-88a6-8a755aa2a0e0")
+	)
+	(no_connect
+		(at 162.70 162.70)
+		(uuid "fbfdb401-684e-531c-a5cf-ac2e85123120")
+	)
+	(no_connect
+		(at 162.70 165.24)
+		(uuid "0ec833bb-e25d-5201-836f-92f7caa0918e")
+	)
+	(no_connect
+		(at 337.62 92.54)
+		(uuid "2176b88d-e45e-54d6-8854-bebe2bed28af")
 	)
 	(sheet_instances
 		(path "/"

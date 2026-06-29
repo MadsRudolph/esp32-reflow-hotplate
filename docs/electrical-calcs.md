@@ -235,3 +235,45 @@ well below Q1's Vds(max) = **100 V**, protecting the MOSFET drain.
 | R6 | 10 kΩ  | Q1.G → GND gate-source pulldown (belt-and-suspenders) |
 
 All are standard E24 values stocked in `components-inventory/dtu_component_shop(1).csv`.
+
+## 8. High-current pour width (Task 9 layout requirement)
+
+The heater loop (J2 → element → Q1 drain `HEATER_RET` → Q1 source → `GND`,
+and the `+24V` feed to the element) carries the full **13 A** heater current.
+On a single-sided laser/mill board this copper is **35 µm (1 oz)** on an
+external layer, so the conductor cross-section must be sized by the
+**IPC-2221** external-layer formula:
+
+```
+A[mil²] = ( I / (k · ΔT^0.44) ) ^ (1/0.725)        k = 0.048 (external layer)
+w       = A / (thickness in mil)                    1 oz = 1.378 mil (35 µm)
+```
+
+For **I = 13 A** and a **≤ 20 °C** temperature rise:
+
+```
+A = (13 / (0.048 · 20^0.44))^(1/0.725) ≈ 368 mil²
+w = 368 / 1.378 ≈ 267 mil ≈ 6.8 mm        (ΔT = 20 °C)
+```
+
+Sensitivity to the allowed rise (same 13 A, 1 oz, external):
+
+| ΔT rise | Required pour width |
+|--------:|--------------------:|
+| 30 °C   | ≈ 5.3 mm |
+| **20 °C** | **≈ 6.8 mm** (IPC-2221 minimum) |
+| 10 °C   | ≈ 10.3 mm |
+
+**Task 9 layout target: make every 13 A conductor a flood pour ≥ 8 mm wide,
+aiming for ~10 mm where the board allows.** 6.8 mm is the bare IPC-2221
+minimum at ΔT = 20 °C; widening to 8–10 mm pulls the rise toward ~10–15 °C and
+covers (a) the etched-edge/under-etch tolerance of the laser process, which
+narrows the effective conductor, and (b) the lack of a second copper layer or
+thermal vias to spread heat. The high-current nets to size are `+24V` (heater
+feed), `HEATER_RET` (Q1 drain), and the heater-return `GND` back to J1/J2.
+Lower-current rails (`+5V`, `+12V`, `+3V3`, logic) have no such requirement and
+use the default 1.0 mm track.
+
+> Cross-check at layout: measure the narrowest copper on `+24V`, `HEATER_RET`,
+> and the heater `GND` return; each must be **≥ 8 mm** (≥ 6.8 mm is the hard
+> IPC-2221 floor for ΔT ≤ 20 °C).
