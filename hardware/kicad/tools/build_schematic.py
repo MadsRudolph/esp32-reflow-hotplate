@@ -99,11 +99,19 @@ COMPONENTS = [
     # Task 3 had used "TerminalBlock:..." as the symbol lib_id, but no such
     # *symbol* library exists (TerminalBlock is a footprint lib only), so the
     # pins were unresolvable and could not be wired -- fixed here in Task 4.
-    ("J1", "Connector:Screw_Terminal_01x02", "24V_IN",
+    # J1 value snapped to the DTU shop part (Connector,Terminal,2 pol
+    # skrueterminal) for the Task-8 BOM cross-check; footprint unchanged.
+    ("J1", "Connector:Screw_Terminal_01x02", "2 pol skrueterminal",
      "TerminalBlock:TerminalBlock_bornier-2_P5.08mm", 30, 40, 0),
-    ("F1", "Device:Fuse", "15A",
+    # F1 = the 24 V fuse HOLDER -- a bring-your-own/external part (the fuse
+    # element is user-supplied), so its value is informational only and F1 is
+    # excluded from the shop cross-check (see check_bom_against_shop EXCLUDE_REFS
+    # and the BOM "External / bring-your-own" section).
+    ("F1", "Device:Fuse", "15A (holder, BYO)",
      "Fuse:Fuseholder_Cylinder-5x20mm_Schurter_FUP_0031.2510_Horizontal_Closed", 55, 40, 0),
-    ("D3", "Device:D_TVS", "SMBJ26A",
+    # D3 = 24 V input-rail TVS, snapped to DTU shop P6KE24P (24 V standoff,
+    # ~33 V clamp < the 35 V input caps and < LM2575 Vin max). See calcs §2.
+    ("D3", "Device:D_TVS", "P6KE24P",
      "Diode_THT:D_DO-201AD_P15.24mm_Horizontal", 75, 50, 0),
 
     # ---- 24V -> 5V buck (LM2575-ADJ + feedback divider) (top-left) ----
@@ -145,7 +153,8 @@ COMPONENTS = [
     # ---- Heater power stage (bottom-right corner) ----
     ("Q1", "Transistor_FET:Q_NMOS_GDS", "IRFS4710",
      "energy_system:TO-220-3_Vertical_LaserPads", 330, 220, 0),
-    ("J2", "Connector:Screw_Terminal_01x02", "HEATER",
+    # J2 value snapped to the DTU shop screw-terminal part for the BOM check.
+    ("J2", "Connector:Screw_Terminal_01x02", "2 pol skrueterminal",
      "TerminalBlock:TerminalBlock_bornier-2_P5.08mm", 380, 200, 0),
 
     # ---- Two-stage BS170 boot-safe gate drive (bottom-right) ----
@@ -178,7 +187,9 @@ COMPONENTS = [
     # HEATER_RET, anode at GND) to clamp inductive drain transients when Q1
     # switches the heater load. 33 V standoff sits above the 24 V rail with
     # margin and below Q1's Vds(max)=100 V.
-    ("D4", "Device:D_TVS", "SMBJ33A",
+    # D4 snapped to DTU shop 1.5KE36A (36 V standoff > 24 V rail -> no
+    # conduction in normal off-state; ~52 V clamp << Q1 Vds(max)=100 V). See §7.5.
+    ("D4", "Device:D_TVS", "1.5KE36A",
      "Diode_THT:D_DO-201AD_P15.24mm_Horizontal", 355, 195, 0),
 
     # ---- Thermocouple header (UI / right) ----
@@ -190,11 +201,14 @@ COMPONENTS = [
      "reflow:Header_1x04_P2.54", 250, 130, 0),
 
     # ---- Rotary encoder + start button + status LED (UI / right edge) ----
-    ("SW1", "Device:RotaryEncoder_Switch", "ENC",
+    # SW1/SW2/D1 values snapped to DTU shop parts for the Task-8 BOM check:
+    #   SW1 -> Encoder,Rotary,Rotary 1x12 EYE   SW2 -> Hardware,Switch,Pushbutton
+    #   D1  -> LED,5mm,LED 5MM GRØN (green status LED)
+    ("SW1", "Device:RotaryEncoder_Switch", "Rotary 1x12 EYE",
      "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm", 330, 90, 0),
-    ("SW2", "Switch:SW_Push", "START",
+    ("SW2", "Switch:SW_Push", "Pushbutton",
      "Button_Switch_THT:SW_PUSH_6mm", 330, 130, 0),
-    ("D1", "Device:LED", "STATUS",
+    ("D1", "Device:LED", "LED 5MM GRØN",
      "LED_THT:LED_D5.0mm", 380, 130, 0),
     # R13 = status-LED current-limit resistor (was R6 in Task-3 placement; R6 is
     # reassigned to the gate-drive pulldown per the Task-5 brief). Wired in Task 6.

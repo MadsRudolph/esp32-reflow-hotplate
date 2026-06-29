@@ -27,6 +27,10 @@ build/
 *.blend1
 *.blend2
 
+# Python
+__pycache__/
+*.pyc
+
 # OS / editor
 .DS_Store
 Thumbs.db
