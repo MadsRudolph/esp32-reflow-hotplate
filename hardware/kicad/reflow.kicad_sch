@@ -5,6 +5,2491 @@
 	(uuid "a1b2c3d4-0001-0001-0001-000000000001")
 	(paper "A3")
 	(lib_symbols)
+	(symbol
+		(lib_id "reflow:ESP32_DevKitV1")
+		(at 150 150 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "21abf274-4d5a-423e-8fa2-80cd80ab99b9")
+		(property "Reference" "A1"
+			(at 155.08 147.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "ESP32-DevKitV1"
+			(at 155.08 152.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "reflow:ESP32_DevKitV1_2x15_P2.54_W22.86"
+			(at 150 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 150 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 150 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "ba311612-6b9d-474a-b97a-b36497d2ebe6"))
+		(pin "2" (uuid "9e403b7e-5f3c-4f1d-9857-12792fe7f03d"))
+		(pin "3" (uuid "508e2c68-c926-4c0b-83b4-4e8c1902c2a1"))
+		(pin "4" (uuid "aa45ecb3-8829-4bef-8523-c787c150eb3a"))
+		(pin "5" (uuid "df962cd3-d8b5-49ce-8772-046142ea8bee"))
+		(pin "6" (uuid "eb99d06b-8ffd-4fa1-908e-36db0d1ceeb0"))
+		(pin "7" (uuid "1421c5f2-d1b3-4a5f-8bb8-0f8406fb8a04"))
+		(pin "8" (uuid "15ff2d17-65d3-4237-85c4-c81fc06b8210"))
+		(pin "9" (uuid "7c7809a3-b9a8-476c-bcd2-80a03144fc02"))
+		(pin "10" (uuid "c82ca7f3-c3e3-430d-903a-bb3ca739ebd9"))
+		(pin "11" (uuid "bf9a2bb4-5c11-4c72-bf32-0c62e94adce6"))
+		(pin "12" (uuid "cb1b2287-470b-43f3-9907-7f2fc7cce209"))
+		(pin "13" (uuid "3433c876-c6f1-4da5-ae6b-a3d75e6ca2a7"))
+		(pin "14" (uuid "2b92884d-5b2e-490e-98c9-f1cfa6612f26"))
+		(pin "15" (uuid "2c3c2fd2-001e-46a8-b336-36a33b3abdfe"))
+		(pin "16" (uuid "51c3deb0-3fae-4818-b614-8971a624b3fd"))
+		(pin "17" (uuid "b8dd8028-ec79-4330-bfb4-7cb7980eb364"))
+		(pin "18" (uuid "73bdc06e-1d24-4d5f-8f51-7c29f03d6e4e"))
+		(pin "19" (uuid "4fa1459c-4e3c-4916-8478-332e54e9118d"))
+		(pin "20" (uuid "6246ea5f-5189-42a5-9b66-fb1cd5f6a43b"))
+		(pin "21" (uuid "8262a8c7-0e50-4e12-a6f0-43896734fdf1"))
+		(pin "22" (uuid "cb3b758c-0736-4343-a662-906a8ae6465d"))
+		(pin "23" (uuid "c80c3b48-a569-4abe-b200-c61dd3fe5bc5"))
+		(pin "24" (uuid "2a85f4a4-c915-494b-a1f7-9e9dec1f4bc6"))
+		(pin "25" (uuid "27fe8102-3c86-4a1b-9154-398dc4f50afd"))
+		(pin "26" (uuid "8f2cb6ce-e8ea-4444-bf18-f00ae3884e0a"))
+		(pin "27" (uuid "8e5d41b6-99fd-4aac-b611-400cafe98d28"))
+		(pin "28" (uuid "b6331045-b6af-4e12-9930-727ace00af9e"))
+		(pin "29" (uuid "e4a7a000-f974-43e8-96dd-8450ad91c746"))
+		(pin "30" (uuid "1555d215-6da1-47ad-ae0e-6e974f814047"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "A1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "TerminalBlock:TerminalBlock_bornier-2_P5.08mm")
+		(at 30 40 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0491bc95-eea8-48bf-95ac-95d0a996166e")
+		(property "Reference" "J1"
+			(at 35.08 37.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "24V_IN"
+			(at 35.08 42.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TerminalBlock:TerminalBlock_bornier-2_P5.08mm"
+			(at 30 40 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 30 40 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 30 40 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "7b507285-99e1-4def-937c-912a99aa2115"))
+		(pin "2" (uuid "14a01d4b-2533-4b55-9344-fd04a5ac4825"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "J1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Fuse")
+		(at 55 40 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "71b10e10-7d3f-4ee4-a91f-242d4f193b85")
+		(property "Reference" "F1"
+			(at 60.08 37.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "15A"
+			(at 60.08 42.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Fuse:Fuseholder_Cylinder-5x20mm_Schurter_FAB_0031.8201_Horizontal_Closed"
+			(at 55 40 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 55 40 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 55 40 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "c3c207dd-b63c-4e44-a4f2-3063566eedf6"))
+		(pin "2" (uuid "5f68a268-bb1e-4c24-b3b4-3e7fda7244d7"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "F1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_TVS")
+		(at 75 50 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7ae73984-fede-4baf-95d8-9a3d530075ad")
+		(property "Reference" "D3"
+			(at 80.08 47.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SMBJ26A"
+			(at 80.08 52.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_THT:D_DO-201AD_P15.24mm_Horizontal"
+			(at 75 50 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 75 50 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 75 50 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "84abec0f-46d9-420a-bc1f-9e07dfa0ff31"))
+		(pin "2" (uuid "81a1cb18-ef68-4627-9134-ccc47f373e48"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "D3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Regulator_Switching:LM2576T-5")
+		(at 40 80 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f0fdbbe4-3089-41aa-a6f7-dd97f8b8b5bd")
+		(property "Reference" "U2"
+			(at 45.08 77.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "LM2576-5.0"
+			(at 45.08 82.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "energy_system:TO-220-3_Vertical_LaserPads"
+			(at 40 80 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 40 80 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 40 80 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "97575e12-7da0-4a93-91c1-4e4b9e7bce54"))
+		(pin "2" (uuid "aa923d36-dbaf-4f92-8020-d48ae9b9ba0d"))
+		(pin "3" (uuid "cb3940f0-d3ff-4a1b-9730-9a8c6ef7a3d5"))
+		(pin "4" (uuid "e97625d1-b865-4786-adb0-2bfdb3e980a0"))
+		(pin "5" (uuid "c4c43c21-e15b-4bca-af9f-ae8f8b1b3e94"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "U2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:L")
+		(at 70 75 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8c06cf95-32ea-4f3b-a09f-45dc9401bb5c")
+		(property "Reference" "L1"
+			(at 75.08 72.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100uH"
+			(at 75.08 77.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Inductor_THT:L_Toroid_Vertical_L20.0mm_D7.0mm_P10.16mm"
+			(at 70 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 70 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 70 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "002c0d70-f01b-4ca0-821c-164abc4a2d2f"))
+		(pin "2" (uuid "16b42959-471f-4c61-b1ec-6d675cef2d9d"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "L1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 70 95 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9ac22571-8d7d-48c6-b63b-f684c918eea5")
+		(property "Reference" "D2"
+			(at 75.08 92.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1N5817"
+			(at 75.08 97.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal"
+			(at 70 95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 70 95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 70 95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "59f2d706-481e-405b-a518-86fa5896197e"))
+		(pin "2" (uuid "5ccd1c87-db20-4d6c-9172-3fee984250e0"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "D2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 25 95 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3f1ccef8-021e-4353-9d3a-dcf1f6f025e7")
+		(property "Reference" "C1"
+			(at 30.08 92.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100uF"
+			(at 30.08 97.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm"
+			(at 25 95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 25 95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 25 95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "9a8d7af3-72e5-4ec0-959d-bfc7152777cd"))
+		(pin "2" (uuid "e1a2cbc4-733e-4f7f-87c6-76d31459aa1f"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 90 90 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e4658bc5-a97f-4b4f-8566-2896d7edc99c")
+		(property "Reference" "C2"
+			(at 95.08 87.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1000uF"
+			(at 95.08 92.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
+			(at 90 90 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 90 90 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 90 90 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "51e9b7e7-d4c4-43d1-9895-db7bc26bddc2"))
+		(pin "2" (uuid "d0c0c281-f23b-4d50-9945-d42bbcc457d8"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "C2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Regulator_Linear:LM7812_TO220")
+		(at 40 120 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3cc5573d-c16c-49c4-bb83-34094f26c396")
+		(property "Reference" "U3"
+			(at 45.08 117.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "LM7812"
+			(at 45.08 122.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "energy_system:TO-220-3_Vertical_LaserPads"
+			(at 40 120 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 40 120 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 40 120 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "8803d0d2-381c-4f0c-8b3b-307049b8691b"))
+		(pin "2" (uuid "34d0939d-2504-4ac3-a836-30e24ccb7515"))
+		(pin "3" (uuid "51dc3bac-5aaa-4cd4-bd2f-1ae17c431980"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "U3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 25 135 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ff405bc9-0826-4a0c-8c15-9ca85e629080")
+		(property "Reference" "C3"
+			(at 30.08 132.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 30.08 137.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm"
+			(at 25 135 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 25 135 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 25 135 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "4c485610-bdf0-4e3d-b2ad-d179baf65a5b"))
+		(pin "2" (uuid "a0efdd0e-5067-49c3-a144-3185d1e27e83"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "C3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 60 135 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a62e20f3-5c79-4fd5-8f37-9197a8e86ffa")
+		(property "Reference" "C4"
+			(at 65.08 132.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10uF"
+			(at 65.08 137.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
+			(at 60 135 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 60 135 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 60 135 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "936fe067-92fd-4555-a14b-facfbd7e4103"))
+		(pin "2" (uuid "10b0cce7-25ce-473d-8b14-257c9dfb60c1"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "C4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_GDS")
+		(at 330 220 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "848b1b22-6133-42a7-af5e-2763bb3afb80")
+		(property "Reference" "Q1"
+			(at 335.08 217.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRFS4710"
+			(at 335.08 222.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "energy_system:TO-220-3_Vertical_LaserPads_GDS"
+			(at 330 220 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 330 220 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 330 220 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "b2e584be-a79b-43c5-8d68-e8f175b1ad72"))
+		(pin "2" (uuid "5f02ee80-b569-4d71-9960-32a2bb45bddf"))
+		(pin "3" (uuid "db4fc75e-126b-410f-ba20-140d2188b6df"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "Q1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "TerminalBlock:TerminalBlock_bornier-2_P5.08mm")
+		(at 380 200 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "bdd753c6-6ee4-42e2-babd-74c5d33bc6b5")
+		(property "Reference" "J2"
+			(at 385.08 197.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "HEATER"
+			(at 385.08 202.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TerminalBlock:TerminalBlock_bornier-2_P5.08mm"
+			(at 380 200 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 380 200 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 380 200 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "3812a022-4833-4761-9b95-21124e9ea2fb"))
+		(pin "2" (uuid "0b4fe4e7-89da-40ab-8aa8-7263ca8ee2df"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "J2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_GDS")
+		(at 270 230 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c8876918-a893-4215-b279-afad5f7118a7")
+		(property "Reference" "Q2"
+			(at 275.08 227.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "BS170"
+			(at 275.08 232.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 270 230 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 270 230 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 270 230 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "05421352-1604-4a11-9b80-3327f4313740"))
+		(pin "2" (uuid "9f1e5ab6-efee-4fd5-bac4-de9d7ece9272"))
+		(pin "3" (uuid "41468803-caf9-4a2a-a214-f697edfaa85b"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "Q2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_GDS")
+		(at 300 230 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "879c3295-59a4-4375-8214-add354afd948")
+		(property "Reference" "Q3"
+			(at 305.08 227.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "BS170"
+			(at 305.08 232.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 300 230 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 300 230 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 300 230 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "7df277ea-666a-4ba5-9f52-7c2f19b7a3c8"))
+		(pin "2" (uuid "d388b303-cebd-4942-b0d9-b25de425e613"))
+		(pin "3" (uuid "ddc6cca6-e570-4d40-9da2-18ded9127b08"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "Q3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 255 215 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "97802f60-3a24-489f-8d5d-729b9cc6ab8d")
+		(property "Reference" "R1"
+			(at 260.08 212.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1k"
+			(at 260.08 217.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 255 215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 255 215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 255 215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "2fb125fb-3686-455a-8943-ca671f4c9560"))
+		(pin "2" (uuid "e0562427-dd9c-4418-b0ee-df64622af550"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 285 215 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a12e09c6-7099-4ce6-8d91-5b3680a19b95")
+		(property "Reference" "R2"
+			(at 290.08 212.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1k"
+			(at 290.08 217.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 285 215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 285 215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 285 215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "aa1ef675-cf6c-4f5f-99c8-6be522957523"))
+		(pin "2" (uuid "3807f68f-152a-4008-87fc-2ca2d3be07f9"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 315 215 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a9e14a40-903b-417b-989a-ed1d2f211861")
+		(property "Reference" "R3"
+			(at 320.08 212.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 320.08 217.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 315 215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 315 215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 315 215 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "c052bb8b-eda5-4880-9170-fc7fc5be2215"))
+		(pin "2" (uuid "ea83c3c8-867b-4115-96ee-44d6afa2bb50"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 315 245 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "aea5f627-b330-41b8-9b65-25511abffc5e")
+		(property "Reference" "R4"
+			(at 320.08 242.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100"
+			(at 320.08 247.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 315 245 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 315 245 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 315 245 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "a005c78e-e9c2-4d6e-a71d-b4774401aa38"))
+		(pin "2" (uuid "e3eff557-a0da-4425-9c8c-4977f8c19fe0"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 345 245 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9075f569-2ffa-4b1c-9b9d-5d2f6d0adf8c")
+		(property "Reference" "R5"
+			(at 350.08 242.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 350.08 247.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 345 245 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 345 245 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 345 245 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "f38da8dc-e4f8-4afb-aaa4-364b473d28cc"))
+		(pin "2" (uuid "a1b3f3d4-3336-42e6-96c4-7ed92f09274b"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "reflow:MAX31855_Module")
+		(at 250 90 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4dedecad-e7a4-4fe4-9676-ad1bf67802fe")
+		(property "Reference" "J3"
+			(at 255.08 87.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MAX31855"
+			(at 255.08 92.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "reflow:Header_1x05_P2.54"
+			(at 250 90 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 250 90 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 250 90 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "de89954e-edab-451a-ab87-4c23ae81ceb6"))
+		(pin "2" (uuid "49084f6d-30aa-40a6-b17c-5e26eb7d98ea"))
+		(pin "3" (uuid "db2dfaf3-7641-434c-9309-cd91733c1350"))
+		(pin "4" (uuid "1e44d21b-c0cc-43aa-b584-080f5f36d2e1"))
+		(pin "5" (uuid "1dc7e839-811f-4e32-90b7-b507274dfae7"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "J3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "reflow:OLED_SSD1306_I2C")
+		(at 250 130 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "88d494c2-64d0-4d0c-894e-d235518f559b")
+		(property "Reference" "J4"
+			(at 255.08 127.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "OLED"
+			(at 255.08 132.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "reflow:Header_1x04_P2.54"
+			(at 250 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 250 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 250 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "a91a925e-ecfc-4d88-8524-42e5dae16f99"))
+		(pin "2" (uuid "c96ef520-1d0f-49a0-80be-fc2a70d284be"))
+		(pin "3" (uuid "bea0aee1-1f10-4c04-a844-c9e77eaeeb07"))
+		(pin "4" (uuid "fa572e33-1e05-4571-8239-51c6cc852a84"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "J4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:RotaryEncoder_Switch")
+		(at 330 90 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2d18c236-65eb-4419-a7ff-017050dc9654")
+		(property "Reference" "SW1"
+			(at 335.08 87.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "ENC"
+			(at 335.08 92.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch"
+			(at 330 90 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 330 90 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 330 90 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "A" (uuid "b8f063ae-360e-48b5-9896-380b3da76b1c"))
+		(pin "B" (uuid "a2dbd527-8b20-42e2-8af2-39380934b237"))
+		(pin "C" (uuid "95f55722-8932-476a-a0db-d603b87ab570"))
+		(pin "S1" (uuid "2546df31-9e1a-4a0e-a712-3116d9bfcad5"))
+		(pin "S2" (uuid "16e9d2b5-0b8c-4d19-b45d-44c2dc119867"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "SW1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Switch:SW_Push")
+		(at 330 130 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "abbfb08b-63c2-4db7-bab7-d785032c6909")
+		(property "Reference" "SW2"
+			(at 335.08 127.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "START"
+			(at 335.08 132.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm"
+			(at 330 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 330 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 330 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "c646949a-3773-41f7-81e0-4451c99d42d4"))
+		(pin "2" (uuid "ba1bc4d2-b63e-4b68-962b-2f2e5a8fd1e1"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "SW2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:LED")
+		(at 380 130 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e77bbbed-5840-4101-9eff-17304771f76e")
+		(property "Reference" "D1"
+			(at 385.08 127.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "STATUS"
+			(at 385.08 132.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "LED_THT:LED_D5.0mm"
+			(at 380 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 380 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 380 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "ebf34756-e6ce-4d63-ba29-6cd2a83c1f3e"))
+		(pin "2" (uuid "2f94b76e-110b-4385-8ec0-7dfa2b15b279"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "D1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 365 130 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3cf7a449-3796-4eee-a03c-4ad3ea45f487")
+		(property "Reference" "R6"
+			(at 370.08 127.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "330"
+			(at 370.08 132.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 365 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 365 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 365 130 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "3185a336-5c06-447b-89f6-683302c51f30"))
+		(pin "2" (uuid "2763a455-9118-4252-937b-46d76ffbb737"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 210 120 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e2354ada-61ff-4f60-8187-2b58506ea338")
+		(property "Reference" "R7"
+			(at 215.08 117.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "4.7k"
+			(at 215.08 122.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 210 120 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 210 120 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 210 120 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "18de6267-0e99-47ec-b6f2-251202bf90e1"))
+		(pin "2" (uuid "d6fd7169-e689-4a50-bfb0-c90862a0a8b5"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 210 135 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "73c5245e-afe0-4e51-96fa-49f88c9e562d")
+		(property "Reference" "R8"
+			(at 215.08 132.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "4.7k"
+			(at 215.08 137.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 210 135 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 210 135 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 210 135 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "c51173f6-5fd0-46fc-8cfd-836a41b3f89c"))
+		(pin "2" (uuid "01b3e435-fcf4-44da-b2de-55d0c99edc3c"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 300 75 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "78f9ff12-4e80-4ccb-9eb4-333535d02073")
+		(property "Reference" "R9"
+			(at 305.08 72.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 305.08 77.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 300 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 300 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 300 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "a3f7922c-7aff-4d6b-89ef-2e639a377378"))
+		(pin "2" (uuid "7b854c9b-39e4-4236-aaee-0b82febc67d6"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 315 75 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0bc5a439-628c-4c24-a13f-80283390dc79")
+		(property "Reference" "R10"
+			(at 320.08 72.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 320.08 77.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 315 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 315 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 315 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "d2e4407f-94d6-4bda-b744-ae8bd3fc0044"))
+		(pin "2" (uuid "ad76c6ef-8259-4a58-81ef-3a6ec4d027a8"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 330 75 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b3c5be58-c0f2-417f-bcc9-08894b27acbc")
+		(property "Reference" "R11"
+			(at 335.08 72.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 335.08 77.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 330 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 330 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 330 75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "bbf4b78c-d6ac-44b8-ad55-bc9eb1931df2"))
+		(pin "2" (uuid "8eea403a-6f35-4205-8f3c-7e06323f277f"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 300 150 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7334d4bc-08d3-425f-b711-8583017d2539")
+		(property "Reference" "R12"
+			(at 305.08 147.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 305.08 152.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+			(at 300 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 300 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 300 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "3afe2a63-5518-417a-962a-201a7dc3e492"))
+		(pin "2" (uuid "4ffdc934-0f01-4473-b389-66d511da41b5"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "R12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 250 110 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3b781aa4-b066-4420-a801-5c5e913be775")
+		(property "Reference" "C5"
+			(at 255.08 107.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 255.08 112.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm"
+			(at 250 110 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 250 110 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 250 110 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "2d55ef93-2e00-44a3-9af2-2e76691dfd5c"))
+		(pin "2" (uuid "929ccdfb-88e4-4250-908f-bb25cd122c34"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "C5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 250 150 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7110c81c-0f9f-42ed-8589-8b55b6523ebd")
+		(property "Reference" "C6"
+			(at 255.08 147.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 255.08 152.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm"
+			(at 250 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 250 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 250 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "1f8966c8-4ec3-4376-8ec7-730a5e49d43d"))
+		(pin "2" (uuid "f26b52ed-5f9f-4cdb-b230-6fa0b9ae9ff0"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "C6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 330 110 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4a7021aa-c9f7-4a9a-a366-022c765fd350")
+		(property "Reference" "C7"
+			(at 335.08 107.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 335.08 112.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm"
+			(at 330 110 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 330 110 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 330 110 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "12a93abd-e8a0-4f03-9de7-70c50fe166fe"))
+		(pin "2" (uuid "e863057f-dbf0-4678-9719-645559e29af0"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "C7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 330 150 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5edf1212-7e8c-4a1d-a913-f3f0bbe98563")
+		(property "Reference" "C8"
+			(at 335.08 147.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 335.08 152.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P2.50mm"
+			(at 330 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 330 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 330 150 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1" (uuid "2e6ae55d-5584-4801-828e-331957167e91"))
+		(pin "2" (uuid "ee11bcc5-a14f-4f8a-9118-8db99ce705c9"))
+		(instances
+			(project "reflow"
+				(path "/a1b2c3d4-0001-0001-0001-000000000001"
+					(reference "C8")
+					(unit 1)
+				)
+			)
+		)
+	)
 	(sheet_instances
 		(path "/"
 			(page "1")
