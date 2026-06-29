@@ -1,0 +1,38 @@
+{
+  "module": "ESP32-DevKitV1-30pin",
+  "_comment": "Interface-level design-of-record. pinmap is the binding GPIO contract (spec 8.1). nets lists only the named interface nets and module/IC-level power consumers; passive interconnects (gate-drive R/C, dividers, decoupling) are realized and ERC-checked in Tasks 4-6 and intentionally NOT enumerated here. Reference designators: A1=ESP32 DevKitV1, U2=5V buck, U3=3V3 LDO, U4=12V supply, J1=24V input, J3=MAX31855 module header, J4=OLED module header, SW1=rotary encoder (Device:RotaryEncoder_Switch, pins A/B/C/S1/S2), SW2=start push button (Switch:SW_Push), D1=status LED, Q1=heater MOSFET, HP1=hotplate heater.",
+  "pinmap": {
+    "HEATER_PWM": "GPIO25",
+    "TC_SCK": "GPIO18",
+    "TC_SO": "GPIO19",
+    "TC_CS": "GPIO5",
+    "OLED_SDA": "GPIO21",
+    "OLED_SCL": "GPIO22",
+    "ENC_A": "GPIO32",
+    "ENC_B": "GPIO33",
+    "ENC_SW": "GPIO27",
+    "BTN_START": "GPIO26",
+    "LED_STATUS": "GPIO4"
+  },
+  "power_nets": ["+24V", "+12V", "+5V", "+3V3", "GND", "HEATER_RET"],
+  "nets": {
+    "+24V": ["J1.1", "U4.IN", "U2.IN", "HP1.1"],
+    "+12V": ["U4.OUT", "Q1.GATE_DRIVE"],
+    "+5V": ["U2.OUT", "U3.IN", "A1.VIN"],
+    "+3V3": ["U3.OUT", "A1.3V3", "J3.VCC", "J4.VCC"],
+    "GND": ["J1.2", "U2.GND", "U3.GND", "U4.GND", "A1.GND", "J3.GND", "J4.GND", "SW1.C", "SW2.2", "D1.K_RET", "Q1.SOURCE"],
+    "HEATER_RET": ["HP1.2", "Q1.DRAIN"],
+
+    "HEATER_PWM": ["A1.GPIO25", "Q1.GATE_NET"],
+    "TC_SCK": ["A1.GPIO18", "J3.SCK"],
+    "TC_SO": ["A1.GPIO19", "J3.SO"],
+    "TC_CS": ["A1.GPIO5", "J3.CS"],
+    "OLED_SDA": ["A1.GPIO21", "J4.SDA"],
+    "OLED_SCL": ["A1.GPIO22", "J4.SCL"],
+    "ENC_A": ["A1.GPIO32", "SW1.A"],
+    "ENC_B": ["A1.GPIO33", "SW1.B"],
+    "ENC_SW": ["A1.GPIO27", "SW1.S1"],
+    "BTN_START": ["A1.GPIO26", "SW2.1"],
+    "LED_STATUS": ["A1.GPIO4", "D1.A_NET"]
+  }
+}
