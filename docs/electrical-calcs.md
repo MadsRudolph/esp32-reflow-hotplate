@@ -8,12 +8,17 @@ drive, controller) are documented with their respective tasks.
 ## 1. Power tree overview
 
 ```
-24 V DC ──[F1 fuse]──┬── +24V rail ──┬── U2  LM2576-5.0 buck ── +5V  (ESP32 + OLED)
+24 V DC ──[F1 fuse]──┬── +24V rail ──┬── U2  LM2575-ADJ buck ─── +5V  (ESP32 + OLED)
         (D3 TVS to GND)              ├── U3  LM7812 linear   ── +12V (gate-drive VCC)
                                      └── J2.1 heater terminal (switched low-side by Q1)
 ```
 
-- **U2 = LM2576T-5** — SIMPLE SWITCHER step-down (buck), fixed 5.0 V output.
+- **U2 = LM2575-ADJ** — adjustable SIMPLE SWITCHER step-down (buck), 1 A, output
+  programmed to **5.03 V** by the R7/R8 feedback divider (see §3). The DTU
+  component shop stocks the *adjustable* LM2575 (`IC,Linear,LM2575,Step-Down
+  Adjustable Voltage Switching Regulator`), not the fixed LM2576-5.0, so the
+  design uses the ADJ part plus a divider. Same 5-pin TO-220 pinout
+  (1=Vin 2=Out 3=GND 4=FB 5=ON/OFF) and footprint as the fixed part.
 - **U3 = LM7812** — TO-220 linear regulator, fixed 12 V output.
 - There is **no separate 3V3 regulator**: +3V3 is produced by the ESP32
   DevKit's on-board LDO from +5V (handled in Task 6).
@@ -28,15 +33,15 @@ D3 (TVS) clamping +24V → GND at the input.
 | +5V  | ESP32-DevKitV1 (Wi-Fi idle/active), SSD1306 OLED, MAX31855 | ~0.30–0.50 A (use **0.5 A** worst case) |
 | +12V | Two-stage BS170 gate drive for the heater MOSFET — average current is only the gate-charge shuttling current at the PWM rate | **a few mA** average (see §4) |
 
-## 3. LM2576-5.0 buck (24 V → 5 V)
+## 3. LM2575-ADJ buck (24 V → 5 V)
 
 A buck converter's loss is dominated by switching + conduction in the internal
 switch and the catch diode, **not** by `(Vin − Vout)·Iload` (that term is the
 linear-regulator penalty a switcher specifically avoids).
 
 - Output power delivered: `Pout = 5 V × 0.5 A = 2.5 W`.
-- LM2576 typical efficiency at this operating point (Vin = 24 V, Vout = 5 V,
-  Io = 0.5 A) is roughly **75–80 %** per the TI datasheet efficiency curves.
+- LM2575 typical efficiency at this operating point (Vin = 24 V, Vout = 5 V,
+  Io = 0.5 A) is roughly **75–80 %** per the datasheet efficiency curves.
 - Input power: `Pin ≈ Pout / η ≈ 2.5 / 0.77 ≈ 3.25 W`, drawing
   `Iin ≈ 3.25 W / 24 V ≈ 0.14 A` from the 24 V rail.
 - Regulator dissipation: `Pdiss ≈ Pin − Pout ≈ 0.75 W`, shared between the IC
@@ -44,10 +49,41 @@ linear-regulator penalty a switcher specifically avoids).
 
 By comparison, a **linear** 24 V → 5 V regulator at 0.5 A would burn
 `(24 − 5) × 0.5 = 9.5 W` — which is exactly why the buck is used here. With
-~0.75 W spread across the package and diode, the LM2576 needs only a modest
-clip-on heatsink (or none, with copper pour) for this load; it is rated to 3 A.
+~0.75 W spread across the package and diode, the LM2575-ADJ needs only a modest
+clip-on heatsink (or none, with copper pour) for this load. The LM2575 is the
+**1 A** member of the family (vs the LM2576's 3 A); at the ~0.14 A input /
+~0.5 A output of this design the 1 A rating is ample (≈ 2× margin on the output
+load and far above the ~0.14 A drawn from the 24 V rail).
 
-### Support passives (LM2576-5.0 fixed-output application circuit)
+### Output-voltage feedback divider (LM2575-ADJ)
+
+The adjustable LM2575 regulates its **FB pin (4)** to the internal reference
+`Vref = 1.23 V`. A resistor divider from the +5V output node into FB sets the
+output:
+
+```
+Vout = Vref · (1 + R7/R8)        Vref = 1.23 V   (LM2575-ADJ datasheet)
+```
+
+Using DTU-shop E96 values **R7 (top) = 3K09**, **R8 (bot) = 1K00**:
+
+```
+Vout = 1.23 · (1 + 3090/1000) = 1.23 · 4.09 ≈ 5.03 V
+```
+
+so the +5V rail lands at **≈ 5.03 V** (within the ESP32 DevKit VIN tolerance and
+the OLED/MAX31855 supply range; the on-board AMS1117 LDO drops it to 3.3 V).
+Divider current `≈ 5.03 V / (3090 + 1000) = 1.23 mA` keeps the divider stiff
+against the FB pin's ~µA bias current while wasting negligible power. Topology:
+`+5V → R7 → VFB(=FB pin 4) → R8 → GND`. Both `3K09` and `1K00` are stocked in
+`components-inventory/dtu_component_shop(1).csv` (E96 standard).
+
+| Ref | Value | Role | Shop part |
+|-----|-------|------|-----------|
+| R7 | **3.09 kΩ** (3K09) | FB divider top, +5V → VFB | `Resistor,E96 Standard,3K09` |
+| R8 | **1.00 kΩ** (1K00) | FB divider bottom, VFB → GND | `Resistor,E96 Standard,1K00` |
+
+### Support passives (LM2575-ADJ application circuit)
 
 Values are TI datasheet "typical application" parts, chosen from the DTU
 component shop (`components-inventory/dtu_component_shop(1).csv`):
@@ -59,8 +95,10 @@ component shop (`components-inventory/dtu_component_shop(1).csv`):
 | D2 | **1N5817** (1 A Schottky) | Catch diode, cathode at switch node, anode to GND | `Diode,Schottky,1N5817` |
 | C2 | **1000 µF** electrolytic (≥ 16 V) | Output cap, +5V→GND | `Capacitor,Electrolytic,1000µF 50V` |
 
-These match the LM2576-5.0 fixed-output reference design (100 µH / 1000 µF /
-1N5817 are the datasheet-recommended values for this class of load).
+These match the LM2575/LM2576 buck reference design (100 µH / 1000 µF /
+1N5817 are the datasheet-recommended values for this class of load); the same
+power-path passives apply to the LM2575-ADJ, which differs from the fixed part
+only in the FB divider above.
 
 #### Inductor current rating
 

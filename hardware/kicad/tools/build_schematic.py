@@ -63,7 +63,7 @@ PIN_IDS = {
     "reflow:ESP32_DevKitV1": [str(i) for i in range(1, 31)],
     "reflow:MAX31855_Module": ["1", "2", "3", "4", "5"],
     "reflow:OLED_SSD1306_I2C": ["1", "2", "3", "4"],
-    "Regulator_Switching:LM2576T-5": ["1", "2", "3", "4", "5"],
+    "Regulator_Switching:LM2575BT-ADJ": ["1", "2", "3", "4", "5"],
     "Regulator_Linear:LM7812_TO220": ["1", "2", "3"],
     "Transistor_FET:Q_NMOS_GDS": ["1", "2", "3"],
     "Device:RotaryEncoder_Switch": ["A", "B", "C", "S1", "S2"],
@@ -102,21 +102,36 @@ COMPONENTS = [
     ("J1", "Connector:Screw_Terminal_01x02", "24V_IN",
      "TerminalBlock:TerminalBlock_bornier-2_P5.08mm", 30, 40, 0),
     ("F1", "Device:Fuse", "15A",
-     "Fuse:Fuseholder_Cylinder-5x20mm_Schurter_FAB_0031.8201_Horizontal_Closed", 55, 40, 0),
+     "Fuse:Fuseholder_Cylinder-5x20mm_Schurter_FUP_0031.2510_Horizontal_Closed", 55, 40, 0),
     ("D3", "Device:D_TVS", "SMBJ26A",
      "Diode_THT:D_DO-201AD_P15.24mm_Horizontal", 75, 50, 0),
 
-    # ---- 24V -> 5V buck (LM2576) (top-left) ----
-    ("U2", "Regulator_Switching:LM2576T-5", "LM2576-5.0",  # TODO Task 4: 5-pin LM2576 needs a TO-220-5 laser-pad footprint; currently 3-pin placeholder
-     "energy_system:TO-220-3_Vertical_LaserPads", 40, 80, 0),
+    # ---- 24V -> 5V buck (LM2575-ADJ + feedback divider) (top-left) ----
+    # Task 8: the DTU component shop stocks the ADJUSTABLE LM2575 (shop row
+    # "IC,Linear,LM2575,Step-Down Adjustable Voltage Switching Regulator"), not
+    # the fixed LM2576-5.0. Swapped to LM2575BT-ADJ (KiCad stock symbol; same
+    # 5-pin TO-220 pinout 1=Vin 2=Out 3=GND 4=FB 5=ON/OFF as the LM2576T-5) and a
+    # +5V feedback divider (R7/R8) sets Vout via Vref=1.23 V. The footprint stays
+    # the vendored 5-pin laser-pad part. See docs/electrical-calcs.md §3.
+    ("U2", "Regulator_Switching:LM2575BT-ADJ", "LM2575-ADJ",
+     "energy_system:TO-220-5_Vertical_LaserPads", 40, 80, 0),
     ("L1", "Device:L", "120uH",
-     "Inductor_THT:L_Toroid_Vertical_L20.0mm_D7.0mm_P10.16mm", 70, 75, 0),
+     "Inductor_THT:L_Toroid_Vertical_L26.7mm_W14.0mm_P10.16mm_Pulse_D", 70, 75, 0),
     ("D2", "Device:D_Schottky", "1N5817",
      "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal", 70, 95, 0),
     ("C1", "Device:C", "100uF",
      "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm", 25, 95, 0),
     ("C2", "Device:C", "1000uF",
      "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm", 90, 90, 0),
+
+    # ---- LM2575-ADJ feedback divider (Task 8) ----
+    # Vout = Vref*(1 + R7/R8), Vref = 1.23 V.  R7 (top) = 3K09, R8 (bot) = 1K00
+    # -> Vout = 1.23 * (1 + 3090/1000) = 1.23 * 4.09 = 5.03 V.  Both E96 values
+    # are stocked in the DTU shop (3K09, 1K00).  Divider: +5V - R7 - FB - R8 - GND.
+    ("R7", "Device:R", "3k09",
+     "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 105, 75, 0),
+    ("R8", "Device:R", "1k00",
+     "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 105, 90, 0),
 
     # ---- 24V -> 12V linear (LM7812) gate-drive rail (left) ----
     ("U3", "Regulator_Linear:LM7812_TO220", "LM7812",
@@ -129,7 +144,7 @@ COMPONENTS = [
 
     # ---- Heater power stage (bottom-right corner) ----
     ("Q1", "Transistor_FET:Q_NMOS_GDS", "IRFS4710",
-     "energy_system:TO-220-3_Vertical_LaserPads_GDS", 330, 220, 0),
+     "energy_system:TO-220-3_Vertical_LaserPads", 330, 220, 0),
     ("J2", "Connector:Screw_Terminal_01x02", "HEATER",
      "TerminalBlock:TerminalBlock_bornier-2_P5.08mm", 380, 200, 0),
 
@@ -142,9 +157,9 @@ COMPONENTS = [
     #   R5 100R  GATE_MAIN -> Q1.G series gate resistor
     #   R6 10k   Q1.G -> GND gate-source pulldown (belt-and-suspenders)
     ("Q2", "Transistor_FET:Q_NMOS_GDS", "BS170",
-     "Package_TO_SOT_THT:TO-92_Inline", 270, 230, 0),
+     "energy_system:TO-92_Inline_GDS", 270, 230, 0),
     ("Q3", "Transistor_FET:Q_NMOS_GDS", "BS170",
-     "Package_TO_SOT_THT:TO-92_Inline", 300, 230, 0),
+     "energy_system:TO-92_Inline_GDS", 300, 230, 0),
     ("R1", "Device:R", "100k",
      "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 255, 215, 0),
     ("R2", "Device:R", "1k",
@@ -176,7 +191,7 @@ COMPONENTS = [
 
     # ---- Rotary encoder + start button + status LED (UI / right edge) ----
     ("SW1", "Device:RotaryEncoder_Switch", "ENC",
-     "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch", 330, 90, 0),
+     "Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm", 330, 90, 0),
     ("SW2", "Switch:SW_Push", "START",
      "Button_Switch_THT:SW_PUSH_6mm", 330, 130, 0),
     ("D1", "Device:LED", "STATUS",
@@ -478,8 +493,16 @@ NET_PINS = [
     ("SW_OUT", "D2", "1"),  # catch-diode cathode at switch node
     ("SW_OUT", "L1", "1"),  # inductor input at switch node
     ("+5V", "L1", "2"),     # inductor output = +5V rail
-    ("+5V", "U2", "4"),     # LM2576 feedback senses +5V directly (5.0-fixed)
     ("+5V", "C2", "1"),     # output cap + to +5V
+
+    # ---- LM2575-ADJ feedback divider (Task 8): +5V - R7 - VFB - R8 - GND ----
+    # The ADJ part senses Vout through a divider into FB (pin 4), unlike the
+    # fixed-5.0 part which tied FB straight to +5V.
+    ("+5V", "R7", "1"),     # divider top -> +5V (sensed output)
+    ("VFB", "R7", "2"),     # R7 bottom = feedback node
+    ("VFB", "U2", "4"),     # LM2575 FB pin senses the divided output
+    ("VFB", "R8", "1"),     # R8 top = feedback node
+    ("GND", "R8", "2"),     # divider bottom -> GND
 
     # ---- 12V linear output side ----
     ("+12V", "U3", "3"),    # LM7812 OUT = +12V
@@ -684,6 +707,29 @@ NETS_CTRL = [
 NETS_CTRL_ALIASES = [
     ("GPIO25", "A1", "8"),
 ]
+
+# =============================================================================
+# Footprint-finalization no_connect markers (Task 8: folded in from the
+# post-placement footprint-assignment pass so this script regenerates the
+# finalized schematic faithfully -- ERC otherwise flags the unused ESP32 module
+# pins and the encoder S2 pin as "unconnected").
+#
+# These coordinates are the absolute pin endpoints of A1's unused module pins
+# and SW1.S2; KiCad accepts a (no_connect (at x y)) on the pin endpoint. They are
+# stable because A1 (150,150) and SW1 (330,90) placements are fixed above.
+# =============================================================================
+NO_CONNECTS = [
+    (137.30, 132.22), (137.30, 134.76), (137.30, 137.30), (137.30, 139.84),
+    (137.30, 142.38), (137.30, 157.62), (137.30, 160.16), (137.30, 162.70),
+    (162.70, 132.22), (162.70, 137.30), (162.70, 139.84), (162.70, 152.54),
+    (162.70, 155.08), (162.70, 160.16), (162.70, 162.70), (162.70, 165.24),
+    (337.62, 92.54),
+]
+
+
+def render_no_connect(x, y) -> str:
+    return f'\t(no_connect\n\t\t(at {x} {y})\n\t\t(uuid "{uid()}")\n\t)'
+
 
 # Net-label visual styling. KiCad treats SW_OUT / J1_HOT as ordinary local nets.
 _STUB = 2.54  # mm wire-stub length from the pin endpoint
@@ -982,6 +1028,7 @@ def main() -> None:
     wiring = render_power_wiring()              # Task 4: power-net connectivity
     wiring += render_powerstage_wiring()        # Task 5: gate drive + power loop
     wiring += render_ctrl_wiring()              # Task 6: controller/sensor/UI
+    wiring += [render_no_connect(x, y) for x, y in NO_CONNECTS]  # Task 8: NC marks
     parts.extend(wiring)
     parts.append(FOOTER)
 
