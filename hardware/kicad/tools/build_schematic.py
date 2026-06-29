@@ -133,21 +133,38 @@ COMPONENTS = [
     ("J2", "Connector:Screw_Terminal_01x02", "HEATER",
      "TerminalBlock:TerminalBlock_bornier-2_P5.08mm", 380, 200, 0),
 
-    # ---- Two-stage BS170 gate drive (bottom-right) ----
+    # ---- Two-stage BS170 boot-safe gate drive (bottom-right) ----
+    # Gate-drive resistor roles & values per task-5 brief (R1..R6):
+    #   R1 100k  Q2.G->GND pulldown (floating logic input => Q2 off)
+    #   R2 1k    HEATER_PWM -> Q2.G series
+    #   R3 10k   GD_NODE1 -> +12V pull-UP (Q2 off => GD_NODE1 high => Q3 on)
+    #   R4 10k   GATE_MAIN -> +12V pull-UP
+    #   R5 100R  GATE_MAIN -> Q1.G series gate resistor
+    #   R6 10k   Q1.G -> GND gate-source pulldown (belt-and-suspenders)
     ("Q2", "Transistor_FET:Q_NMOS_GDS", "BS170",
      "Package_TO_SOT_THT:TO-92_Inline", 270, 230, 0),
     ("Q3", "Transistor_FET:Q_NMOS_GDS", "BS170",
      "Package_TO_SOT_THT:TO-92_Inline", 300, 230, 0),
-    ("R1", "Device:R", "1k",
+    ("R1", "Device:R", "100k",
      "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 255, 215, 0),
     ("R2", "Device:R", "1k",
      "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 285, 215, 0),
     ("R3", "Device:R", "10k",
      "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 315, 215, 0),
-    ("R4", "Device:R", "100",
+    ("R4", "Device:R", "10k",
      "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 315, 245, 0),
-    ("R5", "Device:R", "10k",
+    ("R5", "Device:R", "100",
      "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 345, 245, 0),
+    ("R6", "Device:R", "10k",
+     "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 345, 220, 0),
+
+    # ---- Heater-drain TVS clamp (Task 5; D4) ----
+    # SMBJ33A-equivalent THT TVS across HEATER_RET -> GND (cathode at
+    # HEATER_RET, anode at GND) to clamp inductive drain transients when Q1
+    # switches the heater load. 33 V standoff sits above the 24 V rail with
+    # margin and below Q1's Vds(max)=100 V.
+    ("D4", "Device:D_TVS", "SMBJ33A",
+     "Diode_THT:D_DO-201AD_P15.24mm_Horizontal", 355, 195, 0),
 
     # ---- Thermocouple header (UI / right) ----
     ("J3", "reflow:MAX31855_Module", "MAX31855",
@@ -164,7 +181,9 @@ COMPONENTS = [
      "Button_Switch_THT:SW_PUSH_6mm", 330, 130, 0),
     ("D1", "Device:LED", "STATUS",
      "LED_THT:LED_D5.0mm", 380, 130, 0),
-    ("R6", "Device:R", "330",
+    # R13 = status-LED current-limit resistor (was R6 in Task-3 placement; R6 is
+    # reassigned to the gate-drive pulldown per the Task-5 brief). Wired in Task 6.
+    ("R13", "Device:R", "330",
      "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 365, 130, 0),
 
     # ---- I2C pull-ups + encoder/button debounce + misc passives ----
@@ -495,6 +514,67 @@ PWR_FLAGS = [
     ("GND", "U2", "3"),
 ]
 
+# =============================================================================
+# Task 5: heater power stage + boot-safe two-stage gate drive (NETS_POWERSTAGE)
+# =============================================================================
+#
+# Q_NMOS_GDS pin map: 1 = Gate, 2 = Drain, 3 = Source (confirmed from the
+# library symbol geometry). Same net-label connectivity as Task 4: a short
+# outward wire stub per pin with a net label on its far endpoint; identical
+# label names form one net.
+#
+# Non-inverting, boot-safe topology (GPIO high -> heater ON; low/floating/
+# unpowered -> heater OFF inherently):
+#
+#   HEATER_PWM --R2(1k)--> Q2.G          R1(100k) Q2.G -> GND pulldown
+#   Q2.S = GND, Q2.D = GD_NODE1          R3(10k)  GD_NODE1 -> +12V pull-UP
+#   GD_NODE1 -> Q3.G                     Q3.S = GND
+#   Q3.D = GATE_MAIN                     R4(10k)  GATE_MAIN -> +12V pull-UP
+#   GATE_MAIN --R5(100R)--> Q1.G         R6(10k)  Q1.G -> GND pulldown
+#   Q1.D = HEATER_RET (= J2.2), Q1.S = GND
+#   D4 (TVS, cathode=HEATER_RET anode=GND) clamps drain transients
+#
+# Local (unnamed-by-rail) interconnect nodes are given explicit net labels so
+# the series resistors stay in series:
+#   Q2_GATE  = R2.2 + Q2.G(1) + R1.1     (logic input side of R2 -> Q2 gate)
+#   GD_NODE1 = Q2.D(2) + Q3.G(1) + R3.2  (inter-stage)
+#   GATE_MAIN= Q3.D(2) + R4.2 + R5.1     (stage-2 drain / gate rail)
+#   Q1_GATE  = R5.2 + Q1.G(1) + R6.1     (gated node at the power MOSFET)
+#   HEATER_RET = J2.2 + Q1.D(2) + D4.1
+NETS_POWERSTAGE = [
+    # ---- Stage 1 inverter (Q2) ----
+    ("HEATER_PWM", "R2", "1"),   # gate-drive INPUT side (A1.GPIO25 wired Task 6)
+    ("Q2_GATE", "R2", "2"),      # R2 series -> Q2 gate
+    ("Q2_GATE", "Q2", "1"),      # Q2 gate
+    ("Q2_GATE", "R1", "1"),      # R1 100k pulldown top
+    ("GND", "R1", "2"),          # R1 pulldown to GND
+    ("GND", "Q2", "3"),          # Q2 source = GND
+    ("GD_NODE1", "Q2", "2"),     # Q2 drain = inter-stage node
+    ("GD_NODE1", "R3", "2"),     # R3 10k pull-up bottom
+    ("+12V", "R3", "1"),         # R3 pull-up to +12V
+
+    # ---- Stage 2 inverter (Q3) ----
+    ("GD_NODE1", "Q3", "1"),     # GD_NODE1 -> Q3 gate
+    ("GND", "Q3", "3"),          # Q3 source = GND
+    ("GATE_MAIN", "Q3", "2"),    # Q3 drain = gate rail
+    ("GATE_MAIN", "R4", "2"),    # R4 10k pull-up bottom
+    ("+12V", "R4", "1"),         # R4 pull-up to +12V
+    ("GATE_MAIN", "R5", "1"),    # R5 100R series gate resistor (in)
+
+    # ---- Power MOSFET gate node ----
+    ("Q1_GATE", "R5", "2"),      # R5 series (out) -> Q1 gate
+    ("Q1_GATE", "Q1", "1"),      # Q1 gate
+    ("Q1_GATE", "R6", "1"),      # R6 10k gate-source pulldown top
+    ("GND", "R6", "2"),          # R6 pulldown to GND
+
+    # ---- Power loop ----
+    ("HEATER_RET", "J2", "2"),   # heater return terminal (J2.1 = +24V, Task 4)
+    ("HEATER_RET", "Q1", "2"),   # Q1 drain = heater return
+    ("HEATER_RET", "D4", "1"),   # TVS cathode at HEATER_RET
+    ("GND", "Q1", "3"),          # Q1 source = GND (low-side)
+    ("GND", "D4", "2"),          # TVS anode to GND
+]
+
 # Net-label visual styling. KiCad treats SW_OUT / J1_HOT as ordinary local nets.
 _STUB = 2.54  # mm wire-stub length from the pin endpoint
 
@@ -723,6 +803,23 @@ def render_power_wiring() -> list[str]:
     return out
 
 
+def render_powerstage_wiring() -> list[str]:
+    """Task-5 power-stage + boot-safe gate-drive connectivity.
+
+    Identical net-label-on-outward-stub technique as ``render_power_wiring``;
+    only the net list (``NETS_POWERSTAGE``) differs. No new PWR_FLAGs: +12V and
+    GND already have drivers/flags from Task 4, and the local gate nets
+    (Q2_GATE, GD_NODE1, GATE_MAIN, Q1_GATE, HEATER_RET) are ordinary nets.
+    """
+    out: list[str] = []
+    for net, ref, pin in NETS_POWERSTAGE:
+        x, y = endpoint_of(ref, pin)
+        fx, fy = _stub_far(ref, pin)
+        out.append(render_wire(x, y, fx, fy))
+        out.append(render_label(net, fx, fy))
+    return out
+
+
 HEADER = '''(kicad_sch
 \t(version 20250114)
 \t(generator "eeschema")
@@ -750,6 +847,7 @@ def main() -> None:
     for ref, lib_id, value, footprint, x, y, angle in COMPONENTS:
         parts.append(render_symbol(ref, lib_id, value, footprint, x, y, angle))
     wiring = render_power_wiring()              # Task 4: power-net connectivity
+    wiring += render_powerstage_wiring()        # Task 5: gate drive + power loop
     parts.extend(wiring)
     parts.append(FOOTER)
 
