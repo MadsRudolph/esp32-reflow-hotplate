@@ -14,7 +14,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "21abf274-4d5a-423e-8fa2-80cd80ab99b9")
+		(uuid "cf284754-0cc4-462d-a8ad-08bcc5c8bfff")
 		(property "Reference" "A1"
 			(at 155.08 147.46 0)
 			(effects
@@ -60,36 +60,36 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "ba311612-6b9d-474a-b97a-b36497d2ebe6"))
-		(pin "2" (uuid "9e403b7e-5f3c-4f1d-9857-12792fe7f03d"))
-		(pin "3" (uuid "508e2c68-c926-4c0b-83b4-4e8c1902c2a1"))
-		(pin "4" (uuid "aa45ecb3-8829-4bef-8523-c787c150eb3a"))
-		(pin "5" (uuid "df962cd3-d8b5-49ce-8772-046142ea8bee"))
-		(pin "6" (uuid "eb99d06b-8ffd-4fa1-908e-36db0d1ceeb0"))
-		(pin "7" (uuid "1421c5f2-d1b3-4a5f-8bb8-0f8406fb8a04"))
-		(pin "8" (uuid "15ff2d17-65d3-4237-85c4-c81fc06b8210"))
-		(pin "9" (uuid "7c7809a3-b9a8-476c-bcd2-80a03144fc02"))
-		(pin "10" (uuid "c82ca7f3-c3e3-430d-903a-bb3ca739ebd9"))
-		(pin "11" (uuid "bf9a2bb4-5c11-4c72-bf32-0c62e94adce6"))
-		(pin "12" (uuid "cb1b2287-470b-43f3-9907-7f2fc7cce209"))
-		(pin "13" (uuid "3433c876-c6f1-4da5-ae6b-a3d75e6ca2a7"))
-		(pin "14" (uuid "2b92884d-5b2e-490e-98c9-f1cfa6612f26"))
-		(pin "15" (uuid "2c3c2fd2-001e-46a8-b336-36a33b3abdfe"))
-		(pin "16" (uuid "51c3deb0-3fae-4818-b614-8971a624b3fd"))
-		(pin "17" (uuid "b8dd8028-ec79-4330-bfb4-7cb7980eb364"))
-		(pin "18" (uuid "73bdc06e-1d24-4d5f-8f51-7c29f03d6e4e"))
-		(pin "19" (uuid "4fa1459c-4e3c-4916-8478-332e54e9118d"))
-		(pin "20" (uuid "6246ea5f-5189-42a5-9b66-fb1cd5f6a43b"))
-		(pin "21" (uuid "8262a8c7-0e50-4e12-a6f0-43896734fdf1"))
-		(pin "22" (uuid "cb3b758c-0736-4343-a662-906a8ae6465d"))
-		(pin "23" (uuid "c80c3b48-a569-4abe-b200-c61dd3fe5bc5"))
-		(pin "24" (uuid "2a85f4a4-c915-494b-a1f7-9e9dec1f4bc6"))
-		(pin "25" (uuid "27fe8102-3c86-4a1b-9154-398dc4f50afd"))
-		(pin "26" (uuid "8f2cb6ce-e8ea-4444-bf18-f00ae3884e0a"))
-		(pin "27" (uuid "8e5d41b6-99fd-4aac-b611-400cafe98d28"))
-		(pin "28" (uuid "b6331045-b6af-4e12-9930-727ace00af9e"))
-		(pin "29" (uuid "e4a7a000-f974-43e8-96dd-8450ad91c746"))
-		(pin "30" (uuid "1555d215-6da1-47ad-ae0e-6e974f814047"))
+		(pin "1" (uuid "70ce982f-c8a6-4d5c-9ea5-04b0c84d1518"))
+		(pin "2" (uuid "f47a6b36-7201-4c18-8a3e-b3b70d747c39"))
+		(pin "3" (uuid "4185c255-627a-4e37-a679-c6966e623c45"))
+		(pin "4" (uuid "d51274ff-43a2-4dea-9983-cb9d730a2847"))
+		(pin "5" (uuid "36fa7dd5-39fe-4f4b-af74-83f1ea69849d"))
+		(pin "6" (uuid "a24d7aaa-9ffd-45a8-9355-37c2cd633de8"))
+		(pin "7" (uuid "0ebd5ecb-ab7d-48d7-8883-b03a4397a120"))
+		(pin "8" (uuid "3ae2dd4f-eefb-4042-bbfa-4cf091aa1d71"))
+		(pin "9" (uuid "6d85bfd5-57c8-4080-9417-8416375a8984"))
+		(pin "10" (uuid "99621d4f-50c3-4be7-bf92-369196d41f00"))
+		(pin "11" (uuid "cb14da36-477a-4d02-9f28-50db5c71cbc7"))
+		(pin "12" (uuid "eef6a466-424a-4adf-9727-be9e4e7989dc"))
+		(pin "13" (uuid "efb908ec-5c3d-4429-8cb4-70b952af463f"))
+		(pin "14" (uuid "ff213123-a27f-4940-9f4b-abc176226bf9"))
+		(pin "15" (uuid "db2c1b6e-f797-4a06-b28e-8774c87b82db"))
+		(pin "16" (uuid "a25386b2-bb6f-48e0-93b1-df2a3da8d3d8"))
+		(pin "17" (uuid "a87c89ae-1ea9-45c9-879c-95aa48a80b15"))
+		(pin "18" (uuid "85a0656a-ca54-4e65-9c87-505eb4a3f863"))
+		(pin "19" (uuid "1f1153ae-f1c0-4234-9433-31f8c2b91e69"))
+		(pin "20" (uuid "1ce938b8-3091-40d2-ac13-71521a07a664"))
+		(pin "21" (uuid "9c6c82a4-adc7-4324-a64b-0e05d26f5406"))
+		(pin "22" (uuid "95964615-e747-4f58-b467-0096593d8eac"))
+		(pin "23" (uuid "64786c4d-c5a0-4ef8-a527-39ef02dc60d4"))
+		(pin "24" (uuid "ba46406f-fd36-48e4-97f6-efff9ff38f4a"))
+		(pin "25" (uuid "52a2e41d-6703-40d1-9089-253093497413"))
+		(pin "26" (uuid "aea9bd16-c42a-4eed-b32e-90f27ce8c9d7"))
+		(pin "27" (uuid "86f9eaa1-7383-4063-a709-949c84a82eef"))
+		(pin "28" (uuid "c4a4e924-e1ae-4726-91b6-6869ee1063d2"))
+		(pin "29" (uuid "d864ca7d-0f80-494a-8332-7f044f512a98"))
+		(pin "30" (uuid "bf3b3eb6-9d1e-4788-adea-408425af70b7"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -108,7 +108,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "0491bc95-eea8-48bf-95ac-95d0a996166e")
+		(uuid "3363cfde-0680-41da-ae95-42597aeb61d9")
 		(property "Reference" "J1"
 			(at 35.08 37.46 0)
 			(effects
@@ -154,8 +154,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "7b507285-99e1-4def-937c-912a99aa2115"))
-		(pin "2" (uuid "14a01d4b-2533-4b55-9344-fd04a5ac4825"))
+		(pin "1" (uuid "8599b885-a35d-4853-a2b8-a22fd708dd56"))
+		(pin "2" (uuid "961b6c4e-2c89-4357-adfd-bb38b195e953"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -174,7 +174,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "71b10e10-7d3f-4ee4-a91f-242d4f193b85")
+		(uuid "5f700400-69f8-4021-bdd3-002c44a62dac")
 		(property "Reference" "F1"
 			(at 60.08 37.46 0)
 			(effects
@@ -220,8 +220,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "c3c207dd-b63c-4e44-a4f2-3063566eedf6"))
-		(pin "2" (uuid "5f68a268-bb1e-4c24-b3b4-3e7fda7244d7"))
+		(pin "1" (uuid "58b59a99-4793-4197-99be-de4c7db0446a"))
+		(pin "2" (uuid "823cf5bf-be31-413b-8373-e3cd54020d82"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -240,7 +240,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "7ae73984-fede-4baf-95d8-9a3d530075ad")
+		(uuid "19798092-ab13-4ba2-8030-ba67f6b2f605")
 		(property "Reference" "D3"
 			(at 80.08 47.46 0)
 			(effects
@@ -286,8 +286,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "84abec0f-46d9-420a-bc1f-9e07dfa0ff31"))
-		(pin "2" (uuid "81a1cb18-ef68-4627-9134-ccc47f373e48"))
+		(pin "1" (uuid "e7dd93c9-3955-4c53-95fd-79eb98e32f8e"))
+		(pin "2" (uuid "9195a7ab-cd4e-411c-9305-101819ec4d39"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -306,7 +306,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "f0fdbbe4-3089-41aa-a6f7-dd97f8b8b5bd")
+		(uuid "e4eb8348-f8ea-46d8-ba04-879a2537b2ff")
 		(property "Reference" "U2"
 			(at 45.08 77.46 0)
 			(effects
@@ -352,11 +352,11 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "97575e12-7da0-4a93-91c1-4e4b9e7bce54"))
-		(pin "2" (uuid "aa923d36-dbaf-4f92-8020-d48ae9b9ba0d"))
-		(pin "3" (uuid "cb3940f0-d3ff-4a1b-9730-9a8c6ef7a3d5"))
-		(pin "4" (uuid "e97625d1-b865-4786-adb0-2bfdb3e980a0"))
-		(pin "5" (uuid "c4c43c21-e15b-4bca-af9f-ae8f8b1b3e94"))
+		(pin "1" (uuid "25a56252-1a02-4a50-bd7d-501a4e7361e2"))
+		(pin "2" (uuid "3cb4747a-cf97-4f09-ae0d-c04f072d64f1"))
+		(pin "3" (uuid "051aa6f6-e314-4ba2-bd79-7a828c3be3f1"))
+		(pin "4" (uuid "b9edf916-dc7f-4bc7-97b0-67f4e410cd55"))
+		(pin "5" (uuid "516745c1-17fd-4e20-9685-e7df9cf84e36"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -375,7 +375,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "8c06cf95-32ea-4f3b-a09f-45dc9401bb5c")
+		(uuid "628d554c-f2ef-4f10-93fe-9231b2ab64b0")
 		(property "Reference" "L1"
 			(at 75.08 72.46 0)
 			(effects
@@ -421,8 +421,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "002c0d70-f01b-4ca0-821c-164abc4a2d2f"))
-		(pin "2" (uuid "16b42959-471f-4c61-b1ec-6d675cef2d9d"))
+		(pin "1" (uuid "41f7ac57-77bb-4700-9fce-488c8e3a075d"))
+		(pin "2" (uuid "d44b3e5f-33ac-4ac2-8015-5b8d386a03ad"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -441,7 +441,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "9ac22571-8d7d-48c6-b63b-f684c918eea5")
+		(uuid "5d8218c0-3cb0-4b1c-8af9-13617328c7b3")
 		(property "Reference" "D2"
 			(at 75.08 92.46 0)
 			(effects
@@ -487,8 +487,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "59f2d706-481e-405b-a518-86fa5896197e"))
-		(pin "2" (uuid "5ccd1c87-db20-4d6c-9172-3fee984250e0"))
+		(pin "1" (uuid "b68dc3cd-b17d-480d-9b4f-76daa4320263"))
+		(pin "2" (uuid "b0f189e5-6180-41b2-a8a2-468104114f71"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -507,7 +507,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "3f1ccef8-021e-4353-9d3a-dcf1f6f025e7")
+		(uuid "8f19f95d-6dfe-47c4-a447-894359b79ec6")
 		(property "Reference" "C1"
 			(at 30.08 92.46 0)
 			(effects
@@ -553,8 +553,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "9a8d7af3-72e5-4ec0-959d-bfc7152777cd"))
-		(pin "2" (uuid "e1a2cbc4-733e-4f7f-87c6-76d31459aa1f"))
+		(pin "1" (uuid "9889c24f-4bf7-4ea4-840b-5958d14fa6d0"))
+		(pin "2" (uuid "dc0c422b-bb0a-476d-908d-861590ce10b2"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -573,7 +573,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "e4658bc5-a97f-4b4f-8566-2896d7edc99c")
+		(uuid "f8af9b7b-d587-4361-a9ca-1348c12ae009")
 		(property "Reference" "C2"
 			(at 95.08 87.46 0)
 			(effects
@@ -619,8 +619,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "51e9b7e7-d4c4-43d1-9895-db7bc26bddc2"))
-		(pin "2" (uuid "d0c0c281-f23b-4d50-9945-d42bbcc457d8"))
+		(pin "1" (uuid "3853e561-744c-481e-b52f-8818ec2a0c3a"))
+		(pin "2" (uuid "28a728fb-853a-473d-8e39-e87fe11a972f"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -639,7 +639,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "3cc5573d-c16c-49c4-bb83-34094f26c396")
+		(uuid "27c2c845-d234-48c9-9009-eed273325113")
 		(property "Reference" "U3"
 			(at 45.08 117.46 0)
 			(effects
@@ -685,9 +685,9 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "8803d0d2-381c-4f0c-8b3b-307049b8691b"))
-		(pin "2" (uuid "34d0939d-2504-4ac3-a836-30e24ccb7515"))
-		(pin "3" (uuid "51dc3bac-5aaa-4cd4-bd2f-1ae17c431980"))
+		(pin "1" (uuid "9fd6b976-77bd-4a97-99a7-70d220e6fb3f"))
+		(pin "2" (uuid "e0ea7ad7-84ae-4a63-adda-c4669663dc99"))
+		(pin "3" (uuid "b2068d4f-ca7a-4af8-9796-26f265eacbfb"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -706,7 +706,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "ff405bc9-0826-4a0c-8c15-9ca85e629080")
+		(uuid "5a6f843b-59f3-4dbd-9d58-aad18105ae73")
 		(property "Reference" "C3"
 			(at 30.08 132.46 0)
 			(effects
@@ -752,8 +752,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "4c485610-bdf0-4e3d-b2ad-d179baf65a5b"))
-		(pin "2" (uuid "a0efdd0e-5067-49c3-a144-3185d1e27e83"))
+		(pin "1" (uuid "57cd1d21-d5a0-4b85-9ef4-0df064af5c52"))
+		(pin "2" (uuid "fbf06ea9-b38a-42bf-924a-9667baaa8a66"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -772,7 +772,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "a62e20f3-5c79-4fd5-8f37-9197a8e86ffa")
+		(uuid "d1e16334-39a0-41b6-8a70-a6b0f2d952f0")
 		(property "Reference" "C4"
 			(at 65.08 132.46 0)
 			(effects
@@ -818,8 +818,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "936fe067-92fd-4555-a14b-facfbd7e4103"))
-		(pin "2" (uuid "10b0cce7-25ce-473d-8b14-257c9dfb60c1"))
+		(pin "1" (uuid "399a91b2-542f-4081-a041-b2007ac46f8b"))
+		(pin "2" (uuid "73e7ba5f-fc96-47dc-801c-55cd0bbfaa11"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -830,7 +830,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_GDS")
+		(lib_id "Device:Q_NMOS_GDS")
 		(at 330 220 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -838,7 +838,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "848b1b22-6133-42a7-af5e-2763bb3afb80")
+		(uuid "a5c267cd-f499-49ee-aa3d-0f5397512b23")
 		(property "Reference" "Q1"
 			(at 335.08 217.46 0)
 			(effects
@@ -884,9 +884,9 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "b2e584be-a79b-43c5-8d68-e8f175b1ad72"))
-		(pin "2" (uuid "5f02ee80-b569-4d71-9960-32a2bb45bddf"))
-		(pin "3" (uuid "db4fc75e-126b-410f-ba20-140d2188b6df"))
+		(pin "1" (uuid "28f1cee2-7d2c-4a00-afff-757131947ffa"))
+		(pin "2" (uuid "f0d66c24-dab3-4086-a0bc-c17751587461"))
+		(pin "3" (uuid "68547e9e-1bb7-45b2-ae86-6c8833a07127"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -905,7 +905,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "bdd753c6-6ee4-42e2-babd-74c5d33bc6b5")
+		(uuid "6d6bdc25-5d86-480d-b339-116d6fab843e")
 		(property "Reference" "J2"
 			(at 385.08 197.46 0)
 			(effects
@@ -951,8 +951,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "3812a022-4833-4761-9b95-21124e9ea2fb"))
-		(pin "2" (uuid "0b4fe4e7-89da-40ab-8aa8-7263ca8ee2df"))
+		(pin "1" (uuid "b512d9bb-508f-4567-835f-84c59c409414"))
+		(pin "2" (uuid "792e7dee-ad21-4f42-8db4-ed2ee2ba14aa"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -963,7 +963,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_GDS")
+		(lib_id "Device:Q_NMOS_GDS")
 		(at 270 230 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -971,7 +971,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "c8876918-a893-4215-b279-afad5f7118a7")
+		(uuid "8e6e66dd-0c18-4dea-860b-7bc62e5061fc")
 		(property "Reference" "Q2"
 			(at 275.08 227.46 0)
 			(effects
@@ -1017,9 +1017,9 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "05421352-1604-4a11-9b80-3327f4313740"))
-		(pin "2" (uuid "9f1e5ab6-efee-4fd5-bac4-de9d7ece9272"))
-		(pin "3" (uuid "41468803-caf9-4a2a-a214-f697edfaa85b"))
+		(pin "1" (uuid "c939ba9f-6835-4373-9c79-7129dfe35853"))
+		(pin "2" (uuid "7ec7ce47-b840-4cfd-acf9-108187475d0d"))
+		(pin "3" (uuid "34636804-02e3-4979-a1fb-807e2a2bb74d"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1030,7 +1030,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_GDS")
+		(lib_id "Device:Q_NMOS_GDS")
 		(at 300 230 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -1038,7 +1038,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "879c3295-59a4-4375-8214-add354afd948")
+		(uuid "0f78185c-25c8-4e94-9060-dea529a44b38")
 		(property "Reference" "Q3"
 			(at 305.08 227.46 0)
 			(effects
@@ -1084,9 +1084,9 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "7df277ea-666a-4ba5-9f52-7c2f19b7a3c8"))
-		(pin "2" (uuid "d388b303-cebd-4942-b0d9-b25de425e613"))
-		(pin "3" (uuid "ddc6cca6-e570-4d40-9da2-18ded9127b08"))
+		(pin "1" (uuid "f2771f85-1e0b-4a48-a27e-bc15f0168366"))
+		(pin "2" (uuid "258c86f1-4d62-4de8-ac08-ae9dc76853ab"))
+		(pin "3" (uuid "197ba933-c05a-4d95-ba50-0eb7fa43f4ce"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1105,7 +1105,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "97802f60-3a24-489f-8d5d-729b9cc6ab8d")
+		(uuid "0a57aadb-8e69-4b9f-81f7-fa8243ec1a70")
 		(property "Reference" "R1"
 			(at 260.08 212.46 0)
 			(effects
@@ -1151,8 +1151,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "2fb125fb-3686-455a-8943-ca671f4c9560"))
-		(pin "2" (uuid "e0562427-dd9c-4418-b0ee-df64622af550"))
+		(pin "1" (uuid "eae84d86-1736-4db6-981a-1bb4b5007d77"))
+		(pin "2" (uuid "1be46cb8-c284-4b3d-8905-f11095644baf"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1171,7 +1171,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "a12e09c6-7099-4ce6-8d91-5b3680a19b95")
+		(uuid "b780aae6-daa5-4d25-adcb-45e3a103174b")
 		(property "Reference" "R2"
 			(at 290.08 212.46 0)
 			(effects
@@ -1217,8 +1217,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "aa1ef675-cf6c-4f5f-99c8-6be522957523"))
-		(pin "2" (uuid "3807f68f-152a-4008-87fc-2ca2d3be07f9"))
+		(pin "1" (uuid "42731352-664e-488e-b93c-c827610fe5a1"))
+		(pin "2" (uuid "421c07f1-f47d-4782-95be-2db3db66e9e5"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1237,7 +1237,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "a9e14a40-903b-417b-989a-ed1d2f211861")
+		(uuid "520ad2e9-d645-4397-90e8-ddc1008fd1ba")
 		(property "Reference" "R3"
 			(at 320.08 212.46 0)
 			(effects
@@ -1283,8 +1283,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "c052bb8b-eda5-4880-9170-fc7fc5be2215"))
-		(pin "2" (uuid "ea83c3c8-867b-4115-96ee-44d6afa2bb50"))
+		(pin "1" (uuid "c3f5d66a-49ab-4234-8aad-9c4446fa67a7"))
+		(pin "2" (uuid "e62dfe58-4cec-43a2-b2eb-8b4aff11246f"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1303,7 +1303,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "aea5f627-b330-41b8-9b65-25511abffc5e")
+		(uuid "107ff1f7-b761-4b64-9a1a-84d807cf3a03")
 		(property "Reference" "R4"
 			(at 320.08 242.46 0)
 			(effects
@@ -1349,8 +1349,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "a005c78e-e9c2-4d6e-a71d-b4774401aa38"))
-		(pin "2" (uuid "e3eff557-a0da-4425-9c8c-4977f8c19fe0"))
+		(pin "1" (uuid "474ed9c3-f138-4d20-9a82-f91fc55f8585"))
+		(pin "2" (uuid "5c5d1392-5fe0-4ea6-8586-b855e49c1a3a"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1369,7 +1369,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "9075f569-2ffa-4b1c-9b9d-5d2f6d0adf8c")
+		(uuid "21d65964-9331-4754-b215-4e23e2eac666")
 		(property "Reference" "R5"
 			(at 350.08 242.46 0)
 			(effects
@@ -1415,8 +1415,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "f38da8dc-e4f8-4afb-aaa4-364b473d28cc"))
-		(pin "2" (uuid "a1b3f3d4-3336-42e6-96c4-7ed92f09274b"))
+		(pin "1" (uuid "03d3a168-88d7-4a71-93fc-be2a93de2abc"))
+		(pin "2" (uuid "1593819a-e815-45e3-bca7-97e8295b99e8"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1435,7 +1435,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "4dedecad-e7a4-4fe4-9676-ad1bf67802fe")
+		(uuid "f0ce3035-01b8-462e-b554-f8575fa124c4")
 		(property "Reference" "J3"
 			(at 255.08 87.46 0)
 			(effects
@@ -1481,11 +1481,11 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "de89954e-edab-451a-ab87-4c23ae81ceb6"))
-		(pin "2" (uuid "49084f6d-30aa-40a6-b17c-5e26eb7d98ea"))
-		(pin "3" (uuid "db2dfaf3-7641-434c-9309-cd91733c1350"))
-		(pin "4" (uuid "1e44d21b-c0cc-43aa-b584-080f5f36d2e1"))
-		(pin "5" (uuid "1dc7e839-811f-4e32-90b7-b507274dfae7"))
+		(pin "1" (uuid "30f452cd-2139-4aba-80c9-b8e82a9b2471"))
+		(pin "2" (uuid "43020eca-a6b6-4ee7-a05e-9573488de3f4"))
+		(pin "3" (uuid "ebabf57d-dfd5-4865-a77f-1d000b1bf7ac"))
+		(pin "4" (uuid "17624d40-0b5d-4dbe-b3f1-18b416eb9052"))
+		(pin "5" (uuid "ac86f52c-0672-4c4e-8c32-ee7716957609"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1504,7 +1504,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "88d494c2-64d0-4d0c-894e-d235518f559b")
+		(uuid "93cfe84d-168a-45f7-9752-50d8f116cc61")
 		(property "Reference" "J4"
 			(at 255.08 127.46 0)
 			(effects
@@ -1550,10 +1550,10 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "a91a925e-ecfc-4d88-8524-42e5dae16f99"))
-		(pin "2" (uuid "c96ef520-1d0f-49a0-80be-fc2a70d284be"))
-		(pin "3" (uuid "bea0aee1-1f10-4c04-a844-c9e77eaeeb07"))
-		(pin "4" (uuid "fa572e33-1e05-4571-8239-51c6cc852a84"))
+		(pin "1" (uuid "a5fcef6c-ca4d-4cf1-b633-a5bf8d70bf17"))
+		(pin "2" (uuid "d4cdecfb-8eed-445f-ade0-ffa51abde309"))
+		(pin "3" (uuid "9867cb95-0d5f-40b6-9d05-f3a5d1e9b2e6"))
+		(pin "4" (uuid "5df615f4-78b1-4bf3-8064-fc5c674c498d"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1572,7 +1572,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "2d18c236-65eb-4419-a7ff-017050dc9654")
+		(uuid "f89f29a4-8774-4257-915a-b6a5c98c8beb")
 		(property "Reference" "SW1"
 			(at 335.08 87.46 0)
 			(effects
@@ -1618,11 +1618,11 @@
 				(hide yes)
 			)
 		)
-		(pin "A" (uuid "b8f063ae-360e-48b5-9896-380b3da76b1c"))
-		(pin "B" (uuid "a2dbd527-8b20-42e2-8af2-39380934b237"))
-		(pin "C" (uuid "95f55722-8932-476a-a0db-d603b87ab570"))
-		(pin "S1" (uuid "2546df31-9e1a-4a0e-a712-3116d9bfcad5"))
-		(pin "S2" (uuid "16e9d2b5-0b8c-4d19-b45d-44c2dc119867"))
+		(pin "A" (uuid "b73d8bbe-74e7-4a57-a95b-00e98712fc90"))
+		(pin "B" (uuid "de520d76-c73c-4e92-b267-aba75765735f"))
+		(pin "C" (uuid "c814a4f9-2f46-460e-a409-dcd34fd73fa9"))
+		(pin "S1" (uuid "70947dde-38c3-4870-908c-7d35a98e7a2a"))
+		(pin "S2" (uuid "3b4e2eb9-152b-4283-8e9f-9d861baab983"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1641,7 +1641,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "abbfb08b-63c2-4db7-bab7-d785032c6909")
+		(uuid "1d897da6-7ad3-425a-b8b9-c94e207030bf")
 		(property "Reference" "SW2"
 			(at 335.08 127.46 0)
 			(effects
@@ -1687,8 +1687,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "c646949a-3773-41f7-81e0-4451c99d42d4"))
-		(pin "2" (uuid "ba1bc4d2-b63e-4b68-962b-2f2e5a8fd1e1"))
+		(pin "1" (uuid "0425752e-06c0-41da-9feb-a2bbb3867561"))
+		(pin "2" (uuid "3dc8647d-e637-444c-90f1-ee566c6c9f68"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1707,7 +1707,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "e77bbbed-5840-4101-9eff-17304771f76e")
+		(uuid "4fba597d-a20e-4535-a8bb-ee92a5d6fb61")
 		(property "Reference" "D1"
 			(at 385.08 127.46 0)
 			(effects
@@ -1753,8 +1753,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "ebf34756-e6ce-4d63-ba29-6cd2a83c1f3e"))
-		(pin "2" (uuid "2f94b76e-110b-4385-8ec0-7dfa2b15b279"))
+		(pin "1" (uuid "9fbd77c7-ece8-4e6e-9f28-f3e53aa34909"))
+		(pin "2" (uuid "e4e9b52c-281c-4189-94ca-adf669ed8309"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1773,7 +1773,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "3cf7a449-3796-4eee-a03c-4ad3ea45f487")
+		(uuid "ccf4530d-715a-4eab-bf3a-8a7643e57e91")
 		(property "Reference" "R6"
 			(at 370.08 127.46 0)
 			(effects
@@ -1819,8 +1819,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "3185a336-5c06-447b-89f6-683302c51f30"))
-		(pin "2" (uuid "2763a455-9118-4252-937b-46d76ffbb737"))
+		(pin "1" (uuid "eaedcada-d966-4f08-a1e7-847b9e404926"))
+		(pin "2" (uuid "7ce82ca2-2df2-4e86-85b0-7cc29b177200"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1839,7 +1839,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "e2354ada-61ff-4f60-8187-2b58506ea338")
+		(uuid "2ce12583-4129-447a-ad59-29757bd31e54")
 		(property "Reference" "R7"
 			(at 215.08 117.46 0)
 			(effects
@@ -1885,8 +1885,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "18de6267-0e99-47ec-b6f2-251202bf90e1"))
-		(pin "2" (uuid "d6fd7169-e689-4a50-bfb0-c90862a0a8b5"))
+		(pin "1" (uuid "062b6181-b163-4f30-9324-b41e3b20b933"))
+		(pin "2" (uuid "fdf08bb4-9d77-4809-ac65-2ef4a78692fa"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1905,7 +1905,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "73c5245e-afe0-4e51-96fa-49f88c9e562d")
+		(uuid "bd062f9a-0fd0-4a0e-9ad2-caefaf34cdf0")
 		(property "Reference" "R8"
 			(at 215.08 132.46 0)
 			(effects
@@ -1951,8 +1951,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "c51173f6-5fd0-46fc-8cfd-836a41b3f89c"))
-		(pin "2" (uuid "01b3e435-fcf4-44da-b2de-55d0c99edc3c"))
+		(pin "1" (uuid "3a57ce7e-4e3b-49a8-b985-8b0188c1d77d"))
+		(pin "2" (uuid "44faf8d6-db43-453e-b365-d2a0889c905b"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -1971,7 +1971,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "78f9ff12-4e80-4ccb-9eb4-333535d02073")
+		(uuid "fdff0f31-cd67-48d2-ad63-07e0b69e4253")
 		(property "Reference" "R9"
 			(at 305.08 72.46 0)
 			(effects
@@ -2017,8 +2017,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "a3f7922c-7aff-4d6b-89ef-2e639a377378"))
-		(pin "2" (uuid "7b854c9b-39e4-4236-aaee-0b82febc67d6"))
+		(pin "1" (uuid "e9ef99e0-33ab-4830-afd9-55623a676e18"))
+		(pin "2" (uuid "a4c943d8-2eaf-4f48-b235-8b8a8dab4a72"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -2037,7 +2037,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "0bc5a439-628c-4c24-a13f-80283390dc79")
+		(uuid "a9bd5fe6-425e-4437-864e-ba951af95331")
 		(property "Reference" "R10"
 			(at 320.08 72.46 0)
 			(effects
@@ -2083,8 +2083,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "d2e4407f-94d6-4bda-b744-ae8bd3fc0044"))
-		(pin "2" (uuid "ad76c6ef-8259-4a58-81ef-3a6ec4d027a8"))
+		(pin "1" (uuid "c3f57958-7490-42d8-8d08-4f19dc33f638"))
+		(pin "2" (uuid "63bd4b75-60b7-48bd-b5da-6a6fad8c5a21"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -2103,7 +2103,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "b3c5be58-c0f2-417f-bcc9-08894b27acbc")
+		(uuid "2e21d802-2d22-41d9-8995-0bfaee453a48")
 		(property "Reference" "R11"
 			(at 335.08 72.46 0)
 			(effects
@@ -2149,8 +2149,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "bbf4b78c-d6ac-44b8-ad55-bc9eb1931df2"))
-		(pin "2" (uuid "8eea403a-6f35-4205-8f3c-7e06323f277f"))
+		(pin "1" (uuid "f3a59766-ea98-411e-99ee-64d12d4eeb8f"))
+		(pin "2" (uuid "1657e72a-3fa2-4263-84ed-b6cf77d908b5"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -2169,7 +2169,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "7334d4bc-08d3-425f-b711-8583017d2539")
+		(uuid "a39230af-ed57-440f-9bb5-37fea4f183cc")
 		(property "Reference" "R12"
 			(at 305.08 147.46 0)
 			(effects
@@ -2215,8 +2215,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "3afe2a63-5518-417a-962a-201a7dc3e492"))
-		(pin "2" (uuid "4ffdc934-0f01-4473-b389-66d511da41b5"))
+		(pin "1" (uuid "adc66a86-a3c4-4747-b76b-178dceae4f15"))
+		(pin "2" (uuid "e37ae2ef-0dea-4d55-a8cc-c73577df8e11"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -2235,7 +2235,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "3b781aa4-b066-4420-a801-5c5e913be775")
+		(uuid "9151393b-6012-48ad-877a-def158ac887e")
 		(property "Reference" "C5"
 			(at 255.08 107.46 0)
 			(effects
@@ -2281,8 +2281,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "2d55ef93-2e00-44a3-9af2-2e76691dfd5c"))
-		(pin "2" (uuid "929ccdfb-88e4-4250-908f-bb25cd122c34"))
+		(pin "1" (uuid "846f49c4-568f-420e-8c3e-879e67cf5351"))
+		(pin "2" (uuid "57f2f995-37c4-4919-81a4-7ef8ab2a7597"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -2301,7 +2301,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "7110c81c-0f9f-42ed-8589-8b55b6523ebd")
+		(uuid "6efbf903-4104-48bd-b47e-42a8b0cd6530")
 		(property "Reference" "C6"
 			(at 255.08 147.46 0)
 			(effects
@@ -2347,8 +2347,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "1f8966c8-4ec3-4376-8ec7-730a5e49d43d"))
-		(pin "2" (uuid "f26b52ed-5f9f-4cdb-b230-6fa0b9ae9ff0"))
+		(pin "1" (uuid "7bb873f3-9984-418e-9cbc-711c78dd70e2"))
+		(pin "2" (uuid "ca470dd0-5a0b-418a-963a-8047efa54e30"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -2367,7 +2367,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "4a7021aa-c9f7-4a9a-a366-022c765fd350")
+		(uuid "57a48a6e-e108-4522-b357-65f88b2adf60")
 		(property "Reference" "C7"
 			(at 335.08 107.46 0)
 			(effects
@@ -2413,8 +2413,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "12a93abd-e8a0-4f03-9de7-70c50fe166fe"))
-		(pin "2" (uuid "e863057f-dbf0-4678-9719-645559e29af0"))
+		(pin "1" (uuid "2a487196-d46b-4a63-be74-fd48ae0f9a1c"))
+		(pin "2" (uuid "ec8378ee-079f-421b-a118-9dd218e6375b"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"
@@ -2433,7 +2433,7 @@
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "5edf1212-7e8c-4a1d-a913-f3f0bbe98563")
+		(uuid "4ea9f56a-b566-4dbc-ab25-6eb61f6549a2")
 		(property "Reference" "C8"
 			(at 335.08 147.46 0)
 			(effects
@@ -2479,8 +2479,8 @@
 				(hide yes)
 			)
 		)
-		(pin "1" (uuid "2e6ae55d-5584-4801-828e-331957167e91"))
-		(pin "2" (uuid "ee11bcc5-a14f-4f8a-9118-8db99ce705c9"))
+		(pin "1" (uuid "687adb7d-bab9-4621-9eb4-ee1b67c5b405"))
+		(pin "2" (uuid "f612c234-05bc-40a2-ac5b-812e1b090833"))
 		(instances
 			(project "reflow"
 				(path "/a1b2c3d4-0001-0001-0001-000000000001"

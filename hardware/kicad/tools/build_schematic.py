@@ -48,7 +48,7 @@ PIN_IDS = {
     "reflow:OLED_SSD1306_I2C": ["1", "2", "3", "4"],
     "Regulator_Switching:LM2576T-5": ["1", "2", "3", "4", "5"],
     "Regulator_Linear:LM7812_TO220": ["1", "2", "3"],
-    "Transistor_FET:Q_NMOS_GDS": ["1", "2", "3"],
+    "Device:Q_NMOS_GDS": ["1", "2", "3"],
     "Device:RotaryEncoder_Switch": ["A", "B", "C", "S1", "S2"],
     "Switch:SW_Push": ["1", "2"],
     "Device:D_TVS": ["1", "2"],
@@ -85,7 +85,7 @@ COMPONENTS = [
      "Diode_THT:D_DO-201AD_P15.24mm_Horizontal", 75, 50, 0),
 
     # ---- 24V -> 5V buck (LM2576) (top-left) ----
-    ("U2", "Regulator_Switching:LM2576T-5", "LM2576-5.0",
+    ("U2", "Regulator_Switching:LM2576T-5", "LM2576-5.0",  # TODO Task 4: 5-pin LM2576 needs a TO-220-5 laser-pad footprint; currently 3-pin placeholder
      "energy_system:TO-220-3_Vertical_LaserPads", 40, 80, 0),
     ("L1", "Device:L", "100uH",
      "Inductor_THT:L_Toroid_Vertical_L20.0mm_D7.0mm_P10.16mm", 70, 75, 0),
@@ -105,15 +105,15 @@ COMPONENTS = [
      "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm", 60, 135, 0),
 
     # ---- Heater power stage (bottom-right corner) ----
-    ("Q1", "Transistor_FET:Q_NMOS_GDS", "IRFS4710",
+    ("Q1", "Device:Q_NMOS_GDS", "IRFS4710",
      "energy_system:TO-220-3_Vertical_LaserPads_GDS", 330, 220, 0),
     ("J2", "TerminalBlock:TerminalBlock_bornier-2_P5.08mm", "HEATER",
      "TerminalBlock:TerminalBlock_bornier-2_P5.08mm", 380, 200, 0),
 
     # ---- Two-stage BS170 gate drive (bottom-right) ----
-    ("Q2", "Transistor_FET:Q_NMOS_GDS", "BS170",
+    ("Q2", "Device:Q_NMOS_GDS", "BS170",
      "Package_TO_SOT_THT:TO-92_Inline", 270, 230, 0),
-    ("Q3", "Transistor_FET:Q_NMOS_GDS", "BS170",
+    ("Q3", "Device:Q_NMOS_GDS", "BS170",
      "Package_TO_SOT_THT:TO-92_Inline", 300, 230, 0),
     ("R1", "Device:R", "1k",
      "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal", 255, 215, 0),
