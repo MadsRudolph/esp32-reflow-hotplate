@@ -1,0 +1,33 @@
+# KiCad
+*-backups/
+*.kicad_pcb-bak
+*.kicad_sch-bak
+*.kicad_prl
+fp-info-cache
+_autosave-*
+*.lck
+*.000
+*.net
+
+# KiCad CLI / production scratch
+**/production/**/*.png
+**/production/**/*.rml
+**/production/**/*.nc
+
+# Firmware build artifacts (PlatformIO / Arduino)
+.pio/
+.pioenvs/
+.piolibdeps/
+build/
+*.bin
+*.elf
+*.map
+
+# Blender
+*.blend1
+*.blend2
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
