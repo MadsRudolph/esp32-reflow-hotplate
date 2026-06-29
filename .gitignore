@@ -35,3 +35,9 @@ __pycache__/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Freerouting / tooling logs
+logs/
+*.drc.txt
+reflow.net
+reflow.json
