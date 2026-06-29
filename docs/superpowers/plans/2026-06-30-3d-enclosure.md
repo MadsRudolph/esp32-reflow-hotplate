@@ -172,127 +172,96 @@ git commit -m "3d: parametric plate frame with ceramic-standoff bosses and air g
 - Create: `hardware/3d/build_box.py`
 
 **Interfaces:**
-- Consumes: `PARAMS`, `build_common`. Produces object `box`, STL `stl/box.stl`, and `lid_insert_centers()` / `panel_insert_centers()` / `pcb_boss_centers()` (lists of (x,y)) for Tasks 4–5 to align to.
+- Consumes: `PARAMS`, `build_common`. Produces object `box`, STL `stl/box.stl`, and `top_insert_centers()` / `board_post_centers()` (lists of (x,y)) for Task 4 (top control panel) to align to.
 
-Geometry: a `box_x × box_y × box_h` shell (walls `wall`, floor `floor`, open top). Inside floor: **4 PCB standoff bosses** with Ø`insert_bore_d`×`insert_bore_depth` bores at `pcb_boss_centers()` (inset for the 104×104 board, scaled to fit the box footprint — document the inset). **Vent slots** (`vent_slot_w`×`vent_slot_l`, a row) on the wall/floor above where the regulators + MOSFET heatsink sit. **Terminal openings** on one wall for J1/J2 screw terminals (a rectangular cut sized to the bornier bodies). **Insert bosses** on the top rim (`lid_insert_centers`, 4 corners) and on the front face (`panel_insert_centers`, ≥2) with Ø`insert_bore_d` bores.
+Geometry: a `box_x × box_y × box_h` shell (walls `wall`, floor `floor`, **open top**) — sized (113×113) to hold the **104×104 board flat** with `board_clear` gap to the walls. Inside floor: **4 board support POSTS** (Ø`board_post_d`, height `board_post_h`) at `board_post_centers()` = `(±board_post_xy, ±board_post_xy)` — the board RESTS on these (it has **no mounting holes**), lifted `board_post_h` off the floor for the bottom lead tails; do NOT bore them (no screw). **Vent slots** (`vent_slot_w`×`vent_slot_l`, a row of ~4) in a wall above where the regulators + MOSFET heatsink sit. **Terminal openings** on one wall for the J1/J2 screw terminals (≈12 mm tall × ~30 mm wide near the floor). **Top-rim insert bosses** at `top_insert_centers()` (4 corners, inset `insert_boss_wall+insert_bore_d/2` from the outer wall) with Ø`insert_bore_d`×`insert_bore_depth` bores — the top control panel screws into these.
 
-- [ ] **Step 1: Write the fit-check** (post-build): manifold; bbox ≤ bed; `pcb_boss_centers()` has 4 entries within the box footprint; each insert bore Ø == `insert_bore_d`; at least one vent slot and the terminal opening exist (e.g. assert object volume < solid-shell volume by the cut amount, or assert the named cut tools were applied — simplest: assert `len(lid_insert_centers())==4` and `len(panel_insert_centers())>=2`).
+- [ ] **Step 1: Write the fit-check** (post-build): manifold; bbox ≤ bed (113 ≤ 220); `board_post_centers()` has 4 entries inside the box; `top_insert_centers()` has 4; each top-insert bore Ø == `insert_bore_d`; vent slots + terminal opening present (assert `len(board_post_centers())==4 and len(top_insert_centers())==4`, and that the board fits: `box_x - 2*wall >= pcb_x` and `box_y - 2*wall >= pcb_y`).
 
 - [ ] **Step 2: Run check pre-build — expect failure** (`box` missing).
 
-- [ ] **Step 3: Implement `build_box.py`** — shell via box-minus-inner; add PCB bosses + bores; subtract vent-slot row; subtract terminal opening; add rim + front insert bosses + bores; join to `box`.
+- [ ] **Step 3: Implement `build_box.py`** — shell via box-minus-inner (open top); add 4 board posts (no bore); subtract vent-slot row; subtract terminal opening; add 4 top-rim insert bosses + bores; join to `box`. Expose `board_post_centers()` and `top_insert_centers()`.
 
 - [ ] **Step 4: Build + verify in Blender:**
 
 ```python
 exec(.../build_common.py); exec(.../build_box.py)
 o = build(); print(verify(o, PARAMS["bed_max"]))
-print("PCB", pcb_boss_centers(), "LID", lid_insert_centers(), "PANEL", panel_insert_centers())
+print("POSTS", board_post_centers(), "TOP", top_insert_centers())
+print("BOARD FITS", PARAMS["box_x"]-2*PARAMS["wall"] >= PARAMS["pcb_x"])  # True
 export_stl(o, ".../stl/box.stl")
 ```
-Expected: `manifold_ok True`, `fits_bed True`, 4 PCB bosses, 4 lid + ≥2 panel insert centres, STL written.
+Expected: `manifold_ok True`, `fits_bed True`, 4 board posts, 4 top-insert centres, BOARD FITS True, STL written.
 
 - [ ] **Step 5: Commit**
 
 ```bash
 git add hardware/3d/build_box.py hardware/3d/stl/box.stl
-git commit -m "3d: electronics box with PCB bosses, vents, terminal openings, insert bosses"
+git commit -m "3d: electronics box sized for the board, corner support posts, vents, terminal openings, top-rim inserts"
 ```
 
 ---
 
-### Task 4: Front panel
+### Task 4: Top control panel (closes the box + carries the controls)
 
 **Files:**
 - Create: `hardware/3d/build_panel.py`
 
 **Interfaces:**
-- Consumes: `PARAMS`, `build_common`, `box.panel_insert_centers()`, and `hardware/kicad/placement.json`. Produces object `panel`, STL `stl/panel.stl`.
+- Consumes: `PARAMS`, `build_common`, `box.top_insert_centers()`, and `hardware/kicad/placement.json`. Produces object `panel`, STL `stl/panel.stl`.
 
-Geometry: a plate `box_x × box_h × panel_t` (front face of the box). Read `placement.json`; map each board (x,y) to panel-local coords (board top-edge → panel; document the affine: panel_x = board_x − offset_x, panel_y = box_h − (board_y − offset_y), so the top board edge maps near the panel top). Cut: **encoder shaft** Ø`encoder_shaft_d` at SW1; **button** Ø`button_d` at SW2; **LED** Ø`led_d` at D1; **OLED window** `oled_win_x × oled_win_y` at J4. Add Ø`insert_bore_d` (or M3 clearance Ø3.4) holes at `panel_insert_centers()` to bolt into the box.
+This part replaces the old separate front panel **and** lid: it is the **top cover** of the box that the user looks down on, with the control cut-outs aligned to the board's components below. The board lies flat in the box, centred, controls pointing **up** at this panel.
 
-- [ ] **Step 1: Write the cut-position check** (post-build): manifold; bbox ≤ bed; and the 4 cut centres equal the mapped placement.json coords for SW1/SW2/D1/J4 (expose `cut_centers()` returning `{ref:(x,y)}`; assert against the affine applied to the JSON values 25.6/11.1, 41.9/7.8, 52.7/7.2, 5.8/9.6).
+Geometry: a plate `box_x × box_y × panel_t` (the box top). Read `placement.json`; the board is centred in the box, so map each board (x,y) to panel-local coords with the affine **`panel_x = board_x − pcb_x/2`, `panel_y = board_y − pcb_y/2`** (board centre → panel centre). Document it in the file. Cut: **encoder shaft** Ø`encoder_shaft_d` at SW1; **button** Ø`button_d` at SW2; **LED** Ø`led_d` at D1; **OLED window** `oled_win_x × oled_win_y` at J4. Add **vent slots** over the regulator/MOSFET zone. Add Ø3.4 mm M3 **clearance holes** at `box.top_insert_centers()` so it screws down into the box top-rim inserts.
+
+- [ ] **Step 1: Write the cut-position check** (post-build): manifold; bbox ≤ bed; the 4 control cut centres equal the mapped placement.json coords (expose `cut_centers()` → `{ref:(x,y)}`; assert against the affine applied to SW1 25.6/11.1, SW2 41.9/7.8, D1 52.7/7.2, J4 5.8/9.6 → e.g. SW1 → `(25.6−52, 11.1−52)=(−26.4,−40.9)`); and the clearance-hole centres equal `box.top_insert_centers()` (panel mates the box rim).
 
 - [ ] **Step 2: Run check pre-build — expect failure** (`panel` missing).
 
-- [ ] **Step 3: Implement `build_panel.py`** — load JSON, compute `cut_centers()`, build the plate, boolean-subtract the four control cut-outs + the insert/clearance holes, name it `panel`.
+- [ ] **Step 3: Implement `build_panel.py`** — load JSON, compute `cut_centers()` via the affine, build the plate, boolean-subtract the 4 control cut-outs + vents + the 4 clearance holes at `box.top_insert_centers()`; name it `panel`. (Exec `build_box.py` first so `top_insert_centers()` is available.)
 
 - [ ] **Step 4: Build + verify in Blender:**
 
 ```python
-exec(.../build_common.py); exec(.../build_panel.py)
+exec(.../build_common.py); exec(.../build_box.py); exec(.../build_panel.py)
 o = build(); print(verify(o, PARAMS["bed_max"]))
-print("CUTS", cut_centers())     # SW1/SW2/D1/J4 at the mapped coords
+print("CUTS", cut_centers())              # SW1/SW2/D1/J4 at the centred coords
+print("MATES box rim:", sorted(hole_centers()) == sorted(top_insert_centers()))
 export_stl(o, ".../stl/panel.stl")
 ```
-Expected: `manifold_ok True`, `fits_bed True`, cut centres match the mapped placement.json coords, STL written.
+Expected: `manifold_ok True`, `fits_bed True`, cut centres match the mapped placement.json coords, clearance holes == box rim insert centres (True), STL written.
 
 - [ ] **Step 5: Commit**
 
 ```bash
 git add hardware/3d/build_panel.py hardware/3d/stl/panel.stl
-git commit -m "3d: front panel with control cut-outs driven by board placement.json"
+git commit -m "3d: top control panel with cut-outs from placement.json, mates the box rim"
 ```
 
 ---
 
-### Task 5: Lid
-
-**Files:**
-- Create: `hardware/3d/build_lid.py`
-
-**Interfaces:**
-- Consumes: `PARAMS`, `build_common`, `box.lid_insert_centers()`. Produces object `lid`, STL `stl/lid.stl`.
-
-Geometry: a cover `box_x × box_y × wall` (a shallow lip optional) with **vent holes/slots** over the heat-generating zone and Ø3.4 mm M3 clearance holes at `lid_insert_centers()` so it screws into the box rim inserts.
-
-- [ ] **Step 1: Write the fit-check** (post-build): manifold; bbox ≤ bed; the lid's clearance-hole centres equal `box.lid_insert_centers()` (so the lid mates with the box rim); at least one vent present.
-
-- [ ] **Step 2: Run check pre-build — expect failure** (`lid` missing).
-
-- [ ] **Step 3: Implement `build_lid.py`** — cover plate, subtract vents + the 4 clearance holes at the box's lid-insert centres.
-
-- [ ] **Step 4: Build + verify in Blender:**
-
-```python
-exec(.../build_common.py); exec(.../build_box.py); exec(.../build_lid.py)
-o = build(); print(verify(o, PARAMS["bed_max"]))
-print("HOLES match box rim:", lid_hole_centers() == lid_insert_centers())
-export_stl(o, ".../stl/lid.stl")
-```
-Expected: `manifold_ok True`, `fits_bed True`, lid holes == box rim insert centres (True), STL written.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add hardware/3d/build_lid.py hardware/3d/stl/lid.stl
-git commit -m "3d: vented lid mating the box rim insert pattern"
-```
-
----
-
-### Task 6: Assembly, interference check, exports + README
+### Task 5: Assembly, interference check, exports + README
 
 **Files:**
 - Create: `hardware/3d/build_all.py`, `hardware/3d/README.md`
-- Produce: `hardware/3d/enclosure.blend`, all four STL re-exported.
+- Produce: `hardware/3d/enclosure.blend`, all **three** STL re-exported (plate_frame, box, panel).
 
-- [ ] **Step 1: Write the assembly interference check** in `build_all.py`: build all four parts in one scene at their assembled positions (box at origin; panel on the box front face; lid on the box rim; plate frame beside the box). For each MATING pair (box↔panel, box↔lid), assert the overlap of their solids is ≤ a tolerance: compute via a temporary BOOLEAN INTERSECT and check the intersection volume ≈ 0 (only the insert bosses/screws should meet, not the walls). Report each pair's intersection volume.
+- [ ] **Step 1: Write the assembly interference check** in `build_all.py`: build all THREE parts in one scene at their assembled positions (box at origin; **panel on the box top** at `z = box_h`; plate frame beside the box, offset in +X). For the MATING pair **box↔panel**, assert overlap ≤ tolerance: compute via a temporary BOOLEAN INTERSECT and check the intersection volume ≈ 0 (only the rim/screws meet, not through the walls). Report the intersection volume.
 
-- [ ] **Step 2: Run it pre-implementation — expect failure** (parts not all present / `build_all` undefined).
+- [ ] **Step 2: Run it pre-implementation — expect failure** (`build_all` undefined).
 
-- [ ] **Step 3: Implement `build_all.py`** — exec each part builder, position them, run the interference check, export all four STL into `stl/`, and `bpy.ops.wm.save_as_mainfile(filepath=".../enclosure.blend")`.
+- [ ] **Step 3: Implement `build_all.py`** — exec each part builder, position them (box origin; panel at z=`box_h`; plate frame at +X beside), run the interference check, export all three STL into `stl/`, and `bpy.ops.wm.save_as_mainfile(filepath=".../enclosure.blend")`.
 
 - [ ] **Step 4: Run in Blender + verify everything green:**
 
 ```python
 exec(.../build_all.py); r = build_all()
-print(r)   # {'plate_frame':{manifold_ok:True,fits_bed:True}, 'box':..., 'panel':..., 'lid':...,
-           #  'interference':{'box_panel':~0,'box_lid':~0}, 'stls':[4 paths], 'blend':saved}
+print(r)   # {'plate_frame':{manifold_ok:True,fits_bed:True}, 'box':..., 'panel':...,
+           #  'interference':{'box_panel':~0}, 'stls':[3 paths], 'blend':saved}
 ```
-Expected: all four parts `manifold_ok True` + `fits_bed True`; both mating intersections ≈ 0; 4 STL written; `enclosure.blend` saved.
+Expected: all three parts `manifold_ok True` + `fits_bed True`; the box↔panel intersection ≈ 0; 3 STL written; `enclosure.blend` saved.
 
-- [ ] **Step 5: Write `hardware/3d/README.md`** — print settings (PETG, ≥3 walls, ~25–40% infill for the box, supports note for overhangs), the **heat-set insert size** (M3 → Ø4.0 bore) + install note, the **hardware BOM** (4× ceramic standoffs + M3 steel screws; M3 brass inserts + screws for box/panel/lid/PCB; rubber feet), the **assembly order**, and the **thermal-safety note** (ceramic standoffs + 22 mm air gap; nothing plastic touches the plate; re-check once the real plate's temp is known). Note STL is the print output; STEP is an optional FreeCAD follow-up.
+- [ ] **Step 5: Write `hardware/3d/README.md`** — print settings (PETG, ≥3 walls, ~25–40% infill, supports note for overhangs); the **heat-set insert** size (M3 → Ø4.0 bore) + install note; the **hardware BOM** — **4× FEMALE-THREADED M3 ceramic standoffs** (the plate-frame blind bosses require female-threaded standoffs that seat on the boss top; the M3 screw threads UP into the plate, NOT down through the frame — a plain spacer needing a bottom nut will NOT work) + M3 steel screws; M3 brass heat-set inserts + screws for the box↔panel joint; rubber feet; the board **rests on the box corner posts** (no board screws). The **assembly order**; and the **thermal-safety note** (ceramic standoffs + 22 mm air gap; nothing plastic touches the plate; re-check once the real plate's temp is known). Note STL is the print output; STEP is an optional FreeCAD follow-up.
 
 - [ ] **Step 6: Commit**
 

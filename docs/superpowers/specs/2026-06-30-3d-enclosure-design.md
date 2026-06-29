@@ -23,42 +23,44 @@ STL (print) and STEP (CAD interchange) for each part.
 | Heater plate | Parametric around 100×100 mm aluminium PTC, 4× corner M3 holes | No specific plate yet; adapt later by changing variables |
 | Layout | Electronics box **offset to the side** of the plate | Keeps all plastic out of the rising heat plume — safest |
 | Thermal isolation | Plate on **ceramic standoffs** (~20–25 mm) + open air gap | Ceramic conducts little heat → PETG base stays well below its ~80 °C Tg |
-| Fastening | **M3 brass heat-set inserts** in PETG for all screwed joints (box, panel, lid, PCB); plate uses steel M3 screws through ceramic standoffs | Durable, re-openable threads; no stripping over service cycles |
-| Parts | 4 printed: plate frame, electronics box, front panel, lid | Modular; each fits a common 220×220 mm bed |
+| Fastening | **M3 brass heat-set inserts** in PETG for the box↔top-panel joint; plate uses steel M3 screws through **female-threaded** ceramic standoffs; the control board **rests on corner posts** (it has no mounting holes) | Durable, re-openable threads; the board needs no holes |
+| Parts | **3 printed: plate frame, electronics box, top control panel** | The board's controls point up, so one TOP panel both closes the box and carries the cut-outs (it is also the lid) |
 | Material | PETG (base/box); hot zone is all metal/ceramic | Better heat tolerance than PLA; nothing plastic touches the plate |
-| Modeling | Blender (MCP), parametric variables | STL + STEP export; easy to re-fit the real plate |
+| Modeling | Blender (MCP), parametric variables | **STL + the parametric `.blend`/`.py`** (Blender has no native STEP export; STEP is an optional FreeCAD follow-up) |
 
-## 3. Architecture (4 printed parts + hardware)
+> **Design correction (2026-06-30, mid-build):** the original 4-part plan (vertical front panel + separate lid) was geometrically wrong — the 104×104 board is larger than the first box envelope, has no mounting holes, and its through-hole controls (SW1/SW2/D1) point *up*, so they must come through a panel parallel and above the board. Corrected to the 3-part design below.
+
+## 3. Architecture (3 printed parts + hardware)
 
 ### 3.1 Plate frame
-PETG base/ring that the heater plate bolts onto via **4 ceramic standoffs** (steel M3 screw
-through a ceramic spacer into the plate's corner hole). The standoffs raise the plate ~20–25 mm
-with an **open air gap** beneath, and the ceramic is the only thermal path to the printed part
-— breaking conduction. Footprint and hole pattern are parametric to the plate. A routed channel
-carries the plate's heater wires toward the electronics side. Feet (or a shared base) underneath.
+PETG base/ring that the heater plate bolts onto via **4 female-threaded ceramic standoffs** (the
+standoff seats on the frame's blind boss; a steel M3 screw threads UP through the standoff into
+the plate's corner hole — NOT down through the frame). The standoffs raise the plate ~22 mm with
+an **open air gap** beneath, and the ceramic is the only thermal path to the printed part —
+breaking conduction. Footprint and hole pattern are parametric to the plate. A routed channel
+carries the plate's heater wires toward the electronics side. Feet under the corners.
 
 ### 3.2 Electronics box
-Sits **beside** the plate frame, out of the heat plume. Holds the CNC-milled control board on
-**M3 heat-set inserts** (board standoff bosses). Features:
+Sits **beside** the plate frame, out of the heat plume, sized (~113×113 mm) to hold the **104×104
+control board flat**. The board **rests on 4 corner support posts** (lifted off the floor for the
+bottom lead tails) — it has no mounting holes, so it is captured from above by the top panel, not
+bolted. Features:
 - Vent slots above the LM2575 / LM7812 regulators and the Q1 (IRFS4710) TO-220 heatsink.
 - Side openings for the 24 V-in (J1) and heater-out (J2) screw terminals.
-- Heat-set inserts on the top rim to receive the lid and on the front face for the panel.
+- **Heat-set inserts on the top rim** to receive the top control panel.
 
-### 3.3 Front panel
-Bolts to the box front via heat-set inserts + M3 screws. Cut-outs **aligned to the control
-board's on-board component positions** (from `hardware/kicad/placement.json`): the rotary
-encoder (SW1) shaft, the start button (SW2), the status LED (D1), and an **OLED window** for
-the J4-connected SSD1306 module. The board mounts so SW1/SW2/D1 protrude/align through the
-panel; the OLED module mounts to the panel (window + its own heat-set inserts) and wires to J4.
+### 3.3 Top control panel (also the lid)
+A PETG plate that **closes the box top** and carries the controls — the user looks down on it.
+Cut-outs **aligned to the control board's on-board component positions** (from
+`hardware/kicad/placement.json`, board centred under the panel): the rotary encoder (SW1) shaft,
+the start button (SW2), the status LED (D1), and an **OLED window** for the J4-connected SSD1306
+module. Vent slots over the heat-generating zone. Bolts down into the box top-rim heat-set inserts
+with M3 screws.
 
-### 3.4 Lid
-Closes the electronics box; fastened with heat-set inserts + M3 screws; includes ventilation
-(slots/holes) over the heat-generating parts.
-
-### 3.5 Hardware (bring-your-own)
-- Plate: 4× ceramic standoffs/spacers + 4× steel M3 screws.
-- Box/panel/lid/PCB: M3 brass heat-set inserts + M3 screws.
-- 4× rubber feet.
+### 3.4 Hardware (bring-your-own)
+- Plate: 4× **female-threaded** ceramic standoffs + 4× steel M3 screws.
+- Box↔panel: M3 brass heat-set inserts + M3 screws.
+- 4× rubber feet. (The control board needs no screws — it rests on the box posts.)
 
 ## 4. Thermal safety rationale
 The ~250 °C plate never contacts printed plastic: it stands on ceramic over an air gap, and the
