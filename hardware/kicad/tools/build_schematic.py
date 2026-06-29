@@ -109,7 +109,7 @@ COMPONENTS = [
     # ---- 24V -> 5V buck (LM2576) (top-left) ----
     ("U2", "Regulator_Switching:LM2576T-5", "LM2576-5.0",  # TODO Task 4: 5-pin LM2576 needs a TO-220-5 laser-pad footprint; currently 3-pin placeholder
      "energy_system:TO-220-3_Vertical_LaserPads", 40, 80, 0),
-    ("L1", "Device:L", "100uH",
+    ("L1", "Device:L", "120uH",
      "Inductor_THT:L_Toroid_Vertical_L20.0mm_D7.0mm_P10.16mm", 70, 75, 0),
     ("D2", "Device:D_Schottky", "1N5817",
      "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal", 70, 95, 0),

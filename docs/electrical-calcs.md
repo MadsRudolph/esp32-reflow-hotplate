@@ -55,27 +55,27 @@ component shop (`components-inventory/dtu_component_shop(1).csv`):
 | Ref | Value | Role | Shop part |
 |-----|-------|------|-----------|
 | C1 | **100 µF** electrolytic (≥ 35 V) | Input bulk cap, +24V→GND | `Capacitor,Electrolytic,100µF` (use a ≥ 35 V can for the 24 V rail) |
-| L1 | **100 µH** | Buck inductor, switch node → +5V | `Inductor,Through-hole,100µ 0.66A` |
+| L1 | **120 µH** | Buck inductor, switch node → +5V | `Inductor,Through-hole,120µ 1A` |
 | D2 | **1N5817** (1 A Schottky) | Catch diode, cathode at switch node, anode to GND | `Diode,Schottky,1N5817` |
 | C2 | **1000 µF** electrolytic (≥ 16 V) | Output cap, +5V→GND | `Capacitor,Electrolytic,1000µF 50V` |
 
 These match the LM2576-5.0 fixed-output reference design (100 µH / 1000 µF /
 1N5817 are the datasheet-recommended values for this class of load).
 
-#### Inductor current rating — note
+#### Inductor current rating
 
 Peak inductor current ≈ `Iout + ΔI_L/2`. With Vin = 24 V, Vout = 5 V,
-f = 52 kHz, L = 100 µH the ripple is
+f = 52 kHz, L = 120 µH the ripple is
 
 ```
-ΔI_L = (Vout · (Vin − Vout)) / (Vin · L · f)
-     = (5 · 19) / (24 · 100e-6 · 52e3) ≈ 0.76 A(pp)
+ΔI_L = Vout · (1 − Vout/Vin) / (L · f)
+     = 5 · (1 − 5/24) / (120e-6 · 52e3)
+     = 5 · 0.792 / 6.24 ≈ 0.63 A(pp)
 ```
 
-so peak ≈ `0.5 + 0.38 ≈ 0.88 A`. The shop's 100 µH part is rated **0.66 A** —
-adequate for the average current but **below the calculated peak**. This is the
-one passive whose rating is marginal; see Concerns. A 100 µH inductor rated
-≥ 1 A (saturation) is preferred for production. The 1N5817 (1 A) and the
+so peak ≈ `0.5 + 0.32 ≈ 0.82 A`. The shop's 120 µH part is rated **1 A** —
+the 1 A rating exceeds the 0.82 A peak with approximately 20 % margin, so
+saturation is not a concern at this load. The 1N5817 (1 A) and the
 electrolytics are comfortably within rating.
 
 ## 4. LM7812 linear (24 V → 12 V), gate-drive rail
@@ -131,7 +131,7 @@ A standard 100 µF / 35 V aluminium electrolytic is rated well above 200 mA
 ripple at 100 kHz, so C1's ripple-current rating is **not** the limiting factor
 here. (Voltage rating is: the 24 V rail demands a ≥ 35 V can — the 100 µF shop
 part must be selected in a ≥ 35 V voltage class.) The 1000 µF output cap C2 sees
-only the inductor ripple (~0.76 A pp / √12 ≈ 0.22 A rms), again within a
+only the inductor ripple (~0.63 A pp / √12 ≈ 0.18 A rms), again within a
 standard 1000 µF/16 V (or the 50 V shop part) rating.
 
 ## 6. PWR_FLAG / ERC note
