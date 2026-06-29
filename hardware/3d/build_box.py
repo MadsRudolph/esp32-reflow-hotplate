@@ -1,155 +1,116 @@
-# build_box.py -- Task 3: electronics box for the ESP32 reflow hotplate.
+# build_box.py -- Task 3: electronics box for the ESP32 reflow hotplate (CORRECTED).
+#
+# Corrected 3-part top-panel architecture. The box is now an outer envelope
+# (box_x x box_y x box_h = 113 x 113 x 30) shell with `wall` walls, a `floor`
+# floor, and an OPEN top. It is sized to hold the 104x104 control board FLAT
+# with `board_clear` gap to the inner walls.
 #
 # Coordinate convention (origin = centre of the box floor at z=0):
-#   x in [-OUT_X/2, +OUT_X/2], y in [-OUT_Y/2, +OUT_Y/2], floor sits on z=0..floor.
-#   box_x/box_y/box_h are treated as the INNER cavity envelope; the outer shell
-#   is the cavity plus a `wall` on each side and a `floor` underneath.
+#   x in [-box_x/2, +box_x/2], y in [-box_y/2, +box_y/2]; floor occupies z=0..floor.
 #
-# Contract for Tasks 4 (panel) & 5 (lid):
-#   - lid_insert_centers()  : 4 (x,y) on the top rim, inset INSET_RIM from outer corners.
-#   - panel_insert_centers(): 2 (x,y) on the FRONT (-Y) face, at z = front bore height.
-#   - pcb_boss_centers()    : 4 (x,y) PCB standoff bosses on the floor.
-# These are deterministic (computed from PARAMS) so downstream tasks can align holes.
+# The board has NO mounting holes: it simply RESTS on 4 corner support posts
+# (Ø board_post_d x board_post_h) at board_post_centers() = (+-board_post_xy,
+# +-board_post_xy). Posts are NOT bored -- no screws.
+#
+# Contract for Task 4 (top control panel), both deterministic (computed from PARAMS):
+#   - top_insert_centers()  : 4 (x,y) top-rim insert bosses the panel screws into.
+#   - board_post_centers()  : 4 (x,y) board support-post centres (not bored).
+#
+# Requires build_common.py and params.py exec'd first (helpers + PARAMS in scope).
 
 import bpy
-import math
 
-# --- Derived dimensions -------------------------------------------------------
-WALL  = PARAMS["wall"]
-FLOOR = PARAMS["floor"]
-IN_X  = PARAMS["box_x"]          # inner cavity X = 90
-IN_Y  = PARAMS["box_y"]          # inner cavity Y = 70
-IN_H  = PARAMS["box_h"]          # inner cavity height = 40
-OUT_X = IN_X + 2 * WALL          # 94.8
-OUT_Y = IN_Y + 2 * WALL          # 74.8
-OUT_H = IN_H + FLOOR             # 42.4 total outer height
-
-BORE_D     = PARAMS["insert_bore_d"]      # 4.0 (M3 heat-set insert pilot)
-BORE_DEPTH = PARAMS["insert_bore_depth"]  # 6.0
-BOSS_WALL  = PARAMS["insert_boss_wall"]   # 2.0 wall around a bore
-BOSS_D     = BORE_D + 2 * BOSS_WALL       # 8.0 outer Ø of an insert boss
-
-# PCB standoff bosses: the 104x104 board is larger than the 94.8x74.8 outer
-# footprint, so it overhangs the box on all sides and is supported on its own
-# corner bosses INSET from the inner walls. We choose a boss-pitch rectangle of
-# PCB_PITCH_X x PCB_PITCH_Y centred on the floor; the inset from each inner wall
-# is (IN/2 - PITCH/2). With a 10 mm inset the bosses sit on a 70x50 rectangle.
-PCB_INSET     = 10.0
-PCB_PITCH_X   = IN_X - 2 * PCB_INSET      # 70
-PCB_PITCH_Y   = IN_Y - 2 * PCB_INSET      # 50
-PCB_BOSS_H    = 6.0                        # standoff boss height above the floor
-PCB_BOSS_D    = BORE_D + 2 * 2.0          # 8.0 outer Ø
-
-# Lid rim inserts: 4 corners, inset from the OUTER corner so the boss body fits
-# within the wall ring.
-INSET_RIM     = 6.0
-RIM_BORE_DEPTH = BORE_DEPTH
-
-# Panel (front, -Y face) inserts: 2 horizontally-spaced bores into the front
-# wall, drilled along +Y, at a height centred on the cavity.
-PANEL_SPACING = 60.0                       # centre-to-centre, symmetric about x=0
-PANEL_Z       = FLOOR + IN_H * 0.5         # mid-height of the cavity
-
-# Vent slots: a row of 4 slots cut THROUGH the floor, offset to +X half where
-# the regulators + MOSFET heatsink sit.
-VENT_W  = PARAMS["vent_slot_w"]            # 2.5
-VENT_L  = PARAMS["vent_slot_l"]            # 18.0
-VENT_N  = 4
-VENT_PITCH = 6.0                           # centre-to-centre across the row
-VENT_CX = IN_X * 0.22                      # row centred toward +X side of floor
-VENT_CY = 0.0
-
-# Terminal opening: rectangular cut in the +X wall for the J1/J2 bornier bodies.
-TERM_W  = 30.0                             # width along Y
-TERM_H  = 12.0                             # height along Z
-TERM_Z0 = FLOOR + 1.0                      # bottom of opening, just above floor
+P = PARAMS
 
 
 # --- Contract functions -------------------------------------------------------
-def pcb_boss_centers():
-    hx, hy = PCB_PITCH_X / 2.0, PCB_PITCH_Y / 2.0
-    return [(-hx, -hy), (hx, -hy), (hx, hy), (-hx, hy)]
+def board_post_centers():
+    """4 corner support-post centres (x, y). The board rests on these; not bored."""
+    o = P["board_post_xy"]
+    return [(-o, -o), (o, -o), (o, o), (-o, o)]
 
-def lid_insert_centers():
-    hx = OUT_X / 2.0 - INSET_RIM
-    hy = OUT_Y / 2.0 - INSET_RIM
-    return [(-hx, -hy), (hx, -hy), (hx, hy), (-hx, hy)]
 
-def panel_insert_centers():
-    h = PANEL_SPACING / 2.0
-    return [(-h, -OUT_Y / 2.0), (h, -OUT_Y / 2.0)]
+def top_insert_centers():
+    """4 top-rim insert-boss centres (x, y), inset from the OUTER wall.
+
+    Inset = insert_boss_wall + insert_bore_d/2 from each outer wall, so the boss
+    body fits within the wall ring. Task 4 aligns its screws to these.
+    """
+    half_x = P["box_x"] / 2.0
+    half_y = P["box_y"] / 2.0
+    inset = P["insert_boss_wall"] + P["insert_bore_d"] / 2.0
+    cx = half_x - inset
+    cy = half_y - inset
+    return [(-cx, -cy), (cx, -cy), (cx, cy), (-cx, cy)]
 
 
 # --- Build --------------------------------------------------------------------
 def build():
     fresh_scene()
 
-    # 1) Shell = outer box minus inner cavity (open top).
-    outer = add_box("box", OUT_X, OUT_Y, OUT_H, loc=(0, 0, OUT_H / 2.0))
-    # Inner cavity: starts at z=FLOOR, open at the top (extend above the rim).
-    cav_h = IN_H + 10.0
-    cavity = add_box("cavity", IN_X, IN_Y, cav_h,
-                     loc=(0, 0, FLOOR + cav_h / 2.0))
+    box_x = P["box_x"]
+    box_y = P["box_y"]
+    box_h = P["box_h"]
+    wall = P["wall"]
+    floor = P["floor"]
+
+    # 1) Shell = outer box minus inner cavity (OPEN top). Outer base at z=0.
+    outer = add_box("box", box_x, box_y, box_h, loc=(0, 0, box_h / 2.0))
+
+    inner_x = box_x - 2 * wall
+    inner_y = box_y - 2 * wall
+    inner_h = box_h - floor
+    # Cavity starts at z=floor and extends above the rim so the top is fully open.
+    cav_h = inner_h + 10.0
+    cavity = add_box("cavity", inner_x, inner_y, cav_h,
+                     loc=(0, 0, floor + cav_h / 2.0))
     boolean(outer, cavity, 'DIFFERENCE')
 
-    # 2) PCB standoff bosses on the floor, each with a blind bore on top.
-    for (x, y) in pcb_boss_centers():
-        boss = add_cyl("pcb_boss", PCB_BOSS_D, PCB_BOSS_H,
-                       loc=(x, y, FLOOR + PCB_BOSS_H / 2.0))
-        boolean(outer, boss, 'UNION')
-    for (x, y) in pcb_boss_centers():
-        top_z = FLOOR + PCB_BOSS_H
-        bore = add_cyl("pcb_bore", BORE_D, BORE_DEPTH + 0.2,
-                       loc=(x, y, top_z - BORE_DEPTH / 2.0 + 0.1))
-        boolean(outer, bore, 'DIFFERENCE')
+    # 2) 4 board support posts (NOT bored): lift the board off the floor for the
+    #    bottom lead tails. The board rests on top of these.
+    pd = P["board_post_d"]
+    ph = P["board_post_h"]
+    for (x, y) in board_post_centers():
+        post = add_cyl("board_post", pd, ph, loc=(x, y, floor + ph / 2.0))
+        boolean(outer, post, 'UNION')
 
-    # 3) Lid rim insert bosses (4 corners) at the top rim, with blind bores
-    #    drilled DOWN from the rim.
-    rim_z = OUT_H
-    boss_h = RIM_BORE_DEPTH + 2.0
-    for (x, y) in lid_insert_centers():
-        boss = add_cyl("rim_boss", BOSS_D, boss_h,
-                       loc=(x, y, rim_z - boss_h / 2.0))
-        boolean(outer, boss, 'UNION')
-    for (x, y) in lid_insert_centers():
-        bore = add_cyl("rim_bore", BORE_D, RIM_BORE_DEPTH + 0.2,
-                       loc=(x, y, rim_z - RIM_BORE_DEPTH / 2.0 + 0.1))
-        boolean(outer, bore, 'DIFFERENCE')
-
-    # 4) Panel (front -Y) insert bosses with bores drilled along +Y into the wall.
-    #    Build the boss as a cylinder whose axis is along Y, hugging the inner
-    #    face of the front wall.
-    boss_len = RIM_BORE_DEPTH + 2.0
-    inner_front_y = -IN_Y / 2.0           # inner face of front wall
-    for (x, _y) in panel_insert_centers():
-        boss = add_cyl("panel_boss", BOSS_D, boss_len,
-                       loc=(x, inner_front_y + boss_len / 2.0, PANEL_Z))
-        boss.rotation_euler[0] = math.radians(90)  # axis -> Y
-        bpy.context.view_layer.objects.active = boss
-        bpy.ops.object.transform_apply(rotation=True)
-        boolean(outer, boss, 'UNION')
-    for (x, _y) in panel_insert_centers():
-        # bore from the outer front face inward
-        outer_front_y = -OUT_Y / 2.0
-        bore = add_cyl("panel_bore", BORE_D, RIM_BORE_DEPTH + 0.2,
-                       loc=(x, outer_front_y + (RIM_BORE_DEPTH) / 2.0 - 0.1, PANEL_Z))
-        bore.rotation_euler[0] = math.radians(90)
-        bpy.context.view_layer.objects.active = bore
-        bpy.ops.object.transform_apply(rotation=True)
-        boolean(outer, bore, 'DIFFERENCE')
-
-    # 5) Vent slots: a row of through-floor slots toward +X.
-    start = -((VENT_N - 1) * VENT_PITCH) / 2.0
-    for i in range(VENT_N):
-        sx = VENT_CX + start + i * VENT_PITCH
-        slot = add_box("vent", VENT_W, VENT_L, FLOOR + 1.0,
-                       loc=(sx, VENT_CY, FLOOR / 2.0))
+    # 3) Vent-slot row in the +Y wall, above the regulator/MOSFET zone. Slots are
+    #    narrow in X (vent_slot_w) and tall in Z (vent_slot_l).
+    vw = P["vent_slot_w"]
+    vl = P["vent_slot_l"]
+    n_vents = 4
+    pitch = 12.0
+    span = (n_vents - 1) * pitch
+    vent_z = floor + ph + 2.0 + vl / 2.0     # above board level
+    wall_y = box_y / 2.0
+    for i in range(n_vents):
+        vx = -span / 2.0 + i * pitch
+        slot = add_box("vent", vw, wall * 3.0, vl, loc=(vx, wall_y, vent_z))
         boolean(outer, slot, 'DIFFERENCE')
 
-    # 6) Terminal opening: rectangular cut through the +X wall.
-    term = add_box("term", WALL + 2.0, TERM_W, TERM_H,
-                   loc=(OUT_X / 2.0, 0.0, TERM_Z0 + TERM_H / 2.0))
+    # 4) Terminal opening: rectangular cut in the -Y wall, near the floor, for
+    #    the J1/J2 bornier terminal bodies (~12 mm tall x ~30 mm wide).
+    term_w = 30.0
+    term_h = 12.0
+    term_z = floor + 1.0 + term_h / 2.0
+    term = add_box("term", term_w, wall * 3.0, term_h,
+                   loc=(0, -box_y / 2.0, term_z))
     boolean(outer, term, 'DIFFERENCE')
+
+    # 5) 4 top-rim insert bosses + bores. Bosses rise from the inner floor up to
+    #    the top rim; the top panel screws DOWN into the bores.
+    boss_d = P["insert_bore_d"] + 2 * P["insert_boss_wall"]
+    bore_d = P["insert_bore_d"]
+    bore_depth = P["insert_bore_depth"]
+    boss_h = box_h - floor
+    boss_z = floor + boss_h / 2.0
+    for (x, y) in top_insert_centers():
+        boss = add_cyl("top_boss", boss_d, boss_h, loc=(x, y, boss_z))
+        boolean(outer, boss, 'UNION')
+    for (x, y) in top_insert_centers():
+        bore = add_cyl("top_bore", bore_d, bore_depth + 0.2,
+                       loc=(x, y, box_h - bore_depth / 2.0 + 0.1))
+        boolean(outer, bore, 'DIFFERENCE')
 
     outer.name = "box"
     return outer
