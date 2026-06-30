@@ -6,11 +6,10 @@ extern "C" {
 #endif
 
 /* Maximum temperature ceiling for any reflow stage.
- * NOTE (Task 6): When safety.h is introduced it will define SAFETY_CEILING_C.
- * At that point, reconcile so there is a single source of truth — either have
- * safety.h include this header and reuse PROFILE_MAX_TEMP_C, or move the
- * constant there and #include "safety.h" here.  Do NOT pre-create safety.h. */
-#define PROFILE_MAX_TEMP_C  260
+ * Single source of truth lives in safety.h (SAFETY_CEILING_C); this is just
+ * the integer view of it for profile validation. */
+#include "safety.h"
+#define PROFILE_MAX_TEMP_C  ((int)SAFETY_CEILING_C)
 
 #define PROFILE_MAX_STAGES  6
 #define PROFILE_NAME_LEN    16
