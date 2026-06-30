@@ -15,14 +15,17 @@ void tearDown(void) {}
  *          because the >= check happens before the reset.  A fresh reading
  *          only prevents the NEXT tick's stall.
  *
- *   RUNAWAY: only evaluated while duty_pct > 50.  On the first heating tick
- *          after a (re)set, win_start_temp is captured; win_elapsed_s += dt_s
- *          on every heating tick (including the first).  When
- *          win_elapsed_s >= runaway_window_s, compare temp_c - win_start_temp
- *          against runaway_min_rise_c; if the rise is too small -> SAFE_RUNAWAY.
- *          The window then resets (win_start_temp = temp_c, win_elapsed_s = 0).
- *          While duty_pct <= 50 the window is held reset, so idle/cooldown
- *          never trips runaway.
+ *   RUNAWAY: only evaluated while duty_pct > 50.  The baseline-capture tick
+ *          and the evaluation tick are ALWAYS different ticks.  On the first
+ *          heating tick after a (re)set (win_elapsed_s == 0) win_start_temp is
+ *          captured and win_elapsed_s += dt_s, but the window does NOT evaluate
+ *          this tick — even if a single huge dt_s already exceeds the window.
+ *          On subsequent heating ticks (win_elapsed_s > 0) win_elapsed_s += dt_s
+ *          and, when win_elapsed_s >= runaway_window_s, temp_c - win_start_temp
+ *          is compared against runaway_min_rise_c; too small -> SAFE_RUNAWAY.
+ *          Either way the window then rolls over (win_start_temp = temp_c,
+ *          win_elapsed_s = 0).  While duty_pct <= 50 the window is held reset,
+ *          so idle/cooldown never trips runaway.
  * ----------------------------------------------------------------------- */
 
 /* -----------------------------------------------------------------------
@@ -110,24 +113,14 @@ static void test_fresh_reading_resets_stall(void)
 {
     safety_t s;
     safety_init(&s);
-    /* Build up 4s of staleness */
-    for (int i = 0; i < 4; i++)
-        safety_check(&s, 80.0f, 1, 0.0f, 0, 1);
-    /* A fresh reading resets to 0 (after add+check on this same tick:
-     * since_reading=5 would trip... but fresh is checked: per our ordering,
-     * fresh resets AFTER the >= check.  To prove the RESET behaviour cleanly
-     * we keep accumulation below the threshold here: 4s then fresh.
-     * since_reading: 1,2,3,4 (4 stale ticks). Now a fresh tick: add ->5,
-     * check 5>=5 -> STALL fires on the same tick per our documented ordering. */
-    /* Therefore use only 3 stale ticks before the fresh reset to stay safe: */
-    safety_init(&s);
+    /* 3 stale ticks: since_reading 1,2,3 (all < 5) -> OK. */
     for (int i = 0; i < 3; i++)
         TEST_ASSERT_EQUAL_INT(SAFE_OK,
-            safety_check(&s, 80.0f, 1, 0.0f, 0, 1)); /* since_reading 1,2,3 */
-    /* fresh reading: add->4 (4>=5 false, OK), then reset to 0 */
+            safety_check(&s, 80.0f, 1, 0.0f, 0, 1));
+    /* Fresh reading tick: add -> 4 (4 >= 5 false -> OK), then reset to 0. */
     TEST_ASSERT_EQUAL_INT(SAFE_OK,
         safety_check(&s, 80.0f, 1, 0.0f, 1, 1));
-    /* Next stale tick: since_reading 1 -> OK (timer was reset) */
+    /* Next stale tick: since_reading restarts at 1 -> OK (timer was reset). */
     TEST_ASSERT_EQUAL_INT(SAFE_OK,
         safety_check(&s, 80.0f, 1, 0.0f, 0, 1));
 }
@@ -140,12 +133,104 @@ static void test_runaway_flat_temp_trips(void)
 {
     safety_t s;
     safety_init(&s);
-    /* 20 ticks of 1s, temp constant 80. win_elapsed: 1..20.
-     * On the 20th tick win_elapsed=20>=20, rise=0 < 2.0 -> SAFE_RUNAWAY. */
+    /* 20 ticks of 1s, temp constant 80.
+     * Tick 1 captures the baseline (win_elapsed 0 -> 1) and does NOT evaluate.
+     * Ticks 2..20 accumulate (win_elapsed 2..20).  On the 20th tick
+     * win_elapsed=20>=20, rise=0 < 2.0 -> SAFE_RUNAWAY.  The deferral of the
+     * baseline tick does NOT shift this case: with 1 s ticks the window still
+     * first reaches 20 s on tick 20 exactly as before the fix. */
     safety_fault_t f = SAFE_OK;
-    for (int i = 0; i < 20; i++)
-        f = safety_check(&s, 80.0f, 1, 100.0f, 1, 1);
+    for (int i = 0; i < 19; i++)
+        TEST_ASSERT_EQUAL_INT(SAFE_OK,
+            safety_check(&s, 80.0f, 1, 100.0f, 1, 1));   /* ticks 1..19 OK */
+    f = safety_check(&s, 80.0f, 1, 100.0f, 1, 1);        /* tick 20 trips   */
     TEST_ASSERT_EQUAL_INT(SAFE_RUNAWAY, f);
+}
+
+/* -----------------------------------------------------------------------
+ * Genuine flat-temp runaway across multiple normal ticks STILL trips, and at
+ * the same tick (20) as before the deferral fix.  This pins the no-regression
+ * guarantee for the real safety case.
+ * ----------------------------------------------------------------------- */
+static void test_runaway_still_trips_flat_multiticks(void)
+{
+    safety_t s;
+    safety_init(&s);
+    safety_fault_t f = SAFE_OK;
+    for (int i = 0; i < 19; i++)
+        TEST_ASSERT_EQUAL_INT(SAFE_OK,
+            safety_check(&s, 150.0f, 1, 100.0f, 1, 1));   /* ticks 1..19 OK */
+    /* tick 20: win_elapsed reaches 20 >= 20, rise 0 < 2.0 -> trips */
+    f = safety_check(&s, 150.0f, 1, 100.0f, 1, 1);
+    TEST_ASSERT_EQUAL_INT(SAFE_RUNAWAY, f);
+}
+
+/* -----------------------------------------------------------------------
+ * Fail-safe edge: a SINGLE first heating tick with dt_s >= the runaway window
+ * (e.g. a stalled/coalesced 25 s tick) must NOT spuriously trip runaway.  The
+ * baseline-capture tick can never be the evaluation tick.  The earliest a trip
+ * can occur is a LATER tick that closes a full window above the captured
+ * baseline.
+ * ----------------------------------------------------------------------- */
+static void test_runaway_single_big_tick_no_false_trip(void)
+{
+    safety_t s;
+    safety_init(&s);
+    /* Isolate the runaway stage: raise the stall timeout so a large dt_s does
+     * not trip SAFE_STALL first (stall has higher priority than runaway).  This
+     * leaves the runaway window (20 s) as the only stage the big dt can reach. */
+    s.stall_timeout_s = 1000;
+    /* One huge first heating tick: dt 25 >= window 20.  Baseline captured at
+     * 80 C; this tick must return SAFE_OK (no spurious runaway) because the
+     * baseline tick can never also be the evaluation tick. */
+    TEST_ASSERT_EQUAL_INT(SAFE_OK,
+        safety_check(&s, 80.0f, 1, 100.0f, 1, 25));
+    /* A second flat heating tick whose dt again covers the window is the
+     * EARLIEST a trip can occur — and it does, now that a real baseline (80 C)
+     * exists and the rise is 0 < 2.0. */
+    TEST_ASSERT_EQUAL_INT(SAFE_RUNAWAY,
+        safety_check(&s, 80.0f, 1, 100.0f, 1, 25));
+}
+
+/* -----------------------------------------------------------------------
+ * Dropping below the heating threshold (duty <= 50) holds the window reset,
+ * so a re-baseline after resuming heat needs a FULL fresh window before it can
+ * trip — it can never trip earlier off a stale pre-cooldown baseline.
+ * ----------------------------------------------------------------------- */
+static void test_runaway_duty_crossing_50_rebaselines(void)
+{
+    safety_t s;
+    safety_init(&s);
+    /* Heat partway into the window: 10 ticks of 1s at flat 100 C. */
+    for (int i = 0; i < 10; i++)
+        TEST_ASSERT_EQUAL_INT(SAFE_OK,
+            safety_check(&s, 100.0f, 1, 100.0f, 1, 1));   /* win_elapsed -> 10 */
+    /* Drop to not-heating for a few ticks: window held reset every tick. */
+    for (int i = 0; i < 3; i++)
+        TEST_ASSERT_EQUAL_INT(SAFE_OK,
+            safety_check(&s, 100.0f, 1, 0.0f, 1, 1));      /* win reset, OK    */
+    /* Resume heating, flat temp.  Re-baseline on the first heating tick, then
+     * a FULL fresh 20 s window is required: ticks 1..19 must be OK, trip on the
+     * 20th — never earlier (the pre-cooldown 10 s does NOT carry over). */
+    safety_fault_t f = SAFE_OK;
+    for (int i = 0; i < 19; i++)
+        TEST_ASSERT_EQUAL_INT(SAFE_OK,
+            safety_check(&s, 100.0f, 1, 100.0f, 1, 1));    /* ticks 1..19 OK   */
+    f = safety_check(&s, 100.0f, 1, 100.0f, 1, 1);         /* tick 20 trips    */
+    TEST_ASSERT_EQUAL_INT(SAFE_RUNAWAY, f);
+}
+
+/* -----------------------------------------------------------------------
+ * Stall overshoot: a single first tick with dt_s well over the stall timeout
+ * still trips SAFE_STALL (the accumulate-then-check ordering is unchanged).
+ * ----------------------------------------------------------------------- */
+static void test_stall_large_dt_overshoot(void)
+{
+    safety_t s;
+    safety_init(&s);
+    /* fresh_reading=0, dt 10 >= stall_timeout 5 -> since_reading 10 >= 5. */
+    TEST_ASSERT_EQUAL_INT(SAFE_STALL,
+        safety_check(&s, 80.0f, 1, 0.0f, 0, 10));
 }
 
 /* -----------------------------------------------------------------------
@@ -199,6 +284,10 @@ int main(void)
     RUN_TEST(test_stall_after_timeout);
     RUN_TEST(test_fresh_reading_resets_stall);
     RUN_TEST(test_runaway_flat_temp_trips);
+    RUN_TEST(test_runaway_still_trips_flat_multiticks);
+    RUN_TEST(test_runaway_single_big_tick_no_false_trip);
+    RUN_TEST(test_runaway_duty_crossing_50_rebaselines);
+    RUN_TEST(test_stall_large_dt_overshoot);
     RUN_TEST(test_runaway_rising_temp_ok);
     RUN_TEST(test_no_runaway_when_not_heating);
     RUN_TEST(test_healthy_tick_ok);
