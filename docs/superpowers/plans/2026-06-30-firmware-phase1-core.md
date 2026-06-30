@@ -353,6 +353,65 @@ git commit -m "firmware/core: safety watchdog (overtemp/runaway/tc-fault/stall)"
 
 ---
 
+### Task 7: Split-range actuator (`core/actuator`)
+
+**Files:**
+- Create: `firmware/lib/core/actuator.h`, `firmware/lib/core/actuator.c`, `firmware/test/test_actuator/test_actuator.c`
+
+**Interfaces:**
+- Produces:
+  ```c
+  typedef struct { float heater_pct; float fan_pct; } drive_t;   /* each 0..100 */
+  drive_t actuator_split(float effort_pct, float deadband_pct);  /* effort in [-100,100] */
+  ```
+  Maps the bipolar PID effort to two non-overlapping duties:
+  `effort > +deadband` → `heater_pct = clamp(effort,0,100), fan_pct = 0`;
+  `effort < -deadband` → `fan_pct = clamp(-effort,0,100), heater_pct = 0`;
+  within `[-deadband,+deadband]` → both 0. **Heater and fan are NEVER both > 0.**
+- Consumes: nothing (pure). The control loop (Phase 2) configures the PID range to
+  `[-100,+100]` and feeds the effort here; this phase only builds + tests the mapping.
+
+- [ ] **Step 1: Write failing tests** `test_actuator/test_actuator.c`:
+
+```c
+#include <unity.h>
+#include "actuator.h"
+void setUp(void){} void tearDown(void){}
+static void test_positive_effort_heats_only(void){ drive_t d=actuator_split(60.0f,5.0f);
+    TEST_ASSERT_FLOAT_WITHIN(0.01f,60.0f,d.heater_pct); TEST_ASSERT_FLOAT_WITHIN(0.01f,0.0f,d.fan_pct); }
+static void test_negative_effort_cools_only(void){ drive_t d=actuator_split(-40.0f,5.0f);
+    TEST_ASSERT_FLOAT_WITHIN(0.01f,0.0f,d.heater_pct); TEST_ASSERT_FLOAT_WITHIN(0.01f,40.0f,d.fan_pct); }
+static void test_deadband_both_off(void){ drive_t d=actuator_split(3.0f,5.0f);
+    TEST_ASSERT_FLOAT_WITHIN(0.01f,0.0f,d.heater_pct); TEST_ASSERT_FLOAT_WITHIN(0.01f,0.0f,d.fan_pct); }
+static void test_never_both_on(void){ for(float e=-100;e<=100;e+=1.0f){ drive_t d=actuator_split(e,5.0f);
+    TEST_ASSERT_FALSE(d.heater_pct>0.0f && d.fan_pct>0.0f);
+    TEST_ASSERT_TRUE(d.heater_pct>=0.0f && d.heater_pct<=100.0f);
+    TEST_ASSERT_TRUE(d.fan_pct>=0.0f && d.fan_pct<=100.0f); } }
+static void test_clamps_over_range(void){ drive_t d=actuator_split(150.0f,5.0f);
+    TEST_ASSERT_FLOAT_WITHIN(0.01f,100.0f,d.heater_pct);
+    drive_t c=actuator_split(-150.0f,5.0f); TEST_ASSERT_FLOAT_WITHIN(0.01f,100.0f,c.fan_pct); }
+int main(void){ UNITY_BEGIN(); RUN_TEST(test_positive_effort_heats_only);
+    RUN_TEST(test_negative_effort_cools_only); RUN_TEST(test_deadband_both_off);
+    RUN_TEST(test_never_both_on); RUN_TEST(test_clamps_over_range); return UNITY_END(); }
+```
+
+- [ ] **Step 2: Run — expect FAIL** (`pio test -e native -f test_actuator`): undefined `actuator_split`.
+
+- [ ] **Step 3: Implement** `actuator.h` + `actuator.c` (pure C, only the C stdlib). Clamp helper
+  inline; no platform headers.
+
+- [ ] **Step 4: Run — expect PASS** (`pio test -e native -f test_actuator`: 5/5), then
+  `pio test -e native` (ALL suites green).
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add firmware/lib/core/actuator.h firmware/lib/core/actuator.c firmware/test/test_actuator
+git commit -m "firmware/core: split-range actuator (heater/fan deadband mapping)"
+```
+
+---
+
 ## Self-Review notes (for the executor)
 - **Native purity is the gate:** `lib/core/*` must compile under `pio test -e native` (gcc)
   — any accidental `esp_*`/`driver/*` include breaks the build and the phase's whole premise.

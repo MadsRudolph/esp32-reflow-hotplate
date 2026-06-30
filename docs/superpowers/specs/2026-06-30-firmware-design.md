@@ -26,6 +26,7 @@ isolated as pure C and unit-tested natively.
 | Language / framework | **Embedded C on ESP-IDF** (PlatformIO `framework = espidf`) | Pure C, no C++/Arduino; native C driver APIs + FreeRTOS |
 | Control loop | **PID**, position form, anti-windup, derivative-on-measurement; fixed conservative default gains | Reliable reflow tracking; tune once per plate |
 | Heater output | **Time-proportional control** (slow ~1–2 s PWM window on GPIO25), fail-safe low | Standard for thermal/heater control |
+| Cooling / fan | **5 V fan on GPIO13**, driven as the cooling half of a **bipolar split-range PID** (heater vs fan, deadband) | Active cooling on the down-ramp → more accurate curves; needs a board revision |
 | Testability | `core/` is pure C (no ESP-IDF deps) → **PlatformIO `native` Unity tests**; HAL bench-verified | Fast TDD for the safety-critical logic |
 | Profiles | **Editable, persisted to NVS** (`nvs_flash`); seeded with leaded Sn63/Pb37 + lead-free SAC305 | Tweak without reflash; managed from OLED and web |
 | Local UI | SSD1306 OLED + rotary encoder + start/stop button | Standalone operation |
@@ -42,15 +43,17 @@ firmware/                         PlatformIO project (framework = espidf)
   partitions.csv                  app + nvs (profiles)
   src/
     core/      PURE C — NO ESP-IDF/Arduino deps → native Unity tests
-      pid.c/.h        position PID, anti-windup clamp, derivative-on-measurement
+      pid.c/.h        position PID, anti-windup clamp, derivative-on-measurement (BIPOLAR output)
+      actuator.c/.h   split-range: bipolar effort → (heater_duty, fan_duty) with a deadband
       profile.c/.h    profile model (stages) + setpoint-vs-time interpolation + validation
       reflow.c/.h     run state machine (idle→preheat→soak→reflow→cool→done / fault)
-      safety.c/.h     watchdog: pure verdict from (temp, duty, dt, flags)
+      safety.c/.h     watchdog: pure verdict from (temp, heater_duty, dt, flags)
       settings.c/.h   profile store; storage behind a struct-of-fn-pointers (fake in tests)
     hal/       ESP-IDF C drivers (bench-verified, not native-tested)
       tc_max31855.c   driver/spi_master: read 32-bit word, parse temp + fault bits
       oled_ssd1306.c  driver/i2c_master: minimal text/line/bar driver
       heater.c        time-proportional slow-PWM on GPIO25; fail-safe low
+      fan.c           5 V cooling fan PWM (LEDC) on GPIO13; off on init/abort/fault
       encoder.c       PCNT peripheral (A/B) + GPIO ISR for switch
       button.c, led.c GPIO
     ui/ui.c           OLED screens + encoder navigation (depends on core + hal)
@@ -67,13 +70,20 @@ firmware/                         PlatformIO project (framework = espidf)
 ### 3.1 Pin map (from `hardware/kicad/net_contract.json`)
 `HEATER_PWM=GPIO25, TC_SCK=GPIO18, TC_SO=GPIO19, TC_CS=GPIO5, OLED_SDA=GPIO21,
 OLED_SCL=GPIO22, ENC_A=GPIO32, ENC_B=GPIO33, ENC_SW=GPIO27, BTN_START=GPIO26,
-LED_STATUS=GPIO4`. SPI is read-only (no MOSI); MAX31855 is the only SPI device.
+LED_STATUS=GPIO4, FAN_PWM=GPIO13`. SPI is read-only (no MOSI); MAX31855 is the only SPI
+device. **FAN_PWM (GPIO13)** drives a 5 V cooling fan — added 2026-06-30; it is NOT on the
+fabricated board yet and needs a board revision (see §12).
 
 ## 4. Control core (`core/`)
 
-- **`pid`** — position-form PID; output 0–100 % duty. Anti-windup (integral clamp on
-  saturation); derivative on the measurement (not the error) to avoid a setpoint kick at
-  stage boundaries. Conservative default `Kp/Ki/Kd` in config; documented tuning procedure.
+- **`pid`** — position-form PID; **bipolar output −100…+100 %** (positive = heat demand,
+  negative = cool demand). Anti-windup (conditional integration on either rail); derivative
+  on the measurement (not the error) to avoid a setpoint kick at stage boundaries; NaN/Inf
+  output → fail-safe minimum. Conservative default `Kp/Ki/Kd` in config; documented tuning.
+- **`actuator` (split-range)** — maps the bipolar PID effort to two non-overlapping outputs
+  with a deadband: `effort > +deadband` → `heater_duty = effort, fan_duty = 0`;
+  `effort < −deadband` → `fan_duty = |effort|, heater_duty = 0`; inside the deadband both
+  off. **Heating and cooling are never commanded at once.** Pure function, fully unit-tested.
 - **`profile`** — a profile is an ordered list of stages `{name, target_c, duration_s}`
   for preheat → soak → reflow(peak) → cool. `profile_setpoint(profile, elapsed_s)` returns
   the interpolated target. `profile_validate()` enforces: stage count/limits, monotonic
@@ -82,10 +92,11 @@ LED_STATUS=GPIO4`. SPI is read-only (no MOSI); MAX31855 is the only SPI device.
 - **`reflow`** — the run state machine: `IDLE → PREHEAT → SOAK → REFLOW → COOL → DONE`,
   plus `FAULT`. Advances stages by the profile; computes the live setpoint; consumes the
   `safety` verdict to abort. Publishes a run snapshot.
-- **`safety`** — pure function evaluated every tick; forces heater OFF + `FAULT` on:
-  over-temp (`≥ 260 °C`), thermal runaway (heater high but temp not rising ≥ ~2 °C / 20 s),
-  thermocouple fault (open/short/NaN/out-of-band), sensor stall (no fresh reading in
-  timeout). Faults latch until acknowledged.
+- **`safety`** — pure function evaluated every tick; forces heater + fan OFF + `FAULT` on:
+  over-temp (`≥ 260 °C`), thermal runaway (**heater_duty** high but temp not rising ≥ ~2 °C /
+  20 s — evaluated on heater duty only, so active fan cooling never trips it), thermocouple
+  fault (open/short/NaN/out-of-band), sensor stall (no fresh reading in timeout). Faults
+  latch until acknowledged.
 - **`settings`** — profile CRUD over an injected `storage_if` (struct of read/write fn
   pointers). On-device it binds to NVS; in native tests, to an in-memory fake. Seeds the
   two default profiles on first boot.
@@ -93,8 +104,9 @@ LED_STATUS=GPIO4`. SPI is read-only (no MOSI); MAX31855 is the only SPI device.
 ## 5. HAL (`hal/`, ESP-IDF C)
 Thin wrappers, no business logic: `tc_max31855` (SPI word → °C + fault), `oled_ssd1306`
 (I²C text/line/bar), `heater` (time-proportional slow-PWM, fail-safe low on init/abort),
-`encoder` (PCNT quadrature + GPIO ISR switch), `button`, `led`. Verified on the bench; the
-steps are documented in `firmware/README.md`.
+`fan` (5 V cooling-fan PWM via LEDC on GPIO13, off on init/abort/fault), `encoder` (PCNT
+quadrature + GPIO ISR switch), `button`, `led`. Verified on the bench; the steps are
+documented in `firmware/README.md`.
 
 ## 6. Local UI (`ui/`)
 ```
@@ -128,14 +140,17 @@ During a run, also stream one CSV line per tick over USB serial (`t,target,actua
 stage`) for plotting and PID tuning.
 
 ## 9. Concurrency model (FreeRTOS)
-- **Control task** (fixed tick, e.g. 250 ms, high priority): TC read → `safety` → `pid` →
-  `heater` duty → publish snapshot → `ui` update + serial CSV. Owns all heater control.
+- **Control task** (fixed tick, e.g. 250 ms, high priority): TC read → `safety` →
+  `pid` (bipolar) → `actuator` (split-range) → `heater` + `fan` duties → publish snapshot →
+  `ui` update + serial CSV. Owns all heater AND fan control.
 - **httpd task** (esp_http_server): serves dashboard, reads the published snapshot, pushes
   WS telemetry, handles profile CRUD (enqueues writes consumed by the control/settings side).
 - **wifi** events handled async. The control + safety loop is independent of WiFi/web state.
 
 ## 10. Testing (PlatformIO `native` env, Unity)
 - `pid`: step response, anti-windup saturation, no derivative kick at setpoint change.
+- `actuator`: positive effort → heater only; negative → fan only; deadband → both off;
+  never heater+fan simultaneously; clamps to valid duty ranges.
 - `profile`: interpolation across stage boundaries; `profile_validate` accepts good /
   rejects bad (non-monotonic, over-ceiling, zero-duration); defaults correct.
 - `reflow`: full state-machine path + abort + fault transitions.
@@ -157,5 +172,10 @@ firmware/   the PlatformIO ESP-IDF project above (src/, test/native/, platformio
   a later option.
 - **Heater fail-safe:** `heater` must drive GPIO25 low on init, abort, fault, and task crash;
   this complements the hardware boot-safe gate. Covered explicitly in tests/bench checks.
+- **Fan board revision (hardware):** the 5 V cooling fan on `FAN_PWM`=GPIO13 is NOT on the
+  fabricated board — it needs a board revision: a logic-level N-MOSFET (2N7000/BS170) low-side
+  switching the fan off `+5V`, a flyback diode, and a 2-pin fan connector (the `FANDRV`
+  sub-circuit in `net_contract.json`). Folds into the next board spin (production files already
+  stale from the PCB re-placement). The firmware `fan` HAL must default the GPIO low/off.
 - **Flash size for the embedded SPA:** keep the dashboard self-contained and small; verify it
   fits the app partition.

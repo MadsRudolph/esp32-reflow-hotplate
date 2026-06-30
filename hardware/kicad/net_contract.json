@@ -12,7 +12,8 @@
     "ENC_B": "GPIO33",
     "ENC_SW": "GPIO27",
     "BTN_START": "GPIO26",
-    "LED_STATUS": "GPIO4"
+    "LED_STATUS": "GPIO4",
+    "FAN_PWM": "GPIO13"
   },
   "power_nets": ["+24V", "+12V", "+5V", "+3V3", "GND", "HEATER_RET"],
   "nets": {
@@ -33,6 +34,8 @@
     "ENC_B": ["A1.GPIO33", "SW1.B"],
     "ENC_SW": ["A1.GPIO27", "SW1.S1"],
     "BTN_START": ["A1.GPIO26", "SW2.1"],
-    "LED_STATUS": ["A1.GPIO4", "D1.A"]
-  }
+    "LED_STATUS": ["A1.GPIO4", "D1.A"],
+    "FAN_PWM": ["A1.GPIO13", "FANDRV.IN"]
+  },
+  "_pending_hardware": "FAN_PWM (GPIO13) added 2026-06-30 for a 5V cooling fan in the split-range PID loop. NOT yet on the fabricated board (main) — requires a board revision: a logic-level N-MOSFET (e.g. 2N7000/BS170) low-side switching the 5V fan off +5V, a flyback diode (fan is inductive), and a 2-pin fan connector; FANDRV = that fan-driver sub-circuit (FANDRV.IN = GPIO13 gate input). Fold into the next board spin (production files already stale from the PCB re-placement)."
 }
