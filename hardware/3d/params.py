@@ -5,10 +5,12 @@ PARAMS = {
     "insert_bore_d": 4.0, "insert_bore_depth": 6.0, "insert_boss_wall": 2.0,
     "wall": 2.4, "floor": 2.4,
     # Box sized to hold the 104x104 board FLAT (inner = pcb + 2*board_clear): outer ~113.
-    "box_x": 113.0, "box_y": 113.0, "box_h": 30.0,        # electronics box outer envelope
+    # box_h raised to 40 to clear the board's VERTICAL TO-220 regulators/MOSFET (~30 mm tall,
+    # measured from the imported board model) above the post-lifted board.
+    "box_x": 113.0, "box_y": 113.0, "box_h": 40.0,        # electronics box outer envelope
     "board_clear": 2.0,                                    # gap: board edge -> inner wall
     "board_post_xy": 48.0,                                 # corner support-post offset from centre (board rests on posts; no screw holes in the board)
-    "board_post_d": 6.0, "board_post_h": 10.0,             # lift board off floor for bottom lead tails
+    "board_post_d": 6.0, "board_post_h": 4.0,             # lift board off floor for clipped lead tails
     "panel_t": 3.0,
     "pcb_x": 104.0, "pcb_y": 104.0,                        # control board outline
     "vent_slot_w": 2.5, "vent_slot_l": 18.0,

@@ -94,6 +94,48 @@ def _intersect_volume(a, b):
     return vol
 
 
+def _import_board():
+    """Import the KiCad board GLB (with component 3D models), scale m->mm, orient to
+    the enclosure frame, and rest it centred on the box corner posts. Returns the
+    joined 'pcb_board' object. This is a REFERENCE model for the assembled view only
+    -- it is not a printed part and is not exported as STL."""
+    import mathutils
+    P = PARAMS
+    glb = os.path.join(_HERE, "pcb", "reflow_board.glb")
+    before = set(o.name for o in bpy.context.scene.objects)
+    bpy.ops.import_scene.gltf(filepath=glb)
+    meshes = [o for o in bpy.context.scene.objects
+              if o.name not in before and o.type == 'MESH']
+    for o in bpy.context.scene.objects:
+        o.select_set(False)
+    for o in meshes:
+        o.select_set(True)
+    bpy.context.view_layer.objects.active = meshes[0]
+    bpy.ops.object.join()
+    board = bpy.context.active_object
+    board.name = "pcb_board"
+    # glTF is in metres -> mm; KiCad negates Y in glTF, so mirror Y back to board frame.
+    board.scale = (1000.0, 1000.0, 1000.0)
+    bpy.ops.object.transform_apply(scale=True)
+    board.scale = (1.0, -1.0, 1.0)
+    bpy.ops.object.transform_apply(scale=True)
+    bpy.context.view_layer.update()
+    mn = [1e9] * 3
+    mx = [-1e9] * 3
+    for c in board.bound_box:
+        w = board.matrix_world @ mathutils.Vector(c)
+        for i in range(3):
+            mn[i] = min(mn[i], w[i])
+            mx[i] = max(mx[i], w[i])
+    cx = (mn[0] + mx[0]) / 2.0
+    cy = (mn[1] + mx[1]) / 2.0
+    board.location.x -= cx                                   # centre X in the box
+    board.location.y -= cy                                   # centre Y in the box
+    board.location.z += (P["floor"] + P["board_post_h"]) - mn[2]   # rest on post tops
+    bpy.context.view_layer.update()
+    return board
+
+
 def build_all():
     P = PARAMS
 
@@ -125,6 +167,17 @@ def build_all():
         plate_frame.location = (box_x + 30.0, 0.0, 0.0)
     finally:
         globals()["fresh_scene"] = real_fresh
+
+    # --- import the real PCB (reference model) centred on the box posts -----
+    board = _import_board()
+    bmn = [1e9] * 3
+    bmx = [-1e9] * 3
+    import mathutils as _mu
+    for c in board.bound_box:
+        w = board.matrix_world @ _mu.Vector(c)
+        for i in range(3):
+            bmn[i] = min(bmn[i], w[i])
+            bmx[i] = max(bmx[i], w[i])
 
     bpy.context.view_layer.update()
 
@@ -159,6 +212,8 @@ def build_all():
         "box": r_box,
         "panel": r_panel,
         "interference": {"box_panel": round(isect_box_panel, 4)},
+        "board": {"bbox_z": [round(bmn[2], 1), round(bmx[2], 1)],
+                  "top_vs_box_h": round(bmx[2] - P["box_h"], 1)},
         "stls": [stl_plate.replace("\\", "/"),
                  stl_box.replace("\\", "/"),
                  stl_panel.replace("\\", "/")],
