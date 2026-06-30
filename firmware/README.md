@@ -34,6 +34,7 @@ pio device monitor -e esp32dev
 | ENC_SW         | 27    | Encoder push-switch (GPIO ISR)         |
 | BTN_START      | 26    | Start/stop button                      |
 | LED_STATUS     | 4     | Status LED                             |
+| FAN_PWM        | 13    | 5 V cooling fan, split-range PID (low-side N-MOSFET); **not yet on the fabricated board — pending board revision** |
 
 ## Architecture
 
