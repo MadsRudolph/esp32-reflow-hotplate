@@ -175,6 +175,130 @@ static void test_abort_from_running_goes_cool(void)
 }
 
 /* ----------------------------------------------------------------------- */
+/* Regression: aborting must be DURABLE across subsequent ticks.  Before the
+ * fix, reflow_tick recomputed state from elapsed_s every tick and silently
+ * reverted RS_COOL back to a hot stage (PREHEAT/SOAK/REFLOW), resuming
+ * heating — unsafe.  The cool-stage final target for both defaults is 50C. */
+static void test_abort_persists_across_tick(void)
+{
+    const float cool_target = g_lf.stages[g_lf.n_stages - 1].target_c; /* 50C */
+
+    reflow_t r;
+    reflow_init(&r);
+    reflow_start(&r, &g_lf);
+    reflow_tick(&r, 25.0f, 10, 0);          /* mid-PREHEAT, elapsed=10 */
+    TEST_ASSERT_EQUAL_INT(RS_PREHEAT, reflow_state(&r));
+
+    reflow_abort(&r);
+    TEST_ASSERT_EQUAL_INT(RS_COOL, reflow_state(&r));
+
+    /* Tick again: must stay COOL, must NOT revert to a hot stage, and the
+     * commanded setpoint must be at/below the cool target (no heat command). */
+    reflow_tick(&r, 25.0f, 5, 0);
+    reflow_state_t s = reflow_state(&r);
+    TEST_ASSERT_TRUE(s == RS_COOL || s == RS_DONE);
+    TEST_ASSERT_NOT_EQUAL(RS_PREHEAT, s);
+    TEST_ASSERT_NOT_EQUAL(RS_SOAK, s);
+    TEST_ASSERT_NOT_EQUAL(RS_REFLOW, s);
+    TEST_ASSERT_TRUE(r.setpoint_c <= cool_target);
+
+    /* And again — still never a hot stage, never a hot setpoint. */
+    reflow_tick(&r, 25.0f, 5, 0);
+    s = reflow_state(&r);
+    TEST_ASSERT_TRUE(s == RS_COOL || s == RS_DONE);
+    TEST_ASSERT_NOT_EQUAL(RS_PREHEAT, s);
+    TEST_ASSERT_NOT_EQUAL(RS_SOAK, s);
+    TEST_ASSERT_NOT_EQUAL(RS_REFLOW, s);
+    TEST_ASSERT_TRUE(r.setpoint_c <= cool_target);
+}
+
+/* ----------------------------------------------------------------------- */
+/* An aborted run still progresses to RS_DONE, and no intermediate tick may
+ * produce a hot state or a setpoint above the cool target. */
+static void test_aborted_run_reaches_done(void)
+{
+    const float cool_target = g_lf.stages[g_lf.n_stages - 1].target_c; /* 50C */
+    const int   total       = profile_total_s(&g_lf);
+
+    reflow_t r;
+    reflow_init(&r);
+    reflow_start(&r, &g_lf);
+    reflow_tick(&r, 25.0f, 10, 0);          /* mid-PREHEAT */
+    reflow_abort(&r);
+
+    /* Tick until DONE; bound the loop so a regression can't spin forever. */
+    int guard = 0;
+    while (reflow_state(&r) != RS_DONE && guard < 10000) {
+        reflow_tick(&r, 25.0f, 5, 0);
+        reflow_state_t s = reflow_state(&r);
+        TEST_ASSERT_NOT_EQUAL(RS_PREHEAT, s);
+        TEST_ASSERT_NOT_EQUAL(RS_SOAK, s);
+        TEST_ASSERT_NOT_EQUAL(RS_REFLOW, s);
+        TEST_ASSERT_TRUE(r.setpoint_c <= cool_target);
+        guard++;
+    }
+    TEST_ASSERT_EQUAL_INT(RS_DONE, reflow_state(&r));
+    TEST_ASSERT_TRUE(r.elapsed_s >= total);
+}
+
+/* ----------------------------------------------------------------------- */
+/* reflow_abort is a no-op from IDLE and from the terminal states. */
+static void test_abort_noop_from_idle_and_terminal(void)
+{
+    reflow_t r;
+
+    /* IDLE -> stays IDLE */
+    reflow_init(&r);
+    reflow_abort(&r);
+    TEST_ASSERT_EQUAL_INT(RS_IDLE, reflow_state(&r));
+
+    /* DONE -> stays DONE */
+    reflow_init(&r);
+    reflow_start(&r, &g_lf);
+    while (reflow_state(&r) != RS_DONE) reflow_tick(&r, 25.0f, 5, 0);
+    reflow_abort(&r);
+    TEST_ASSERT_EQUAL_INT(RS_DONE, reflow_state(&r));
+
+    /* FAULT -> stays FAULT */
+    reflow_init(&r);
+    reflow_start(&r, &g_lf);
+    reflow_tick(&r, 25.0f, 5, 1);           /* -> FAULT */
+    TEST_ASSERT_EQUAL_INT(RS_FAULT, reflow_state(&r));
+    reflow_abort(&r);
+    TEST_ASSERT_EQUAL_INT(RS_FAULT, reflow_state(&r));
+}
+
+/* ----------------------------------------------------------------------- */
+/* Acking an aborted run clears the abort latch: a fresh start then behaves
+ * like a normal, non-aborted run (PREHEAT -> SOAK on the normal timeline). */
+static void test_abort_then_ack_resets(void)
+{
+    reflow_t r;
+    reflow_init(&r);
+    reflow_start(&r, &g_lf);
+    reflow_tick(&r, 25.0f, 10, 0);          /* PREHEAT */
+    reflow_abort(&r);
+
+    /* drive the aborted cooldown to DONE */
+    while (reflow_state(&r) != RS_DONE) reflow_tick(&r, 25.0f, 5, 0);
+
+    reflow_ack(&r);
+    TEST_ASSERT_EQUAL_INT(RS_IDLE, reflow_state(&r));
+    TEST_ASSERT_NULL(r.prof);
+    TEST_ASSERT_EQUAL_INT(0, r.elapsed_s);
+
+    /* Latch must be cleared: a fresh run advances PREHEAT -> SOAK normally. */
+    TEST_ASSERT_EQUAL_INT(0, reflow_start(&r, &g_lf));
+    TEST_ASSERT_EQUAL_INT(RS_PREHEAT, reflow_state(&r));
+    reflow_tick(&r, 25.0f, 50, 0);          /* elapsed=50 -> still PREHEAT */
+    TEST_ASSERT_EQUAL_INT(RS_PREHEAT, reflow_state(&r));
+    reflow_tick(&r, 25.0f, 50, 0);          /* elapsed=100 -> SOAK */
+    TEST_ASSERT_EQUAL_INT(RS_SOAK, reflow_state(&r));
+    /* setpoint climbs (heating) on a normal run — proves no abort latch */
+    TEST_ASSERT_TRUE(r.setpoint_c > 50.0f);
+}
+
+/* ----------------------------------------------------------------------- */
 static void test_ack_from_done_resets_to_idle(void)
 {
     reflow_t r;
@@ -242,6 +366,10 @@ int main(void)
     RUN_TEST(test_setpoint_tracks_profile_after_tick);
     RUN_TEST(test_safety_fault_forces_fault_and_is_terminal);
     RUN_TEST(test_abort_from_running_goes_cool);
+    RUN_TEST(test_abort_persists_across_tick);
+    RUN_TEST(test_aborted_run_reaches_done);
+    RUN_TEST(test_abort_noop_from_idle_and_terminal);
+    RUN_TEST(test_abort_then_ack_resets);
     RUN_TEST(test_ack_from_done_resets_to_idle);
     RUN_TEST(test_ack_from_fault_resets_to_idle);
     RUN_TEST(test_tick_in_terminal_or_idle_does_nothing);

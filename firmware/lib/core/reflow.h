@@ -30,6 +30,7 @@ typedef struct {
     int             elapsed_s;
     float           setpoint_c;
     int             stage_idx;
+    int             aborted;     /* internal: latched-abort cooldown flag */
 } reflow_t;
 
 /* Reset to a clean idle state. */

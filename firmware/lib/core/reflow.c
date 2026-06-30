@@ -50,6 +50,7 @@ void reflow_init(reflow_t *r)
     r->elapsed_s  = 0;
     r->setpoint_c = 0.0f;
     r->stage_idx  = 0;
+    r->aborted    = 0;
 }
 
 int reflow_start(reflow_t *r, const profile_t *p)
@@ -66,6 +67,7 @@ int reflow_start(reflow_t *r, const profile_t *p)
     r->stage_idx  = 0;
     r->state      = RS_PREHEAT;
     r->setpoint_c = profile_setpoint(p, 0);
+    r->aborted    = 0;
     return 0;
 }
 
@@ -83,6 +85,20 @@ void reflow_tick(reflow_t *r, float temp_c, int dt_s, int safety_fault)
         return;
     }
 
+    /* Latched abort: durable cooldown that NEVER reverts to a hot stage.
+     * Advance time toward DONE but FORCE the cool target as the setpoint so we
+     * never command heat (and never replay the cool ramp's hot initial value).
+     * Skips the normal stage->state mapping entirely. */
+    if (r->aborted) {
+        int last = r->prof->n_stages - 1;
+        r->elapsed_s += dt_s;
+        r->stage_idx  = last;
+        r->setpoint_c = r->prof->stages[last].target_c;
+        r->state      = (r->elapsed_s >= profile_total_s(r->prof))
+                            ? RS_DONE : RS_COOL;
+        return;
+    }
+
     r->elapsed_s += dt_s;
     r->setpoint_c = profile_setpoint(r->prof, r->elapsed_s);
 
@@ -96,13 +112,22 @@ void reflow_tick(reflow_t *r, float temp_c, int dt_s, int safety_fault)
     r->state     = stage_to_state(r->stage_idx, r->prof->n_stages);
 }
 
-/* Abort: from any running state move to RS_COOL so the load cools down under
- * the profile's interpolation.  From idle/terminal states this is a no-op —
- * there is nothing to cool. */
+/* Abort: from any running state latch a durable cooldown.  Set state=RS_COOL,
+ * mark `aborted` so reflow_tick will keep commanding the cool target and never
+ * revert to a hot stage, and position the timeline at the START of the final
+ * cool stage so the existing elapsed >= total path still drives it to DONE.
+ * From idle/terminal states this is a no-op — there is nothing to cool. */
 void reflow_abort(reflow_t *r)
 {
-    if (is_running(r->state))
-        r->state = RS_COOL;
+    if (!is_running(r->state))
+        return;
+
+    int last = r->prof->n_stages - 1;
+    r->aborted    = 1;
+    r->state      = RS_COOL;
+    r->stage_idx  = last;
+    r->elapsed_s  = profile_total_s(r->prof) - r->prof->stages[last].duration_s;
+    r->setpoint_c = r->prof->stages[last].target_c;
 }
 
 void reflow_ack(reflow_t *r)
