@@ -120,18 +120,16 @@ def _import_board():
     board.scale = (1.0, -1.0, 1.0)
     bpy.ops.object.transform_apply(scale=True)
     bpy.context.view_layer.update()
-    mn = [1e9] * 3
-    mx = [-1e9] * 3
-    for c in board.bound_box:
-        w = board.matrix_world @ mathutils.Vector(c)
-        for i in range(3):
-            mn[i] = min(mn[i], w[i])
-            mx[i] = max(mx[i], w[i])
-    cx = (mn[0] + mx[0]) / 2.0
-    cy = (mn[1] + mx[1]) / 2.0
-    board.location.x -= cx                                   # centre X in the box
-    board.location.y -= cy                                   # centre Y in the box
-    board.location.z += (P["floor"] + P["board_post_h"]) - mn[2]   # rest on post tops
+    # Put the object origin at the geometric bbox centre, then place by location.
+    # (Doing the centring via origin_set is robust; manual bbox+location maths is
+    # error-prone because bound_box is origin-relative.)
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
+    board.location = (0.0, 0.0, 0.0)                         # centre X/Y in the box, origin at centre
+    bpy.context.view_layer.update()
+    # Now rest it on the post tops: shift up so the board's lowest point sits at
+    # floor + board_post_h.
+    mn_z = min((board.matrix_world @ mathutils.Vector(c)).z for c in board.bound_box)
+    board.location.z += (P["floor"] + P["board_post_h"]) - mn_z
     bpy.context.view_layer.update()
     return board
 
