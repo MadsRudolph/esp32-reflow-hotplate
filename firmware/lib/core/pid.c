@@ -28,20 +28,28 @@ float pid_step(pid_t *p, float setpoint, float measurement, float dt_s)
     float P = p->kp * error;
 
     /* Derivative on measurement (not on error) — skipped on first call to
-       avoid a spike from an uninitialised prev_meas or a setpoint jump. */
+       avoid a spike from an uninitialised prev_meas or a setpoint jump.
+       Also skipped when dt_s <= 0 to prevent division by zero (NaN/Inf). */
     float D = 0.0f;
-    if (p->started) {
+    if (p->started && dt_s > 0.0f) {
         float dmeas = measurement - p->prev_meas;
         D = -p->kd * dmeas / dt_s;
     }
 
-    /* Compute unclamped output (integral not yet updated) */
+    /* Compute unclamped output (integral not yet updated).
+       Integral contribution is zero when dt_s <= 0, which is benign. */
     float u = P + p->integ + D;
 
-    /* Clamp */
-    float out = u;
-    if (out > p->out_max) out = p->out_max;
-    if (out < p->out_min) out = p->out_min;
+    /* NaN/Inf safety clamp: if the output is not finite (e.g. caused by
+       upstream NaN propagation), force it to out_min (heater off — fail safe). */
+    float out;
+    if (isnan(u) || isinf(u)) {
+        out = p->out_min;
+    } else {
+        out = u;
+        if (out > p->out_max) out = p->out_max;
+        if (out < p->out_min) out = p->out_min;
+    }
 
     /* Conditional integration (anti-windup):
        Only integrate when output is not saturated in the same direction
