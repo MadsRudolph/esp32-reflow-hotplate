@@ -48,3 +48,4 @@ hardware/kicad/reflow.refined.*
 hardware/kicad/*.autoplace.json
 *-erc.rpt
 hardware/3d/relfow.blend
+hardware/kicad/reflow.kicad_pcb.bak
